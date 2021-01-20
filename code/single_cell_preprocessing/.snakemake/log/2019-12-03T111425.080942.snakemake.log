@@ -1,0 +1,40 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	align
+	1	all
+	1	index_bam
+	1	run_demuxlet
+	1	run_molinfo
+	1	saturation
+	1	subset_vcf
+	7
+
+[Tue Dec  3 11:14:25 2019]
+rule subset_vcf:
+    output: human.vcf
+    log: log/rule_subset_vcf.err
+    jobid: 3
+
+
+        bcftools view -s NA19160,NA18855,NA18856 /project2/gilad/kenneth/References/human/vcfs/human.YRI.cellranger.exons.vcf > human.vcf 2> log/rule_subset_vcf.err
+        
+Submitted job 3 with external jobid 'Submitted batch job 64121686'.
+
+[Tue Dec  3 11:14:25 2019]
+rule align:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R2_001.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz, /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/, /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt
+    output: YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam, YG-AH-2S-ANT-1_S1_L008/Aligned.out.bam
+    log: log/YG-AH-2S-ANT-1_S1_L008_rule_align.err
+    jobid: 1
+    wildcards: sample=YG-AH-2S-ANT-1_S1_L008
+
+
+        STAR --runThreadN 8 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --soloUMIfiltering MultiGeneUMI --soloCBmatchWLtype 1MM_multi_pseudocounts --outSAMtype BAM Unsorted SortedByCoordinate --outSAMattributes NH HI AS nM CR CY UR UY CB UB --outStd BAM_SortedByCoordinate --soloType CB_UMI_Simple --soloCBwhitelist /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12 --soloStrand Forward --soloFeatures Gene GeneFull --soloUMIdedup 1MM_Directional --outFileNamePrefix YG-AH-2S-ANT-1_S1_L008/ --soloOutFileNames ./ "genes.tsv" "barcodes.tsv" "matrix.mtx" "matrixGeneFull.mtx" --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R2_001.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz --readFilesCommand zcat --outTmpDir ./_STARtmp_YG-AH-2S-ANT-1_S1_L008 --outSAMunmapped Within --outFilterMultimapNmax 1 > YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam 2> log/YG-AH-2S-ANT-1_S1_L008_rule_align.err
+        
+Submitted job 1 with external jobid 'Submitted batch job 64121688'.
+[Tue Dec  3 11:14:35 2019]
+Finished job 3.
+1 of 7 steps (14%) done

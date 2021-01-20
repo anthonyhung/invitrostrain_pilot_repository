@@ -1,0 +1,20 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	1	subset_vcf
+	2
+
+[Tue Dec  3 08:13:50 2019]
+rule subset_vcf:
+    output: human.vcf
+    log: log/rule_subset_vcf.err
+    jobid: 1
+
+
+        bcftools view -s NA19160,NA18855,NA18856 /project2/gilad/kenneth/References/human/vcfs/human.YRI.cellranger.exons.vcf > human.vcf 2> log/rule_subset_vcf.err
+        
+WorkflowError in line 133 of /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/Pipeline/Snakefile_solo:
+'Wildcards' object has no attribute 'partition'

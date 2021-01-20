@@ -1,0 +1,12 @@
+#!/bin/sh
+# properties = {"type": "single", "rule": "align", "local": false, "input": ["/project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R2_001.fastq.gz", "/project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz", "/project2/gilad/kenneth/References/human/STARindex/CellrangerReference/", "/project2/gilad/kenneth/References/whitelists/whitelist.v3.txt"], "output": ["YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam", "YG-AH-2S-ANT-1_S1_L008/Aligned.out.bam"], "wildcards": {"sample": "YG-AH-2S-ANT-1_S1_L008"}, "params": {"tmpdir": "./_STARtmp_YG-AH-2S-ANT-1_S1_L008", "prefix": "YG-AH-2S-ANT-1_S1_L008/", "CBstart": 1, "CBlen": 16, "UMIstart": 17, "UMIlen": 12, "multimap": 1, "threads": 8, "strand": "Forward"}, "log": ["log/YG-AH-2S-ANT-1_S1_L008_rule_align.err"], "threads": 1, "resources": {}, "jobid": 1, "cluster": {"mem": 48000, "n": 1, "tasks": 8, "partition": "broadwl", "name": "align-sample=YG-AH-2S-ANT-1_S1_L008", "logfile": "log/snake-align-sample=YG-AH-2S-ANT-1_S1_L008-%j.out"}}
+cd /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex && \
+/scratch/midway2/anthonyhung/miniconda3/envs/chromium/bin/python3.7 \
+-m snakemake YG-AH-2S-ANT-1_S1_L008/Aligned.out.bam --snakefile /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/Pipeline/Snakefile_solo \
+--force -j --keep-target-files --keep-remote \
+--wait-for-files /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/.snakemake/tmp.8zisgz_0 /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R2_001.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt --latency-wait 20 \
+ --attempt 1 --force-use-threads \
+--wrapper-prefix https://github.com/snakemake/snakemake-wrappers/raw/ \
+ --configfiles /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/config_solo_hg38.yaml --config proj_dir=/project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/ -p --allowed-rules align --nocolor --notemp --no-hooks --nolock \
+--mode 2  && touch "/project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/.snakemake/tmp.8zisgz_0/1.jobfinished" || (touch "/project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/.snakemake/tmp.8zisgz_0/1.jobfailed"; exit 1)
+

@@ -1,0 +1,41 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	align
+	1	all
+	1	index_bam
+	1	run_demuxlet
+	1	run_molinfo
+	1	saturation
+	6
+
+[Tue Dec  3 11:26:29 2019]
+rule align:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R2_001.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz, /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/, /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt
+    output: YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam, YG-AH-2S-ANT-1_S1_L008/Aligned.out.bam
+    log: log/YG-AH-2S-ANT-1_S1_L008_rule_align.err
+    jobid: 1
+    wildcards: sample=YG-AH-2S-ANT-1_S1_L008
+
+
+        STAR --runThreadN 8 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --soloUMIfiltering MultiGeneUMI --soloCBmatchWLtype 1MM_multi_pseudocounts --outSAMtype BAM Unsorted SortedByCoordinate --outSAMattributes NH HI AS nM CR CY UR UY CB UB --outStd BAM_SortedByCoordinate --soloType CB_UMI_Simple --soloCBwhitelist /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12 --soloStrand Forward --soloFeatures Gene GeneFull --soloUMIdedup 1MM_Directional --outFileNamePrefix YG-AH-2S-ANT-1_S1_L008/ --soloOutFileNames ./ "genes.tsv" "barcodes.tsv" "matrix.mtx" "matrixGeneFull.mtx" --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R2_001.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz --readFilesCommand zcat --outTmpDir ./_STARtmp_YG-AH-2S-ANT-1_S1_L008 --outSAMunmapped Within --outFilterMultimapNmax 1 > YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam 2> log/YG-AH-2S-ANT-1_S1_L008_rule_align.err
+        
+Submitted job 1 with external jobid 'Submitted batch job 64121790'.
+[Tue Dec  3 11:26:39 2019]
+Error in rule align:
+    jobid: 1
+    output: YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam, YG-AH-2S-ANT-1_S1_L008/Aligned.out.bam
+    log: log/YG-AH-2S-ANT-1_S1_L008_rule_align.err (check log file(s) for error message)
+    shell:
+        
+        STAR --runThreadN 8 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --soloUMIfiltering MultiGeneUMI --soloCBmatchWLtype 1MM_multi_pseudocounts --outSAMtype BAM Unsorted SortedByCoordinate --outSAMattributes NH HI AS nM CR CY UR UY CB UB --outStd BAM_SortedByCoordinate --soloType CB_UMI_Simple --soloCBwhitelist /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12 --soloStrand Forward --soloFeatures Gene GeneFull --soloUMIdedup 1MM_Directional --outFileNamePrefix YG-AH-2S-ANT-1_S1_L008/ --soloOutFileNames ./ "genes.tsv" "barcodes.tsv" "matrix.mtx" "matrixGeneFull.mtx" --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R2_001.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz --readFilesCommand zcat --outTmpDir ./_STARtmp_YG-AH-2S-ANT-1_S1_L008 --outSAMunmapped Within --outFilterMultimapNmax 1 > YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam 2> log/YG-AH-2S-ANT-1_S1_L008_rule_align.err
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64121790
+
+Error executing rule align on cluster (jobid: 1, external: Submitted batch job 64121790, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/.snakemake/tmp.x9eizj_x/snakejob.align.1.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/.snakemake/log/2019-12-03T112629.123208.snakemake.log

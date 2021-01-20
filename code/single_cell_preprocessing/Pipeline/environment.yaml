@@ -1,0 +1,39 @@
+# Conda configuration file to reproduce computing environment
+#
+# Create the conda environment:
+#
+# conda env create --file environment.yaml
+#
+# Update the conda environment:
+#
+# conda env update --file environment.yaml
+#
+# Activate the conda environment:
+#
+# source activate dropseq2
+#
+# Deactivate the conda environment:
+#
+# source deactivate dropseq2
+#
+# Resources:
+
+
+name:
+    chromium
+channels:
+    - conda-forge
+    - bioconda
+    - default
+dependencies:
+    - fastqc
+    - snakemake
+    - umi_tools >= 0.5.1
+    - STAR >=2.7.3a-0
+    - samtools
+    - multiqc
+    - ucsc-gtftogenepred
+    - cutadapt
+    - pysam
+    - bcftools
+

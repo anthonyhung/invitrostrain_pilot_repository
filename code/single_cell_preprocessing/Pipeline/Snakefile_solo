@@ -1,0 +1,135 @@
+import glob
+import os
+
+# Configuration ----------------------------------------------------------------
+
+#cell barcode UMI structure
+barcode = config["barcode"]
+
+#whitelist
+whitelist = config["whitelist"]
+
+#individuals
+humans = config["humans"]
+
+#genome_index
+GenomeIndex = config["genome_index"]
+
+#demuxlet script
+demuxlet  = config["demuxlet"]
+vcf = config["vcf"]
+
+pd = config["proj_dir"]
+fastq_dir = pd + "fastq/"
+
+#make sure the project directory actually exists
+#assert os.path.exists(pd), "Project directory exists"
+
+# Directory to send log files. Needs to be created manually since it
+# is not a file created by a Snakemake rule.
+dir_log = config["dir_log"]
+if not os.path.isdir(dir_log):
+    os.mkdir(dir_log)
+    
+# input data # might need to be changed to be universal
+
+samples = set(glob_wildcards(fastq_dir + "{samples}_R1_001.fastq.gz").samples)
+
+rule all:
+    input:
+        expand("{sample}/Aligned.out.bam", sample = samples),  
+        expand("{sample}/Aligned.sortedByCoord.out.bam", sample = samples),
+        expand("{sample}/Aligned.sortedByCoord.out.bam.bai", sample = samples),
+        "human.vcf",
+        expand("{sample}/demuxlet.best", sample = samples),
+
+rule align:
+    input:
+        cDNA_read = fastq_dir + "{sample}_R2_001.fastq.gz",
+        bc_read = fastq_dir + "{sample}_R1_001.fastq.gz", 
+        ref_genome = GenomeIndex,
+        whitelist = whitelist
+    output:
+        bam      = "{sample}/Aligned.sortedByCoord.out.bam",
+        unsorted = "{sample}/Aligned.out.bam"
+        # mat = "{sample}_matrix.mtx",
+        # matGeneFull =  "{sample}_matrixGeneFull.mtx",
+        # genes =  "{sample}_genes.tsv",
+        # barcodes =  "{sample}_barcodes.tsv"
+    params:
+        tmpdir = "./_STARtmp_{sample}",
+        prefix =  "{sample}/",
+        CBstart = 1,
+        CBlen = 16,
+        UMIstart = 17,
+        UMIlen = 12,
+        multimap = 1,
+        threads = 8,
+        strand = "Forward"
+    log:
+        dir_log + "{sample}_rule_align.err"
+    shell:
+        """
+        STAR --runThreadN {params.threads} \
+--genomeDir {input.ref_genome} \
+--soloUMIfiltering MultiGeneUMI \
+--soloCBmatchWLtype 1MM_multi_pseudocounts \
+--outSAMtype BAM Unsorted SortedByCoordinate \
+--outSAMattributes NH HI AS nM CR CY UR UY CB UB \
+--outStd BAM_SortedByCoordinate \
+--soloType CB_UMI_Simple \
+--soloCBwhitelist {input.whitelist} \
+--soloCBstart {params.CBstart} \
+--soloCBlen {params.CBlen} \
+--soloUMIstart {params.UMIstart} \
+--soloUMIlen {params.UMIlen} \
+--soloStrand {params.strand} \
+--soloFeatures Gene GeneFull \
+--soloUMIdedup 1MM_Directional \
+--outFileNamePrefix {params.prefix} \
+--soloOutFileNames ./ "genes.tsv" "barcodes.tsv" "matrix.mtx" "matrixGeneFull.mtx" \
+--readFilesIn {input.cDNA_read} {input.bc_read} \
+--readFilesCommand zcat \
+--outTmpDir {params.tmpdir} \
+--outSAMunmapped Within \
+--outFilterMultimapNmax {params.multimap} > {output.bam} 2> {log}
+        """
+        
+rule index_bam:
+    input:
+        "{sample}/Aligned.sortedByCoord.out.bam"
+    output:
+        "{sample}/Aligned.sortedByCoord.out.bam.bai"
+    log:
+        dir_log + "{sample}_rule_index_bam.err"
+    shell:
+        "samtools index {input} 2> {log}"
+     
+# subset vcfs
+rule subset_vcf:
+    output:
+         "human.vcf"
+    log:
+        dir_log + "rule_subset_vcf.err"
+    shell:
+        """
+        bcftools view -s {humans} {vcf} > {output} 2> {log}
+        """
+
+# run demuxlet
+rule run_demuxlet:
+    input:
+        invcf = "human.vcf",
+        inbam = "{sample}/Aligned.sortedByCoord.out.bam",
+        inbai = "{sample}/Aligned.sortedByCoord.out.bam.bai"
+    output:
+         "{sample}/demuxlet.best"
+    params:
+         "{sample}/demuxlet"
+    log:
+        dir_log + "{sample}_rule_run_demuxlet.err"
+    shell:
+        """
+        {demuxlet} --sam {input.inbam} --tag-group CB --tag-UMI UB --vcf {input.invcf} --field GT --out {params} --geno-error 0.01 2> {log}
+        """
+

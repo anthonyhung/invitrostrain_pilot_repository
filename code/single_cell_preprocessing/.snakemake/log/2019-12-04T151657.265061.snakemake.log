@@ -1,0 +1,100 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	align
+	1	all
+	1	index_bam
+	1	run_demuxlet
+	1	run_molinfo
+	1	saturation
+	6
+
+[Wed Dec  4 15:16:58 2019]
+rule align:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-2_S2_L008_R2_001.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-2_S2_L008_R1_001.fastq.gz, /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/, /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt
+    output: YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam, YG-AH-2S-ANT-2_S2_L008/Aligned.out.bam
+    log: log/YG-AH-2S-ANT-2_S2_L008_rule_align.err
+    jobid: 1
+    wildcards: sample=YG-AH-2S-ANT-2_S2_L008
+
+
+        STAR --runThreadN 8 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --soloUMIfiltering MultiGeneUMI --soloCBmatchWLtype 1MM_multi_pseudocounts --outSAMtype BAM Unsorted SortedByCoordinate --outSAMattributes NH HI AS nM CR CY UR UY CB UB --outStd BAM_SortedByCoordinate --soloType CB_UMI_Simple --soloCBwhitelist /project2/gilad/kenneth/References/whitelists/whitelist.v3.txt --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12 --soloStrand Forward --soloFeatures Gene GeneFull --soloUMIdedup 1MM_Directional --outFileNamePrefix YG-AH-2S-ANT-2_S2_L008/ --soloOutFileNames ./ "genes.tsv" "barcodes.tsv" "matrix.mtx" "matrixGeneFull.mtx" --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-2_S2_L008_R2_001.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/fastq/YG-AH-2S-ANT-2_S2_L008_R1_001.fastq.gz --readFilesCommand zcat --outTmpDir ./_STARtmp_YG-AH-2S-ANT-2_S2_L008 --outSAMunmapped Within --outFilterMultimapNmax 1 > YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam 2> log/YG-AH-2S-ANT-2_S2_L008_rule_align.err
+        
+Submitted job 1 with external jobid 'Submitted batch job 64140067'.
+[Wed Dec  4 15:57:20 2019]
+Finished job 1.
+1 of 6 steps (17%) done
+
+[Wed Dec  4 15:57:20 2019]
+rule index_bam:
+    input: YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam
+    output: YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam.bai
+    log: log/YG-AH-2S-ANT-2_S2_L008_rule_index_bam.err
+    jobid: 3
+    wildcards: sample=YG-AH-2S-ANT-2_S2_L008
+
+samtools index YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam 2> log/YG-AH-2S-ANT-2_S2_L008_rule_index_bam.err
+Submitted job 3 with external jobid 'Submitted batch job 64140787'.
+
+[Wed Dec  4 15:57:20 2019]
+rule run_molinfo:
+    input: YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam
+    output: YG-AH-2S-ANT-2_S2_L008/molecule_counts.tsv
+    log: log/YG-AH-2S-ANT-2_S2_L008_rule_run_molinfo.err
+    jobid: 8
+    wildcards: sample=YG-AH-2S-ANT-2_S2_L008
+
+
+        samtools view YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam | /project2/gilad/kenneth/Pipelines/Scripts//count_molecules.sh > YG-AH-2S-ANT-2_S2_L008/molecule_counts.tsv
+        
+Submitted job 8 with external jobid 'Submitted batch job 64140788'.
+[Wed Dec  4 16:00:20 2019]
+Finished job 3.
+2 of 6 steps (33%) done
+
+[Wed Dec  4 16:00:20 2019]
+rule run_demuxlet:
+    input: human.vcf, YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam, YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam.bai
+    output: YG-AH-2S-ANT-2_S2_L008/demuxlet.best
+    log: log/YG-AH-2S-ANT-2_S2_L008_rule_run_demuxlet.err
+    jobid: 6
+    wildcards: sample=YG-AH-2S-ANT-2_S2_L008
+
+
+        /project2/gilad/software/midway2/demuxlet/bin/demuxlet --sam YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam --tag-group CB --tag-UMI UB --vcf human.vcf --field GT --out YG-AH-2S-ANT-2_S2_L008/demuxlet --geno-error 0.01 2> log/YG-AH-2S-ANT-2_S2_L008_rule_run_demuxlet.err
+        
+Submitted job 6 with external jobid 'Submitted batch job 64140808'.
+[Wed Dec  4 16:23:32 2019]
+Finished job 8.
+3 of 6 steps (50%) done
+
+[Wed Dec  4 16:23:32 2019]
+rule saturation:
+    input: YG-AH-2S-ANT-2_S2_L008/molecule_counts.tsv
+    output: YG-AH-2S-ANT-2_S2_L008/saturation.tsv
+    log: log/YG-AH-2S-ANT-2_S2_L008_rule_saturation.err
+    jobid: 10
+    wildcards: sample=YG-AH-2S-ANT-2_S2_L008
+
+
+        /project2/gilad/kenneth/Pipelines/Scripts//estimate_depth.sh YG-AH-2S-ANT-2_S2_L008/molecule_counts.tsv > YG-AH-2S-ANT-2_S2_L008/saturation.tsv
+        
+Submitted job 10 with external jobid 'Submitted batch job 64140913'.
+[Wed Dec  4 16:24:12 2019]
+Finished job 10.
+4 of 6 steps (67%) done
+[Wed Dec  4 16:52:24 2019]
+Finished job 6.
+5 of 6 steps (83%) done
+
+[Wed Dec  4 16:52:24 2019]
+localrule all:
+    input: YG-AH-2S-ANT-2_S2_L008/Aligned.out.bam, YG-AH-2S-ANT-1_S1_L008/Aligned.out.bam, YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam, YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam, YG-AH-2S-ANT-2_S2_L008/Aligned.sortedByCoord.out.bam.bai, YG-AH-2S-ANT-1_S1_L008/Aligned.sortedByCoord.out.bam.bai, human.vcf, YG-AH-2S-ANT-2_S2_L008/demuxlet.best, YG-AH-2S-ANT-1_S1_L008/demuxlet.best, YG-AH-2S-ANT-2_S2_L008/molecule_counts.tsv, YG-AH-2S-ANT-1_S1_L008/molecule_counts.tsv, YG-AH-2S-ANT-2_S2_L008/saturation.tsv, YG-AH-2S-ANT-1_S1_L008/saturation.tsv
+    jobid: 0
+
+[Wed Dec  4 16:52:24 2019]
+Finished job 0.
+6 of 6 steps (100%) done
+Complete log: /project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/.snakemake/log/2019-12-04T151657.265061.snakemake.log

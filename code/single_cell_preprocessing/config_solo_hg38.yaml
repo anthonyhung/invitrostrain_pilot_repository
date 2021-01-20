@@ -1,0 +1,21 @@
+#Snakemake configuration file
+
+#logfile
+dir_log: log/
+
+#individuals
+humans: NA19160,NA18855,NA18856
+  
+#Genome index for STAR aligner
+genome_index: /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/
+
+#whitelist 
+whitelist: whitelist.v3.txt
+
+#demuxlet files
+vcf: human.YRI.cellranger.exons.vcf
+
+demuxlet: demuxlet/bin/demuxlet
+
+# cell barcode UMI Configuration
+barcode: "CCCCCCCCCCCCCCCCNNNNNNNNNN"
