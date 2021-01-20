@@ -10,4 +10,7 @@ data/external_scRNA/Chou_et_al2020/*
 data/external_scRNA/merged_external_scRNA.rds
 data/ANT1_2.rds
 output/*
-
+code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
+code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/*
+code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
+code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/*
