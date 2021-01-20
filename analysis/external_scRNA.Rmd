@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Load in datasets and merge them
+# Load in datasets for topic model and merge them into one seurat object
 
 ## Download datasets from GEO
 
@@ -45,8 +45,8 @@ wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876139/suppl/GSM48761
 
 #download data for Chou et al 2020 from GEO (Sample GSM4626766) for chondrocytes from Minimally damaged outer lateral tibial (oLT) plateau cartilage isolated from one male individual
 cd ..
-mkdir Chou_et_al
-cd Chou_et_al
+mkdir Chou_et_al2020
+cd Chou_et_al2020
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM4626766_OA_oLT_113.barcodes.tsv.gz # barcodes
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM4626766_OA_oLT_113.genes.tsv.gz # genes
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM4626766_OA_oLT_113.matrix.mtx.gz # count matrix
@@ -56,13 +56,10 @@ Load in datasets and create Seurat objects for each of them. Add metadata about 
 
 ```{r Loading in data matrices}
 library(Matrix)
-
-
 #iPSC-Chondrocyte data from the current study
 ANT1.2 <- readRDS("data/ANT1_2.rds")
 ANT1.2 <- Seurat::AddMetaData(ANT1.2, "iPSC-Chondrocyte", col.name = "Cell.Type")
 dim(ANT1.2)
-
 
 
 #Chondrocytes from OA patients (https://www.ncbi.nlm.nih.gov/pubmed/30026257) run through STRT protocol
@@ -149,10 +146,10 @@ dim(chou_chondro_seurat)
 
 
 #iPSCs/MSCs/ipsc-chondrocytes/ipsc-osteoblasts from Genevieve Housman. Combine all the datasets located in the data directory. Each of these datasets contain single cell data from cells from the same human individual from which iPSCs were created. 10x single cell RNA sequencing data from iPSCs, MSCs, iPSC-Osteoblasts, and iPSC-chondrocytes are included after filtering for barcodes with fewer than 25% reads coming from mitochondria.
-GH_iPSC <- readRDS("data/external_scRNA/gh_ipsc.rds")
-GH_iPSCMSC <- readRDS("data/external_scRNA/gh_msc.rds")
-GH_iPSCChond <- readRDS("data/external_scRNA/gh_ipscChond.rds")
-GH_iPSCOsteo <- readRDS("data/external_scRNA/gh_ipscOsteo.rds")
+GH_iPSC <- readRDS("data/external_scRNA/GH_cells/gh_ipsc.rds")
+GH_iPSCMSC <- readRDS("data/external_scRNA/GH_cells/gh_msc.rds")
+GH_iPSCChond <- readRDS("data/external_scRNA/GH_cells/gh_ipscChond.rds")
+GH_iPSCOsteo <- readRDS("data/external_scRNA/GH_cells/gh_ipscOsteo.rds")
 #merge all the datasets into one seurat object
 GH_merged <- merge(GH_iPSC, y = c(GH_iPSCMSC, GH_iPSCChond, GH_iPSCOsteo), 
                 add.cell.ids = c("ipsc", "msc", "chondrogh", "osteo"), project = "ghousman")
@@ -172,6 +169,7 @@ dim(liver_data)
 # Merge the seurat objects into one large one, keeping metadata about which study they originated in as well as their assigned cell type.
 Merged_external_data <- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, GH_merged, liver_data), project = "Combined.common")
 Merged_external_data <- merge(Merged_external_data, wu_combined, project = "Combined.common")
+dim()
 
 saveRDS(Merged_external_data, "data/external_scRNA/merged_external_scRNA.rds")
 ```
