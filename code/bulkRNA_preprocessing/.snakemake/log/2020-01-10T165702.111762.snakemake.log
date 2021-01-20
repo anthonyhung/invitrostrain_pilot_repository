@@ -1,0 +1,1003 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	18	fastqc
+	1	featurecount
+	18	index_bam
+	1	multiqc
+	18	sort_bam
+	18	star_se
+	75
+
+[Fri Jan 10 16:57:03 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-07_S7_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001Aligned.out.bam
+    jobid: 4
+    wildcards: sample=YG-AH-07_S7_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-07_S7_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 4 with external jobid 'Submitted batch job 64906440'.
+
+[Fri Jan 10 16:57:03 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-04_S4_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001Aligned.out.bam
+    jobid: 11
+    wildcards: sample=YG-AH-04_S4_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-04_S4_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 11 with external jobid 'Submitted batch job 64906441'.
+
+[Fri Jan 10 16:57:03 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-09_S9_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-09_S9_L002_R1_001_fastqc.zip
+    jobid: 61
+    wildcards: sample=YG-AH-09_S9_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-09_S9_L002_R1_001.fastq.gz
+Submitted job 61 with external jobid 'Submitted batch job 64906442'.
+
+[Fri Jan 10 16:57:03 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-12_S12_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-12_S12_L002_R1_001_fastqc.zip
+    jobid: 73
+    wildcards: sample=YG-AH-12_S12_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-12_S12_L002_R1_001.fastq.gz
+Submitted job 73 with external jobid 'Submitted batch job 64906443'.
+
+[Fri Jan 10 16:57:03 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-13_S13_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001Aligned.out.bam
+    jobid: 2
+    wildcards: sample=YG-AH-13_S13_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-13_S13_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 2 with external jobid 'Submitted batch job 64906444'.
+
+[Fri Jan 10 16:57:03 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-11_S11_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001Aligned.out.bam
+    jobid: 12
+    wildcards: sample=YG-AH-11_S11_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-11_S11_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 12 with external jobid 'Submitted batch job 64906445'.
+
+[Fri Jan 10 16:57:04 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-02_S2_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-02_S2_L002_R1_001_fastqc.zip
+    jobid: 70
+    wildcards: sample=YG-AH-02_S2_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-02_S2_L002_R1_001.fastq.gz
+Submitted job 70 with external jobid 'Submitted batch job 64906446'.
+
+[Fri Jan 10 16:57:04 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-02_S2_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001Aligned.out.bam
+    jobid: 14
+    wildcards: sample=YG-AH-02_S2_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-02_S2_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 14 with external jobid 'Submitted batch job 64906447'.
+
+[Fri Jan 10 16:57:04 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-11_S11_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-11_S11_L002_R1_001_fastqc.zip
+    jobid: 68
+    wildcards: sample=YG-AH-11_S11_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-11_S11_L002_R1_001.fastq.gz
+Submitted job 68 with external jobid 'Submitted batch job 64906448'.
+
+[Fri Jan 10 16:57:06 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-13_S13_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-13_S13_L002_R1_001_fastqc.zip
+    jobid: 58
+    wildcards: sample=YG-AH-13_S13_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-13_S13_L002_R1_001.fastq.gz
+Submitted job 58 with external jobid 'Submitted batch job 64906449'.
+
+[Fri Jan 10 16:57:06 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-12_S12_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001Aligned.out.bam
+    jobid: 17
+    wildcards: sample=YG-AH-12_S12_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-12_S12_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 17 with external jobid 'Submitted batch job 64906450'.
+
+[Fri Jan 10 16:57:06 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-09_S9_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001Aligned.out.bam
+    jobid: 5
+    wildcards: sample=YG-AH-09_S9_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-09_S9_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 5 with external jobid 'Submitted batch job 64906451'.
+
+[Fri Jan 10 16:57:06 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-07_S7_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-07_S7_L002_R1_001_fastqc.zip
+    jobid: 60
+    wildcards: sample=YG-AH-07_S7_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-07_S7_L002_R1_001.fastq.gz
+Submitted job 60 with external jobid 'Submitted batch job 64906452'.
+
+[Fri Jan 10 16:57:06 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-04_S4_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-04_S4_L002_R1_001_fastqc.zip
+    jobid: 67
+    wildcards: sample=YG-AH-04_S4_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-04_S4_L002_R1_001.fastq.gz
+Submitted job 67 with external jobid 'Submitted batch job 64906453'.
+
+[Fri Jan 10 16:57:06 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-14_S14_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001Aligned.out.bam
+    jobid: 8
+    wildcards: sample=YG-AH-14_S14_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-14_S14_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 8 with external jobid 'Submitted batch job 64906454'.
+
+[Fri Jan 10 16:57:06 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-08_S8_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-08_S8_L002_R1_001_fastqc.zip
+    jobid: 59
+    wildcards: sample=YG-AH-08_S8_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-08_S8_L002_R1_001.fastq.gz
+Submitted job 59 with external jobid 'Submitted batch job 64906455'.
+
+[Fri Jan 10 16:57:11 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-03_S3_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-03_S3_L002_R1_001_fastqc.zip
+    jobid: 72
+    wildcards: sample=YG-AH-03_S3_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-03_S3_L002_R1_001.fastq.gz
+Submitted job 72 with external jobid 'Submitted batch job 64906456'.
+
+[Fri Jan 10 16:57:11 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-06_S6_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001Aligned.out.bam
+    jobid: 13
+    wildcards: sample=YG-AH-06_S6_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-06_S6_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 13 with external jobid 'Submitted batch job 64906457'.
+
+[Fri Jan 10 16:57:11 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-06_S6_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-06_S6_L002_R1_001_fastqc.zip
+    jobid: 69
+    wildcards: sample=YG-AH-06_S6_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-06_S6_L002_R1_001.fastq.gz
+Submitted job 69 with external jobid 'Submitted batch job 64906458'.
+
+[Fri Jan 10 16:57:11 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-03_S3_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001Aligned.out.bam
+    jobid: 16
+    wildcards: sample=YG-AH-03_S3_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-03_S3_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 16 with external jobid 'Submitted batch job 64906459'.
+
+[Fri Jan 10 16:57:11 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-08_S8_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001Aligned.out.bam
+    jobid: 3
+    wildcards: sample=YG-AH-08_S8_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-08_S8_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 3 with external jobid 'Submitted batch job 64906460'.
+
+[Fri Jan 10 16:57:11 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-14_S14_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-14_S14_L002_R1_001_fastqc.zip
+    jobid: 64
+    wildcards: sample=YG-AH-14_S14_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-14_S14_L002_R1_001.fastq.gz
+Submitted job 64 with external jobid 'Submitted batch job 64906461'.
+
+[Fri Jan 10 16:57:11 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-18_S18_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001Aligned.out.bam
+    jobid: 1
+    wildcards: sample=YG-AH-18_S18_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-18_S18_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 1 with external jobid 'Submitted batch job 64906462'.
+
+[Fri Jan 10 16:57:11 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-05_S5_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-05_S5_L002_R1_001_fastqc.zip
+    jobid: 71
+    wildcards: sample=YG-AH-05_S5_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-05_S5_L002_R1_001.fastq.gz
+Submitted job 71 with external jobid 'Submitted batch job 64906463'.
+
+[Fri Jan 10 16:57:13 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-16_S16_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001Aligned.out.bam
+    jobid: 7
+    wildcards: sample=YG-AH-16_S16_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-16_S16_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 7 with external jobid 'Submitted batch job 64906464'.
+
+[Fri Jan 10 16:57:13 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-17_S17_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001Aligned.out.bam
+    jobid: 10
+    wildcards: sample=YG-AH-17_S17_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-17_S17_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 10 with external jobid 'Submitted batch job 64906465'.
+
+[Fri Jan 10 16:57:13 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-17_S17_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-17_S17_L002_R1_001_fastqc.zip
+    jobid: 66
+    wildcards: sample=YG-AH-17_S17_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-17_S17_L002_R1_001.fastq.gz
+Submitted job 66 with external jobid 'Submitted batch job 64906466'.
+
+[Fri Jan 10 16:57:13 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-16_S16_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-16_S16_L002_R1_001_fastqc.zip
+    jobid: 63
+    wildcards: sample=YG-AH-16_S16_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-16_S16_L002_R1_001.fastq.gz
+Submitted job 63 with external jobid 'Submitted batch job 64906467'.
+
+[Fri Jan 10 16:57:14 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-05_S5_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001Aligned.out.bam
+    jobid: 15
+    wildcards: sample=YG-AH-05_S5_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-05_S5_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 15 with external jobid 'Submitted batch job 64906468'.
+
+[Fri Jan 10 16:57:14 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-18_S18_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-18_S18_L002_R1_001_fastqc.zip
+    jobid: 57
+    wildcards: sample=YG-AH-18_S18_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-18_S18_L002_R1_001.fastq.gz
+Submitted job 57 with external jobid 'Submitted batch job 64906469'.
+
+[Fri Jan 10 16:57:14 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-01_S1_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001Aligned.out.bam
+    jobid: 6
+    wildcards: sample=YG-AH-01_S1_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-01_S1_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 6 with external jobid 'Submitted batch job 64906470'.
+
+[Fri Jan 10 16:57:14 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-10_S10_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-10_S10_L002_R1_001_fastqc.zip
+    jobid: 74
+    wildcards: sample=YG-AH-10_S10_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-10_S10_L002_R1_001.fastq.gz
+Submitted job 74 with external jobid 'Submitted batch job 64906471'.
+
+[Fri Jan 10 16:57:14 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-15_S15_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001Aligned.out.bam
+    jobid: 9
+    wildcards: sample=YG-AH-15_S15_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-15_S15_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 9 with external jobid 'Submitted batch job 64906472'.
+
+[Fri Jan 10 16:57:16 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-15_S15_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-15_S15_L002_R1_001_fastqc.zip
+    jobid: 65
+    wildcards: sample=YG-AH-15_S15_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-15_S15_L002_R1_001.fastq.gz
+Submitted job 65 with external jobid 'Submitted batch job 64906473'.
+
+[Fri Jan 10 16:57:16 2020]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-10_S10_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001Aligned.out.bam
+    jobid: 18
+    wildcards: sample=YG-AH-10_S10_L002_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-10_S10_L002_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001 --outSAMtype BAM Unsorted
+Submitted job 18 with external jobid 'Submitted batch job 64906474'.
+
+[Fri Jan 10 16:57:16 2020]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-01_S1_L002_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-01_S1_L002_R1_001_fastqc.zip
+    jobid: 62
+    wildcards: sample=YG-AH-01_S1_L002_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-01_S1_L002_R1_001.fastq.gz
+Submitted job 62 with external jobid 'Submitted batch job 64906475'.
+[Fri Jan 10 17:10:00 2020]
+Finished job 73.
+1 of 75 steps (1%) done
+[Fri Jan 10 17:10:14 2020]
+Finished job 58.
+2 of 75 steps (3%) done
+[Fri Jan 10 17:10:26 2020]
+Finished job 61.
+3 of 75 steps (4%) done
+[Fri Jan 10 17:10:26 2020]
+Finished job 68.
+4 of 75 steps (5%) done
+[Fri Jan 10 17:10:27 2020]
+Finished job 60.
+5 of 75 steps (7%) done
+[Fri Jan 10 17:10:28 2020]
+Finished job 67.
+6 of 75 steps (8%) done
+[Fri Jan 10 17:10:28 2020]
+Finished job 59.
+7 of 75 steps (9%) done
+[Fri Jan 10 17:10:28 2020]
+Finished job 72.
+8 of 75 steps (11%) done
+[Fri Jan 10 17:10:28 2020]
+Finished job 69.
+9 of 75 steps (12%) done
+[Fri Jan 10 17:11:04 2020]
+Finished job 70.
+10 of 75 steps (13%) done
+[Fri Jan 10 17:21:15 2020]
+Finished job 71.
+11 of 75 steps (15%) done
+[Fri Jan 10 17:21:41 2020]
+Finished job 64.
+12 of 75 steps (16%) done
+[Fri Jan 10 17:22:52 2020]
+Finished job 7.
+13 of 75 steps (17%) done
+
+[Fri Jan 10 17:22:52 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam
+    jobid: 43
+    wildcards: sample=YG-AH-16_S16_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001Aligned.out.bam
+Submitted job 43 with external jobid 'Submitted batch job 64906629'.
+[Fri Jan 10 17:22:53 2020]
+Finished job 17.
+14 of 75 steps (19%) done
+
+[Fri Jan 10 17:22:53 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam
+    jobid: 53
+    wildcards: sample=YG-AH-12_S12_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001Aligned.out.bam
+Submitted job 53 with external jobid 'Submitted batch job 64906630'.
+[Fri Jan 10 17:23:04 2020]
+Finished job 10.
+15 of 75 steps (20%) done
+
+[Fri Jan 10 17:23:04 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam
+    jobid: 46
+    wildcards: sample=YG-AH-17_S17_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001Aligned.out.bam
+Submitted job 46 with external jobid 'Submitted batch job 64906631'.
+[Fri Jan 10 17:23:05 2020]
+Finished job 2.
+16 of 75 steps (21%) done
+
+[Fri Jan 10 17:23:05 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam
+    jobid: 38
+    wildcards: sample=YG-AH-13_S13_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001Aligned.out.bam
+[Fri Jan 10 17:23:05 2020]
+Finished job 12.
+17 of 75 steps (23%) done
+Submitted job 38 with external jobid 'Submitted batch job 64906632'.
+
+[Fri Jan 10 17:23:05 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam
+    jobid: 48
+    wildcards: sample=YG-AH-11_S11_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001Aligned.out.bam
+Submitted job 48 with external jobid 'Submitted batch job 64906633'.
+[Fri Jan 10 17:23:17 2020]
+Finished job 4.
+18 of 75 steps (24%) done
+
+[Fri Jan 10 17:23:17 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam
+    jobid: 40
+    wildcards: sample=YG-AH-07_S7_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001Aligned.out.bam
+Submitted job 40 with external jobid 'Submitted batch job 64906634'.
+[Fri Jan 10 17:23:29 2020]
+Finished job 5.
+19 of 75 steps (25%) done
+
+[Fri Jan 10 17:23:29 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam
+    jobid: 41
+    wildcards: sample=YG-AH-09_S9_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001Aligned.out.bam
+[Fri Jan 10 17:23:29 2020]
+Finished job 13.
+20 of 75 steps (27%) done
+Submitted job 41 with external jobid 'Submitted batch job 64906635'.
+[Fri Jan 10 17:23:29 2020]
+Finished job 1.
+21 of 75 steps (28%) done
+
+[Fri Jan 10 17:23:29 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam
+    jobid: 49
+    wildcards: sample=YG-AH-06_S6_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001Aligned.out.bam
+Submitted job 49 with external jobid 'Submitted batch job 64906636'.
+
+[Fri Jan 10 17:23:29 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam
+    jobid: 37
+    wildcards: sample=YG-AH-18_S18_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001Aligned.out.bam
+Submitted job 37 with external jobid 'Submitted batch job 64906637'.
+[Fri Jan 10 17:23:41 2020]
+Finished job 11.
+22 of 75 steps (29%) done
+
+[Fri Jan 10 17:23:41 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam
+    jobid: 47
+    wildcards: sample=YG-AH-04_S4_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001Aligned.out.bam
+[Fri Jan 10 17:23:41 2020]
+Finished job 8.
+23 of 75 steps (31%) done
+Submitted job 47 with external jobid 'Submitted batch job 64906638'.
+[Fri Jan 10 17:23:41 2020]
+Finished job 16.
+24 of 75 steps (32%) done
+
+[Fri Jan 10 17:23:41 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam
+    jobid: 44
+    wildcards: sample=YG-AH-14_S14_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001Aligned.out.bam
+Submitted job 44 with external jobid 'Submitted batch job 64906639'.
+
+[Fri Jan 10 17:23:41 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam
+    jobid: 52
+    wildcards: sample=YG-AH-03_S3_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001Aligned.out.bam
+Submitted job 52 with external jobid 'Submitted batch job 64906640'.
+[Fri Jan 10 17:23:53 2020]
+Finished job 3.
+25 of 75 steps (33%) done
+
+[Fri Jan 10 17:23:53 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam
+    jobid: 39
+    wildcards: sample=YG-AH-08_S8_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001Aligned.out.bam
+Submitted job 39 with external jobid 'Submitted batch job 64906674'.
+[Fri Jan 10 17:24:05 2020]
+Finished job 6.
+26 of 75 steps (35%) done
+
+[Fri Jan 10 17:24:05 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam
+    jobid: 42
+    wildcards: sample=YG-AH-01_S1_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001Aligned.out.bam
+Submitted job 42 with external jobid 'Submitted batch job 64906687'.
+[Fri Jan 10 17:25:17 2020]
+Finished job 66.
+27 of 75 steps (36%) done
+[Fri Jan 10 17:25:17 2020]
+Finished job 63.
+28 of 75 steps (37%) done
+[Fri Jan 10 17:25:18 2020]
+Finished job 65.
+29 of 75 steps (39%) done
+[Fri Jan 10 17:25:29 2020]
+Finished job 43.
+30 of 75 steps (40%) done
+
+[Fri Jan 10 17:25:29 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam.bai
+    jobid: 25
+    wildcards: sample=YG-AH-16_S16_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam
+[Fri Jan 10 17:25:29 2020]
+Finished job 53.
+31 of 75 steps (41%) done
+Submitted job 25 with external jobid 'Submitted batch job 64906688'.
+[Fri Jan 10 17:25:29 2020]
+Finished job 57.
+32 of 75 steps (43%) done
+
+[Fri Jan 10 17:25:29 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam.bai
+    jobid: 35
+    wildcards: sample=YG-AH-12_S12_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam
+Submitted job 35 with external jobid 'Submitted batch job 64906689'.
+[Fri Jan 10 17:25:41 2020]
+Finished job 46.
+33 of 75 steps (44%) done
+
+[Fri Jan 10 17:25:41 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam.bai
+    jobid: 28
+    wildcards: sample=YG-AH-17_S17_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam
+[Fri Jan 10 17:25:41 2020]
+Finished job 38.
+34 of 75 steps (45%) done
+[Fri Jan 10 17:25:41 2020]
+Finished job 48.
+35 of 75 steps (47%) done
+[Fri Jan 10 17:25:41 2020]
+Finished job 74.
+36 of 75 steps (48%) done
+Submitted job 28 with external jobid 'Submitted batch job 64906691'.
+
+[Fri Jan 10 17:25:41 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam.bai
+    jobid: 20
+    wildcards: sample=YG-AH-13_S13_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam
+Submitted job 20 with external jobid 'Submitted batch job 64906692'.
+
+[Fri Jan 10 17:25:41 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam.bai
+    jobid: 30
+    wildcards: sample=YG-AH-11_S11_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam
+Submitted job 30 with external jobid 'Submitted batch job 64906693'.
+[Fri Jan 10 17:25:53 2020]
+Finished job 62.
+37 of 75 steps (49%) done
+[Fri Jan 10 17:26:04 2020]
+Finished job 14.
+38 of 75 steps (51%) done
+
+[Fri Jan 10 17:26:04 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam
+    jobid: 50
+    wildcards: sample=YG-AH-02_S2_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001Aligned.out.bam
+Submitted job 50 with external jobid 'Submitted batch job 64906695'.
+[Fri Jan 10 17:26:48 2020]
+Finished job 15.
+39 of 75 steps (52%) done
+
+[Fri Jan 10 17:26:48 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam
+    jobid: 51
+    wildcards: sample=YG-AH-05_S5_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001Aligned.out.bam
+Submitted job 51 with external jobid 'Submitted batch job 64906698'.
+[Fri Jan 10 17:26:59 2020]
+Finished job 9.
+40 of 75 steps (53%) done
+
+[Fri Jan 10 17:26:59 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam
+    jobid: 45
+    wildcards: sample=YG-AH-15_S15_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001Aligned.out.bam
+Submitted job 45 with external jobid 'Submitted batch job 64906699'.
+[Fri Jan 10 17:27:09 2020]
+Finished job 25.
+41 of 75 steps (55%) done
+[Fri Jan 10 17:27:09 2020]
+Finished job 41.
+42 of 75 steps (56%) done
+
+[Fri Jan 10 17:27:09 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam.bai
+    jobid: 23
+    wildcards: sample=YG-AH-09_S9_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam
+Submitted job 23 with external jobid 'Submitted batch job 64906700'.
+[Fri Jan 10 17:27:10 2020]
+Finished job 40.
+43 of 75 steps (57%) done
+
+[Fri Jan 10 17:27:10 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam.bai
+    jobid: 22
+    wildcards: sample=YG-AH-07_S7_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam
+Submitted job 22 with external jobid 'Submitted batch job 64906701'.
+[Fri Jan 10 17:27:20 2020]
+Finished job 35.
+44 of 75 steps (59%) done
+[Fri Jan 10 17:27:20 2020]
+Finished job 49.
+45 of 75 steps (60%) done
+
+[Fri Jan 10 17:27:20 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam.bai
+    jobid: 31
+    wildcards: sample=YG-AH-06_S6_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam
+[Fri Jan 10 17:27:20 2020]
+Finished job 37.
+46 of 75 steps (61%) done
+[Fri Jan 10 17:27:20 2020]
+Finished job 18.
+47 of 75 steps (63%) done
+Submitted job 31 with external jobid 'Submitted batch job 64906702'.
+
+[Fri Jan 10 17:27:20 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam.bai
+    jobid: 19
+    wildcards: sample=YG-AH-18_S18_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam
+Submitted job 19 with external jobid 'Submitted batch job 64906703'.
+
+[Fri Jan 10 17:27:21 2020]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001Aligned.out.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam
+    jobid: 54
+    wildcards: sample=YG-AH-10_S10_L002_R1_001
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001Aligned.out.bam
+Submitted job 54 with external jobid 'Submitted batch job 64906704'.
+[Fri Jan 10 17:27:21 2020]
+Finished job 28.
+48 of 75 steps (64%) done
+[Fri Jan 10 17:27:21 2020]
+Finished job 20.
+49 of 75 steps (65%) done
+[Fri Jan 10 17:27:31 2020]
+Finished job 23.
+50 of 75 steps (67%) done
+[Fri Jan 10 17:27:31 2020]
+Finished job 30.
+51 of 75 steps (68%) done
+[Fri Jan 10 17:27:32 2020]
+Finished job 22.
+52 of 75 steps (69%) done
+[Fri Jan 10 17:27:43 2020]
+Finished job 31.
+53 of 75 steps (71%) done
+[Fri Jan 10 17:27:43 2020]
+Finished job 19.
+54 of 75 steps (72%) done
+[Fri Jan 10 17:27:43 2020]
+Finished job 47.
+55 of 75 steps (73%) done
+
+[Fri Jan 10 17:27:43 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam.bai
+    jobid: 29
+    wildcards: sample=YG-AH-04_S4_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam
+Submitted job 29 with external jobid 'Submitted batch job 64906705'.
+[Fri Jan 10 17:27:54 2020]
+Finished job 44.
+56 of 75 steps (75%) done
+
+[Fri Jan 10 17:27:54 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam.bai
+    jobid: 26
+    wildcards: sample=YG-AH-14_S14_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam
+[Fri Jan 10 17:27:54 2020]
+Finished job 52.
+57 of 75 steps (76%) done
+Submitted job 26 with external jobid 'Submitted batch job 64906706'.
+
+[Fri Jan 10 17:27:54 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam.bai
+    jobid: 34
+    wildcards: sample=YG-AH-03_S3_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam
+Submitted job 34 with external jobid 'Submitted batch job 64906707'.
+[Fri Jan 10 17:28:04 2020]
+Finished job 29.
+58 of 75 steps (77%) done
+[Fri Jan 10 17:28:14 2020]
+Finished job 26.
+59 of 75 steps (79%) done
+[Fri Jan 10 17:28:14 2020]
+Finished job 34.
+60 of 75 steps (80%) done
+[Fri Jan 10 17:28:44 2020]
+Finished job 51.
+61 of 75 steps (81%) done
+
+[Fri Jan 10 17:28:44 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam.bai
+    jobid: 33
+    wildcards: sample=YG-AH-05_S5_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam
+Submitted job 33 with external jobid 'Submitted batch job 64906712'.
+[Fri Jan 10 17:28:54 2020]
+Finished job 45.
+62 of 75 steps (83%) done
+
+[Fri Jan 10 17:28:54 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam.bai
+    jobid: 27
+    wildcards: sample=YG-AH-15_S15_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam
+Submitted job 27 with external jobid 'Submitted batch job 64906713'.
+[Fri Jan 10 17:29:04 2020]
+Finished job 33.
+63 of 75 steps (84%) done
+[Fri Jan 10 17:29:04 2020]
+Finished job 27.
+64 of 75 steps (85%) done
+[Fri Jan 10 17:29:14 2020]
+Finished job 39.
+65 of 75 steps (87%) done
+
+[Fri Jan 10 17:29:14 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam.bai
+    jobid: 21
+    wildcards: sample=YG-AH-08_S8_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam
+Submitted job 21 with external jobid 'Submitted batch job 64906716'.
+[Fri Jan 10 17:29:24 2020]
+Finished job 42.
+66 of 75 steps (88%) done
+
+[Fri Jan 10 17:29:24 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam.bai
+    jobid: 24
+    wildcards: sample=YG-AH-01_S1_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam
+Submitted job 24 with external jobid 'Submitted batch job 64906717'.
+[Fri Jan 10 17:29:34 2020]
+Finished job 54.
+67 of 75 steps (89%) done
+
+[Fri Jan 10 17:29:34 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam.bai
+    jobid: 36
+    wildcards: sample=YG-AH-10_S10_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam
+[Fri Jan 10 17:29:34 2020]
+Finished job 21.
+68 of 75 steps (91%) done
+Submitted job 36 with external jobid 'Submitted batch job 64906718'.
+[Fri Jan 10 17:29:44 2020]
+Finished job 24.
+69 of 75 steps (92%) done
+[Fri Jan 10 17:29:54 2020]
+Finished job 36.
+70 of 75 steps (93%) done
+[Fri Jan 10 17:35:25 2020]
+Finished job 50.
+71 of 75 steps (95%) done
+
+[Fri Jan 10 17:35:25 2020]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam.bai
+    jobid: 32
+    wildcards: sample=YG-AH-02_S2_L002_R1_001
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam
+Submitted job 32 with external jobid 'Submitted batch job 64906726'.
+
+[Fri Jan 10 17:35:25 2020]
+rule featurecount:
+    input: /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/counts/counts.txt
+    log: log/featurecounts/featurecounts.summary
+    jobid: 56
+    threads: 4
+
+featureCounts -T 4 -t exon -g gene_id -a /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/counts/counts.txt /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam 2> log/featurecounts/featurecounts.summary
+Submitted job 56 with external jobid 'Submitted batch job 64906727'.
+[Fri Jan 10 17:36:05 2020]
+Finished job 32.
+72 of 75 steps (96%) done
+[Fri Jan 10 17:44:15 2020]
+Finished job 56.
+73 of 75 steps (97%) done
+
+[Fri Jan 10 17:44:15 2020]
+rule multiqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-18_S18_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-13_S13_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-08_S8_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-07_S7_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-09_S9_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-01_S1_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-16_S16_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-14_S14_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-15_S15_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-17_S17_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-04_S4_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-11_S11_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-06_S6_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-02_S2_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-05_S5_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-03_S3_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-12_S12_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-10_S10_L002_R1_001_fastqc.zip, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/counts/counts.txt
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/multiqc/multiqc.html
+    jobid: 55
+
+multiqc /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/multiqc/ --force -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/multiqc/ -n /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/multiqc/multiqc.html /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-18_S18_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-13_S13_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-08_S8_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-07_S7_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-09_S9_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-01_S1_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-16_S16_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-14_S14_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-15_S15_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-17_S17_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-04_S4_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-11_S11_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-06_S6_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-02_S2_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-05_S5_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-03_S3_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-12_S12_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-AH-10_S10_L002_R1_001_fastqc.zip /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001Log.final.out /project2/gilad/anthonyhung/Projects/OAStrain_project/out/counts/counts.txt
+Submitted job 55 with external jobid 'Submitted batch job 64906768'.
+[Fri Jan 10 17:45:45 2020]
+Finished job 55.
+74 of 75 steps (99%) done
+
+[Fri Jan 10 17:45:45 2020]
+localrule all:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-18_S18_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-13_S13_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-08_S8_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-07_S7_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-09_S9_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-01_S1_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-16_S16_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-14_S14_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-15_S15_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-17_S17_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-04_S4_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-11_S11_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-06_S6_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-02_S2_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-05_S5_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-03_S3_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-12_S12_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-AH-10_S10_L002_R1_001Aligned.out.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam.bai, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-18_S18_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-13_S13_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-08_S8_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-07_S7_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-09_S9_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-01_S1_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-16_S16_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-14_S14_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-15_S15_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-17_S17_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-04_S4_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-11_S11_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-06_S6_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-02_S2_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-05_S5_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-03_S3_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-12_S12_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/sorted/YG-AH-10_S10_L002_R1_001-sorted.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/multiqc/multiqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/counts/counts.txt
+    jobid: 0
+
+[Fri Jan 10 17:45:45 2020]
+Finished job 0.
+75 of 75 steps (100%) done
+Complete log: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/log/2020-01-10T165702.111762.snakemake.log

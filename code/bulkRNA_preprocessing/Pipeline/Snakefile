@@ -1,0 +1,114 @@
+#Snakefile for bulk RNAseq analysis (cutadapt, fastqc, mapping with star,
+#featureCounts for counting, multiqc, merge counts into a single matrix)
+
+import glob
+import os
+
+
+
+# Configuration ----------------------------------------------------------------
+#these things should go to the config file
+#configfile: ""
+
+#genome_index (For STAR)
+GenomeIndex = config["genome_index"]
+GTF = config["GTF_file"]
+
+#link to directories
+pd = config["proj_dir"]
+out_dir = pd + "out/"
+fastq_dir = pd + "fastq/"
+qc_dir = out_dir + "qc/"
+#cutadapt_dir = out + "trimmed/"
+bam_dir = out_dir + "bam/"
+sort_dir = out_dir + "sorted/"
+count_dir = out_dir + "counts/"
+
+# Directory to send log files. Needs to be created manually since it
+# is not a file created by a Snakemake rule.
+log_dir = config["log_dir"]
+if not os.path.isdir(log_dir):
+    os.mkdir(log_dir)
+
+if not os.path.isdir(out_dir):
+    os.mkdir(out_dir)
+
+# input sample names
+samples = set(glob_wildcards(fastq_dir + "{samples}.fastq.gz").samples)
+
+# Rules ------------------------------------------------------------------------
+rule all:
+    input:
+        #expand(cutadapt_dir + "{sample}.fastq.gz", sample = samples),
+        #expand(cutadapt_dir + "{sample}.qc.txt", sample = samples),
+        expand(bam_dir + "{sample}Aligned.out.bam", sample = samples),
+        expand(sort_dir + "{sample}-sorted.bam.bai", sample = samples),
+        expand(sort_dir + "{sample}-sorted.bam", sample = samples),
+        #expand(qc_dir + "{sample}.txt", sample = samples),
+        qc_dir + "multiqc/multiqc.html",
+        count_dir + "counts.txt"
+
+rule fastqc:
+    input:
+        fastq_dir + "{sample}.fastq.gz"
+    output:
+        qc_dir + "{sample}_fastqc.zip"
+    params:
+        outdir = qc_dir,
+        extra = "--noextract"
+    shell:
+        "fastqc {params.extra} -o {params.outdir} {input}"
+
+rule star_se:
+    input:
+        fq1 = fastq_dir + "{sample}.fastq.gz"
+    output:
+        # see STAR manual for additional output files
+        bam_dir + "{sample}Log.final.out",
+        bam_dir + "{sample}Aligned.out.bam"
+    params:
+        # path to STAR reference genome index
+        index = GenomeIndex,
+        outprefix = bam_dir + "{sample}",
+        # optional parameters
+        extra = "--readFilesCommand zcat"
+    threads: 4
+    shell: "STAR --runThreadN {threads} {params.extra} --genomeDir {params.index} --readFilesIn {input.fq1} --outFileNamePrefix {params.outprefix} --outSAMtype BAM Unsorted"
+
+rule sort_bam:
+    input:
+        bam_dir + "{sample}Aligned.out.bam"
+    output:
+        sort_dir + "{sample}-sorted.bam"
+    shell: "samtools sort -o {output} -O bam {input}"
+
+rule index_bam:
+    input:
+        sort_dir + "{sample}-sorted.bam"
+    output:
+        sort_dir + "{sample}-sorted.bam.bai"
+    shell: "samtools index {input}"
+
+rule featurecount:
+    input:
+        annotation = GTF,
+        bams = expand(sort_dir + "{sample}-sorted.bam", sample=samples)
+    output:
+        count_dir + "counts.txt"
+    log:
+        log_dir + "featurecounts/featurecounts.summary"
+    threads: 4
+    shell:
+        "featureCounts -T {threads} -t exon -g gene_id -a {input.annotation} -o {output} {input.bams} 2> {log}"
+
+rule multiqc:
+    input: #directories containing files that can be read by multiqc
+        fastqc = expand(qc_dir + "{sample}_fastqc.zip", sample = samples),
+        STAR = expand(bam_dir + "{sample}Log.final.out", sample = samples),
+        featCount = count_dir + "counts.txt"
+    output:
+        qc_dir + "multiqc/multiqc.html"
+    params:
+        output_dir = qc_dir + "multiqc/"
+        ""  # Optional: extra parameters for multiqc.
+    shell: "multiqc {params} --force -o {params.output_dir} -n {output} {input.fastqc} {input.STAR} {input.featCount}"

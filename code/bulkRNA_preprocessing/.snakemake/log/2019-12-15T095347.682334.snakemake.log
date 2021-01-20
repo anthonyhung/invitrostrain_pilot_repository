@@ -1,0 +1,34 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	1	featurecount
+	1	multiqc
+	3
+
+[Sun Dec 15 09:53:47 2019]
+rule featurecount:
+    input: /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/outputs/counts/counts.txt
+    log: log/featurecounts/featurecounts.summary
+    jobid: 2
+    threads: 4
+
+featureCounts -T 4 -t exon -g gene_id -a /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf -o /project2/gilad/anthonyhung/Projects/OAStrain_project/outputs/counts/counts.txt  2> log/featurecounts/featurecounts.summary
+Submitted job 2 with external jobid 'Submitted batch job 64303240'.
+[Sun Dec 15 09:53:57 2019]
+Error in rule featurecount:
+    jobid: 2
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/outputs/counts/counts.txt
+    log: log/featurecounts/featurecounts.summary (check log file(s) for error message)
+    shell:
+        featureCounts -T 4 -t exon -g gene_id -a /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf -o /project2/gilad/anthonyhung/Projects/OAStrain_project/outputs/counts/counts.txt  2> log/featurecounts/featurecounts.summary
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64303240
+
+Error executing rule featurecount on cluster (jobid: 2, external: Submitted batch job 64303240, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.dzimer7o/snakejob.featurecount.2.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/log/2019-12-15T095347.682334.snakemake.log

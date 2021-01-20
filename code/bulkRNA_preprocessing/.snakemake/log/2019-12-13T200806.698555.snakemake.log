@@ -1,0 +1,281 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	6	fastqc
+	6	star_se
+	13
+
+[Fri Dec 13 20:08:06 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-1_S1_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-1_S1_L006_fastqc.zip
+    jobid: 6
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006
+
+fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+Submitted job 6 with external jobid 'Submitted batch job 64291686'.
+
+[Fri Dec 13 20:08:06 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam
+    log: logs/star/YG-GH-12S-GH-2_S2_L006.log
+    jobid: 11
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006
+    threads: 4
+
+STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam --outSAMtype BAM Unsorted
+Submitted job 11 with external jobid 'Submitted batch job 64291687'.
+
+[Fri Dec 13 20:08:06 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-5_S5_L006.bam
+    log: logs/star/YG-GH-12S-GH-5_S5_L006.log
+    jobid: 9
+    wildcards: sample=YG-GH-12S-GH-5_S5_L006
+    threads: 4
+
+STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-5_S5_L006.bam --outSAMtype BAM Unsorted
+Submitted job 9 with external jobid 'Submitted batch job 64291688'.
+
+[Fri Dec 13 20:08:06 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-6_S6_L006.bam
+    log: logs/star/YG-GH-12S-GH-6_S6_L006.log
+    jobid: 10
+    wildcards: sample=YG-GH-12S-GH-6_S6_L006
+    threads: 4
+
+STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-6_S6_L006.bam --outSAMtype BAM Unsorted
+Submitted job 10 with external jobid 'Submitted batch job 64291689'.
+
+[Fri Dec 13 20:08:06 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-4_S4_L006.bam
+    log: logs/star/YG-GH-12S-GH-4_S4_L006.log
+    jobid: 7
+    wildcards: sample=YG-GH-12S-GH-4_S4_L006
+    threads: 4
+
+STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-4_S4_L006.bam --outSAMtype BAM Unsorted
+Submitted job 7 with external jobid 'Submitted batch job 64291690'.
+
+[Fri Dec 13 20:08:06 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-3_S3_L006.bam
+    log: logs/star/YG-GH-12S-GH-3_S3_L006.log
+    jobid: 8
+    wildcards: sample=YG-GH-12S-GH-3_S3_L006
+    threads: 4
+
+STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-3_S3_L006.bam --outSAMtype BAM Unsorted
+Submitted job 8 with external jobid 'Submitted batch job 64291691'.
+
+[Fri Dec 13 20:08:07 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-3_S3_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-3_S3_L006_fastqc.zip
+    jobid: 2
+    wildcards: sample=YG-GH-12S-GH-3_S3_L006
+
+fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz
+Submitted job 2 with external jobid 'Submitted batch job 64291692'.
+
+[Fri Dec 13 20:08:07 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-4_S4_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-4_S4_L006_fastqc.zip
+    jobid: 1
+    wildcards: sample=YG-GH-12S-GH-4_S4_L006
+
+fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz
+Submitted job 1 with external jobid 'Submitted batch job 64291693'.
+
+[Fri Dec 13 20:08:07 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-6_S6_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-6_S6_L006_fastqc.zip
+    jobid: 4
+    wildcards: sample=YG-GH-12S-GH-6_S6_L006
+
+fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz
+Submitted job 4 with external jobid 'Submitted batch job 64291694'.
+
+[Fri Dec 13 20:08:07 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-2_S2_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-2_S2_L006_fastqc.zip
+    jobid: 5
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006
+
+fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+Submitted job 5 with external jobid 'Submitted batch job 64291695'.
+
+[Fri Dec 13 20:08:07 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam
+    log: logs/star/YG-GH-12S-GH-1_S1_L006.log
+    jobid: 12
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006
+    threads: 4
+
+STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam --outSAMtype BAM Unsorted
+Submitted job 12 with external jobid 'Submitted batch job 64291696'.
+
+[Fri Dec 13 20:08:07 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-5_S5_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-5_S5_L006_fastqc.zip
+    jobid: 3
+    wildcards: sample=YG-GH-12S-GH-5_S5_L006
+
+fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz
+Submitted job 3 with external jobid 'Submitted batch job 64291697'.
+[Fri Dec 13 20:08:38 2019]
+Error in rule star_se:
+    jobid: 11
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam
+    log: logs/star/YG-GH-12S-GH-2_S2_L006.log (check log file(s) for error message)
+    shell:
+        STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam --outSAMtype BAM Unsorted
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291687
+
+Error executing rule star_se on cluster (jobid: 11, external: Submitted batch job 64291687, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.star_se.11.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:08:38 2019]
+Error in rule star_se:
+    jobid: 9
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-5_S5_L006.bam
+    log: logs/star/YG-GH-12S-GH-5_S5_L006.log (check log file(s) for error message)
+    shell:
+        STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-5_S5_L006.bam --outSAMtype BAM Unsorted
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291688
+
+Error executing rule star_se on cluster (jobid: 9, external: Submitted batch job 64291688, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.star_se.9.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:08:38 2019]
+Error in rule star_se:
+    jobid: 10
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-6_S6_L006.bam
+    log: logs/star/YG-GH-12S-GH-6_S6_L006.log (check log file(s) for error message)
+    shell:
+        STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-6_S6_L006.bam --outSAMtype BAM Unsorted
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291689
+
+Error executing rule star_se on cluster (jobid: 10, external: Submitted batch job 64291689, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.star_se.10.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:08:38 2019]
+Error in rule star_se:
+    jobid: 7
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-4_S4_L006.bam
+    log: logs/star/YG-GH-12S-GH-4_S4_L006.log (check log file(s) for error message)
+    shell:
+        STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-4_S4_L006.bam --outSAMtype BAM Unsorted
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291690
+
+Error executing rule star_se on cluster (jobid: 7, external: Submitted batch job 64291690, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.star_se.7.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:08:38 2019]
+Error in rule star_se:
+    jobid: 8
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-3_S3_L006.bam
+    log: logs/star/YG-GH-12S-GH-3_S3_L006.log (check log file(s) for error message)
+    shell:
+        STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-3_S3_L006.bam --outSAMtype BAM Unsorted
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291691
+
+Error executing rule star_se on cluster (jobid: 8, external: Submitted batch job 64291691, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.star_se.8.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:08:39 2019]
+Error in rule star_se:
+    jobid: 12
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam
+    log: logs/star/YG-GH-12S-GH-1_S1_L006.log (check log file(s) for error message)
+    shell:
+        STAR --runThreadN 4 --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam --outSAMtype BAM Unsorted
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291696
+
+Error executing rule star_se on cluster (jobid: 12, external: Submitted batch job 64291696, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.star_se.12.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:10:19 2019]
+Error in rule fastqc:
+    jobid: 6
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-1_S1_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-1_S1_L006_fastqc.zip
+    shell:
+        fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291686
+
+Error executing rule fastqc on cluster (jobid: 6, external: Submitted batch job 64291686, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.fastqc.6.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:10:29 2019]
+Error in rule fastqc:
+    jobid: 2
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-3_S3_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-3_S3_L006_fastqc.zip
+    shell:
+        fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291692
+
+Error executing rule fastqc on cluster (jobid: 2, external: Submitted batch job 64291692, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.fastqc.2.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:10:29 2019]
+Error in rule fastqc:
+    jobid: 3
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-5_S5_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-5_S5_L006_fastqc.zip
+    shell:
+        fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291697
+
+Error executing rule fastqc on cluster (jobid: 3, external: Submitted batch job 64291697, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.fastqc.3.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:10:39 2019]
+Error in rule fastqc:
+    jobid: 1
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-4_S4_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-4_S4_L006_fastqc.zip
+    shell:
+        fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291693
+
+Error executing rule fastqc on cluster (jobid: 1, external: Submitted batch job 64291693, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.fastqc.1.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:10:49 2019]
+Error in rule fastqc:
+    jobid: 4
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-6_S6_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-6_S6_L006_fastqc.zip
+    shell:
+        fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291694
+
+Error executing rule fastqc on cluster (jobid: 4, external: Submitted batch job 64291694, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.fastqc.4.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 20:11:10 2019]
+Error in rule fastqc:
+    jobid: 5
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-2_S2_L006_fastqc.html, /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/YG-GH-12S-GH-2_S2_L006_fastqc.zip
+    shell:
+        fastqc -o /project2/gilad/anthonyhung/Projects/OAStrain_project/fastqc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291695
+
+Error executing rule fastqc on cluster (jobid: 5, external: Submitted batch job 64291695, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.o1zx5tyr/snakejob.fastqc.5.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/log/2019-12-13T200806.698555.snakemake.log

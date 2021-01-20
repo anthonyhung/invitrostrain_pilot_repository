@@ -1,0 +1,134 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	1	featurecount
+	2	index_bam
+	2	samtools_stats
+	2	sort_bam
+	2	star_se
+	10
+
+[Sun Dec 15 09:17:34 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam
+    jobid: 2
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam --outSAMtype BAM Unsorted > /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam
+Submitted job 2 with external jobid 'Submitted batch job 64303116'.
+
+[Sun Dec 15 09:17:34 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam
+    jobid: 1
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam --outSAMtype BAM Unsorted > /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam
+Submitted job 1 with external jobid 'Submitted batch job 64303117'.
+[Sun Dec 15 09:21:55 2019]
+Finished job 2.
+1 of 10 steps (10%) done
+
+[Sun Dec 15 09:21:55 2019]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam
+    jobid: 6
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-1_S1_L006.bamAligned.out.bam
+Submitted job 6 with external jobid 'Submitted batch job 64303122'.
+[Sun Dec 15 09:22:55 2019]
+Finished job 1.
+2 of 10 steps (20%) done
+
+[Sun Dec 15 09:22:55 2019]
+rule sort_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam
+    jobid: 5
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006
+
+samtools sort -o /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam -O bam /project2/gilad/anthonyhung/Projects/OAStrain_project/bam/YG-GH-12S-GH-2_S2_L006.bamAligned.out.bam
+Submitted job 5 with external jobid 'Submitted batch job 64303123'.
+[Sun Dec 15 09:24:15 2019]
+Finished job 6.
+3 of 10 steps (30%) done
+
+[Sun Dec 15 09:24:15 2019]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam.bai
+    jobid: 4
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam
+Submitted job 4 with external jobid 'Submitted batch job 64303124'.
+
+[Sun Dec 15 09:24:15 2019]
+rule samtools_stats:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/qc/samtools_stats/YG-GH-12S-GH-1_S1_L006.txt
+    log: log/samtools_stats/YG-GH-12S-GH-1_S1_L006.log
+    jobid: 8
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006
+
+samtools stats /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam > /project2/gilad/anthonyhung/Projects/OAStrain_project/qc/samtools_stats/YG-GH-12S-GH-1_S1_L006.txt log/samtools_stats/YG-GH-12S-GH-1_S1_L006.log
+Submitted job 8 with external jobid 'Submitted batch job 64303125'.
+[Sun Dec 15 09:24:25 2019]
+Error in rule samtools_stats:
+    jobid: 8
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/qc/samtools_stats/YG-GH-12S-GH-1_S1_L006.txt
+    log: log/samtools_stats/YG-GH-12S-GH-1_S1_L006.log (check log file(s) for error message)
+    shell:
+        samtools stats /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam > /project2/gilad/anthonyhung/Projects/OAStrain_project/qc/samtools_stats/YG-GH-12S-GH-1_S1_L006.txt log/samtools_stats/YG-GH-12S-GH-1_S1_L006.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64303125
+
+Error executing rule samtools_stats on cluster (jobid: 8, external: Submitted batch job 64303125, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.az5hnq9r/snakejob.samtools_stats.8.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Sun Dec 15 09:24:35 2019]
+Finished job 4.
+4 of 10 steps (40%) done
+[Sun Dec 15 09:26:25 2019]
+Finished job 5.
+5 of 10 steps (50%) done
+
+[Sun Dec 15 09:26:25 2019]
+rule samtools_stats:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/qc/samtools_stats/YG-GH-12S-GH-2_S2_L006.txt
+    log: log/samtools_stats/YG-GH-12S-GH-2_S2_L006.log
+    jobid: 7
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006
+
+samtools stats /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam > /project2/gilad/anthonyhung/Projects/OAStrain_project/qc/samtools_stats/YG-GH-12S-GH-2_S2_L006.txt log/samtools_stats/YG-GH-12S-GH-2_S2_L006.log
+Submitted job 7 with external jobid 'Submitted batch job 64303128'.
+
+[Sun Dec 15 09:26:25 2019]
+rule index_bam:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam.bai
+    jobid: 3
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006
+
+samtools index /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam
+Submitted job 3 with external jobid 'Submitted batch job 64303129'.
+
+[Sun Dec 15 09:26:25 2019]
+rule featurecount:
+    input: /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf, /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam, /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/counts/counts.txt
+    log: log/featurecounts/featurecounts.summary
+    jobid: 9
+    threads: 4
+
+featureCounts -T 4 -t exon -g gene_id -a /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf -o /project2/gilad/anthonyhung/Projects/OAStrain_project/counts/counts.txt /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-2_S2_L006-sort.bam /project2/gilad/anthonyhung/Projects/OAStrain_project/sorted/YG-GH-12S-GH-1_S1_L006-sort.bam 2> log/featurecounts/featurecounts.summary
+Submitted job 9 with external jobid 'Submitted batch job 64303130'.

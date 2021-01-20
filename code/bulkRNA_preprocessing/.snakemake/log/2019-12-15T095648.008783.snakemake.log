@@ -1,0 +1,20 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	1	featurecount
+	1	multiqc
+	3
+
+[Sun Dec 15 09:56:48 2019]
+rule featurecount:
+    input: /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/outputs/counts/counts.txt
+    log: /project2/gilad/anthonyhung/Projects/OAStrain_project/log/featurecounts/featurecounts.summary
+    jobid: 2
+    threads: 4
+
+featureCounts -T 4 -t exon -g gene_id -a /project2/gilad/genome-refs/Homo_sapiens.GRCh38.93.gtf -o /project2/gilad/anthonyhung/Projects/OAStrain_project/outputs/counts/counts.txt  2> /project2/gilad/anthonyhung/Projects/OAStrain_project/log/featurecounts/featurecounts.summary
+Submitted job 2 with external jobid 'Submitted batch job 64303247'.

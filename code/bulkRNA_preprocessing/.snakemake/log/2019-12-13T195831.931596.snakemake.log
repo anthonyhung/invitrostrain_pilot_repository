@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 62 of /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/Pipeline/Snakefile:
+Missing input files for rule fastqc:
+trimmed/YG-GH-12S-GH-6_S6_L006.fastq.gz

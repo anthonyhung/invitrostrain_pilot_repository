@@ -1,0 +1,156 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	6	cutadapt
+	6	fastqc
+	6	star_se
+	19
+
+[Fri Dec 13 19:59:40 2019]
+rule cutadapt:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-3_S3_L006.log
+    jobid: 1
+    wildcards: sample=YG-GH-12S-GH-3_S3_L006
+    threads: 4
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-3_S3_L006.log
+Submitted job 1 with external jobid 'Submitted batch job 64291291'.
+
+[Fri Dec 13 19:59:40 2019]
+rule cutadapt:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-1_S1_L006.log
+    jobid: 3
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006
+    threads: 4
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-1_S1_L006.log
+Submitted job 3 with external jobid 'Submitted batch job 64291292'.
+
+[Fri Dec 13 19:59:40 2019]
+rule cutadapt:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-2_S2_L006.log
+    jobid: 2
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006
+    threads: 4
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-2_S2_L006.log
+Submitted job 2 with external jobid 'Submitted batch job 64291293'.
+
+[Fri Dec 13 19:59:40 2019]
+rule cutadapt:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-6_S6_L006.log
+    jobid: 6
+    wildcards: sample=YG-GH-12S-GH-6_S6_L006
+    threads: 4
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-6_S6_L006.log
+Submitted job 6 with external jobid 'Submitted batch job 64291294'.
+
+[Fri Dec 13 19:59:40 2019]
+rule cutadapt:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-4_S4_L006.log
+    jobid: 5
+    wildcards: sample=YG-GH-12S-GH-4_S4_L006
+    threads: 4
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-4_S4_L006.log
+Submitted job 5 with external jobid 'Submitted batch job 64291295'.
+
+[Fri Dec 13 19:59:41 2019]
+rule cutadapt:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-5_S5_L006.log
+    jobid: 4
+    wildcards: sample=YG-GH-12S-GH-5_S5_L006
+    threads: 4
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-5_S5_L006.log
+Submitted job 4 with external jobid 'Submitted batch job 64291296'.
+[Fri Dec 13 19:59:50 2019]
+Error in rule cutadapt:
+    jobid: 1
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-3_S3_L006.log (check log file(s) for error message)
+    shell:
+        cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-3_S3_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-3_S3_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-3_S3_L006.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291291
+
+Error executing rule cutadapt on cluster (jobid: 1, external: Submitted batch job 64291291, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.zgy_qpib/snakejob.cutadapt.1.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 19:59:50 2019]
+Error in rule cutadapt:
+    jobid: 3
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-1_S1_L006.log (check log file(s) for error message)
+    shell:
+        cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-1_S1_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-1_S1_L006.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291292
+
+Error executing rule cutadapt on cluster (jobid: 3, external: Submitted batch job 64291292, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.zgy_qpib/snakejob.cutadapt.3.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 19:59:50 2019]
+Error in rule cutadapt:
+    jobid: 2
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-2_S2_L006.log (check log file(s) for error message)
+    shell:
+        cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-2_S2_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-2_S2_L006.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291293
+
+Error executing rule cutadapt on cluster (jobid: 2, external: Submitted batch job 64291293, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.zgy_qpib/snakejob.cutadapt.2.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 19:59:50 2019]
+Error in rule cutadapt:
+    jobid: 6
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-6_S6_L006.log (check log file(s) for error message)
+    shell:
+        cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-6_S6_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-6_S6_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-6_S6_L006.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291294
+
+Error executing rule cutadapt on cluster (jobid: 6, external: Submitted batch job 64291294, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.zgy_qpib/snakejob.cutadapt.6.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 19:59:50 2019]
+Error in rule cutadapt:
+    jobid: 5
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-4_S4_L006.log (check log file(s) for error message)
+    shell:
+        cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-4_S4_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-4_S4_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-4_S4_L006.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291295
+
+Error executing rule cutadapt on cluster (jobid: 5, external: Submitted batch job 64291295, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.zgy_qpib/snakejob.cutadapt.5.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 19:59:50 2019]
+Error in rule cutadapt:
+    jobid: 4
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.fastq.gz, /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.qc.txt
+    log: logs/cutadapt/YG-GH-12S-GH-5_S5_L006.log (check log file(s) for error message)
+    shell:
+        cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -q 20 -j 4 -o /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.fastq.gz /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-5_S5_L006_R1_001.fastq.gz > /project2/gilad/anthonyhung/Projects/OAStrain_project/trimmed/YG-GH-12S-GH-5_S5_L006.qc.txt logs/cutadapt/YG-GH-12S-GH-5_S5_L006.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: Submitted batch job 64291296
+
+Error executing rule cutadapt on cluster (jobid: 4, external: Submitted batch job 64291296, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.zgy_qpib/snakejob.cutadapt.4.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/log/2019-12-13T195940.732470.snakemake.log

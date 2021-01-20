@@ -1,0 +1,32 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	1	cutadapt
+	1	fastqc
+	1	star_se
+	4
+
+[Fri Dec 13 19:02:11 2019]
+rule cutadapt:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-AH-2S-ANT-1_S1_L008_R1_001.fastq.gz
+    output: trimmed/YG-AH-2S-ANT-1_S1_L008.fastq.gz, trimmed/YG-AH-2S-ANT-1_S1_L008.qc.txt
+    log: logs/cutadapt/YG-AH-2S-ANT-1_S1_L008.log
+    jobid: 1
+    wildcards: sample=YG-AH-2S-ANT-1_S1_L008
+    threads: 4
+
+Submitted job 1 with external jobid 'Submitted batch job 64291212'.
+[Fri Dec 13 19:02:21 2019]
+Error in rule cutadapt:
+    jobid: 1
+    output: trimmed/YG-AH-2S-ANT-1_S1_L008.fastq.gz, trimmed/YG-AH-2S-ANT-1_S1_L008.qc.txt
+    log: logs/cutadapt/YG-AH-2S-ANT-1_S1_L008.log (check log file(s) for error message)
+    cluster_jobid: Submitted batch job 64291212
+
+Error executing rule cutadapt on cluster (jobid: 1, external: Submitted batch job 64291212, jobscript: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/tmp.j_1cr36r/snakejob.cutadapt.1.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/.snakemake/log/2019-12-13T190210.917234.snakemake.log

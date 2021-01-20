@@ -1,0 +1,3 @@
+NameError in line 21 of /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/Pipeline/Snakefile:
+name 'dir_data' is not defined
+  File "/project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/Pipeline/Snakefile", line 21, in <module>

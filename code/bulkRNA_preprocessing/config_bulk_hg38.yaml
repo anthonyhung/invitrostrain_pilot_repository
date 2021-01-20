@@ -1,0 +1,15 @@
+#Snakemake configuration file
+
+#This contains the setup for a bulkRNAseq run with multiple samples
+
+#Genome index for STAR aligner (created with STAR). This will need to be created
+genome_index: /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/
+
+#projectdirectory
+proj_dir: .
+
+#logdirectory
+log_dir: log/
+
+#annotation
+GTF_file: Homo_sapiens.GRCh38.93.gtf

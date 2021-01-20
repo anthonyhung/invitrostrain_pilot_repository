@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 97 of /project2/gilad/anthonyhung/Projects/OAStrain_project/bulkRNAseq/Pipeline/Snakefile:
+Missing input files for rule sort_bam:
+/project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-GH-12S-GH-2_S2_L006_R1_001Algined.out.bam

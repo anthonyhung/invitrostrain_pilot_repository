@@ -1,0 +1,56 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cluster nodes: 150
+Job counts:
+	count	jobs
+	1	all
+	2	fastqc
+	1	featurecount
+	2	index_bam
+	1	multiqc
+	2	samtools_stats
+	2	sort_bam
+	2	star_se
+	13
+
+[Sun Dec 15 10:48:44 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-GH-12S-GH-2_S2_L006_R1_001.Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-GH-12S-GH-2_S2_L006_R1_001.bam
+    jobid: 1
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-GH-12S-GH-2_S2_L006_R1_001 --outSAMtype BAM Unsorted
+Submitted job 1 with external jobid 'Submitted batch job 64303331'.
+
+[Sun Dec 15 10:48:44 2019]
+rule star_se:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-GH-12S-GH-1_S1_L006_R1_001.Log.final.out, /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-GH-12S-GH-1_S1_L006_R1_001.bam
+    jobid: 2
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006_R1_001
+    threads: 4
+
+STAR --runThreadN 4 --readFilesCommand zcat --genomeDir /project2/gilad/kenneth/References/human/STARindex/CellrangerReference/ --readFilesIn /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz --outFileNamePrefix /project2/gilad/anthonyhung/Projects/OAStrain_project/out/bam/YG-GH-12S-GH-1_S1_L006_R1_001 --outSAMtype BAM Unsorted
+Submitted job 2 with external jobid 'Submitted batch job 64303332'.
+
+[Sun Dec 15 10:48:44 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-GH-12S-GH-1_S1_L006_R1_001_fastqc.zip
+    jobid: 12
+    wildcards: sample=YG-GH-12S-GH-1_S1_L006_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-1_S1_L006_R1_001.fastq.gz
+Submitted job 12 with external jobid 'Submitted batch job 64303333'.
+
+[Sun Dec 15 10:48:45 2019]
+rule fastqc:
+    input: /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+    output: /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/YG-GH-12S-GH-2_S2_L006_R1_001_fastqc.zip
+    jobid: 11
+    wildcards: sample=YG-GH-12S-GH-2_S2_L006_R1_001
+
+fastqc --noextract -o /project2/gilad/anthonyhung/Projects/OAStrain_project/out/qc/ /project2/gilad/anthonyhung/Projects/OAStrain_project/fastq/YG-GH-12S-GH-2_S2_L006_R1_001.fastq.gz
+Submitted job 11 with external jobid 'Submitted batch job 64303334'.
