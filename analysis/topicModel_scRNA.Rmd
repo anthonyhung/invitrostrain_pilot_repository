@@ -34,12 +34,14 @@ dim(raw_counts_allGenes)
 # Use fastTopics functions to fit a topic model k=7 to the data
 
 ```{r fit topic model}
-fit <- fit_poisson_nmf(raw_counts_allGenes,k = 7,numiter = 100)
-saveRDS(fit, "output/fasttopics/Combined_external_data_allGenes_k=7.rds")
+if (file.exists("output/fasttopics/Combined_external_data_allGenes_k=7.rds")) {
+  fit <- readRDS("output/fasttopics/Combined_external_data_allGenes_k=7.rds")
+} else {
+  fit <- fit_poisson_nmf(raw_counts_allGenes,k = 7,numiter = 100)
+  saveRDS(fit, "output/fasttopics/Combined_external_data_allGenes_k=7.rds")
+}
 
-fit <- readRDS("output/fasttopics/Combined_external_data_allGenes_k=7.rds")
-
-#compute weights and topics (need to add up to 1)
+#compute weights and topics (rescale each of l and f to add up to 1)
 l <- fit$L
 f <- fit$F
 weights <- sweep(l, MARGIN = 2, colSums(f), `*`)
@@ -54,44 +56,6 @@ library(stringr)
 library(pheatmap)
 library(dummies)
 library(tidyverse)
-#plot heatmap of topic weights for samples
-#get labels of cells and reorder to group them
-sample <- as.data.frame(Combined.common@meta.data$Cell.Type)
-sample_labels <- sample %>% 
-     dplyr::transmute(Cell.Type = stringr::word(`Combined.common@meta.data$Cell.Type`, start = 1))
-rownames(sample_labels) <- rownames(Combined.common@meta.data)
-sample <- sample_labels %>% 
-     dplyr::arrange(Cell.Type)
-#reorder weights df to match sample order
-weights_reordered <- weights[match(rownames(sample), rownames(weights)),]
-#make the plot (color strip on the left is by indivdual)
-pheatmap(weights_reordered, cluster_cols = FALSE, cluster_rows = FALSE, annotation_row = sample,
-         show_rownames = FALSE, main = "Heatmap of topic weights grouped by cell labels")
-#same heatmap but group all the cells that are of the same label together (more interpretable??)
-sample_dummy <- as.data.frame(Combined.common@meta.data$Cell.Type)
-sample_dummy <- sample_dummy %>% 
-     dplyr::transmute(Cell.Type = stringr::word(`Combined.common@meta.data$Cell.Type`, start = 1))
-rownames(sample_dummy) <- rownames(Combined.common@meta.data)
-sample_dummies <- dummy.data.frame(sample_dummy)
-cor_by_sample <- cor(sample_dummies, weights, method = "pearson")
-pheatmap(cor_by_sample, cluster_cols = TRUE, cluster_rows = TRUE, main = "Correlation by sample label")
-
-#same heatmap but group all the cells that are of the same label and strain condition together
-sample_dummy <- as.data.frame(Combined.common@meta.data$Cell.Type)
-sample_dummy$`Combined.common@meta.data$Cell.Type` <- as.character(sample_dummy$`Combined.common@meta.data$Cell.Type`)
-rownames(sample_dummy) <- rownames(Combined.common@meta.data)
-metadata <- as.data.frame(Combined.common@meta.data)
-metadata <- metadata %>% filter(orig.ident == "ANT1" | orig.ident == "ANT2")
-sample_dummy$`Combined.common@meta.data$Cell.Type`[match(rownames(metadata), rownames(sample_dummy))] <- metadata$labels
-sample_dummy$`Combined.common@meta.data$Cell.Type` <- gsub("NA18855_Strain|NA19160_Strain", "iPSC-Chondrocyte_Strain", sample_dummy$`Combined.common@meta.data$Cell.Type`)
-sample_dummy$`Combined.common@meta.data$Cell.Type` <- gsub("NA18855_Unstrain|NA19160_Unstrain|NA18856_Unstrain", "iPSC-Chondrocyte_Control", sample_dummy$`Combined.common@meta.data$Cell.Type`)
-sample_dummy <- sample_dummy %>% 
-     dplyr::transmute(Cell.Type = stringr::word(`Combined.common@meta.data$Cell.Type`, start = 1))
-rownames(sample_dummy) <- rownames(Combined.common@meta.data)
-sample_dummies <- dummy.data.frame(sample_dummy)
-cor_by_sample <- cor(sample_dummies, weights, method = "pearson")
-cor_by_sample
-pheatmap(cor_by_sample, cluster_cols = TRUE, cluster_rows = TRUE, main = "Correlation by sample label")
 
 MSC_markers <- c("THY1", "NT5E", "ENG")
 Chondrocyte_markers <- c("COL2A1", "ACAN", "SOX9", "SOX5", "SOX6", "COL9A1")
@@ -187,16 +151,9 @@ ggplot_call_for_volcano_plot <- function (dat, y.label, topic.label) {
     theme_cowplot(font_size = 18) +
     theme(plot.title = element_text(size = 18,face = "plain"))}
 
-
-
 ```
 
 ```{r DE plots}
-MSC_markers <- c("THY1", "NT5E", "ENG")
-Chondrocyte_markers <- c("COL2A1", "ACAN", "COL11A1", "SOX9", "SOX5", "SOX6", "COL9A1")
-Hepatocyte_markers <- c("AFP", "ALB")
-iPSC_markers <- c("POU5F1", "SOX2", "NANOG")
-
 #plots
 p1 <- volcano_plot_with_highlighted_genes(diff_count_res = diff_count_topics,
                                           k = "k1",
@@ -247,13 +204,6 @@ p7 <- volcano_plot_with_highlighted_genes(diff_count_topics,
      #ylim(c(0,225)) +
      guides(fill = "none") +
      ggtitle("topic 5 (Chondrocyte 3)")
-p8 <- volcano_plot_with_highlighted_genes(diff_count_chondro,
-                                          "k7+k6+k5+k3",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topics 7,6,5,3 (Chondrocyte)")
 plot_grid(p1,p2,p3,p4,p5,p6,p7,nrow = 3,ncol = 3)
 
 ```

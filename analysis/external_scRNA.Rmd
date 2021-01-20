@@ -12,8 +12,9 @@ editor_options:
 ## Download datasets from GEO
 
 Some of the data included in this model come from publically available datasets from published studies, housed in GEO.
+Run the following code from the home directory of this repo to download the necessary datasets.
 
-```{bash}
+```{bash eval=FALSE}
 mkdir data/external_scRNA
 cd data/external_scRNA
 
