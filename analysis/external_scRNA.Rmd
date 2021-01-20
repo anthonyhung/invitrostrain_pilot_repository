@@ -7,88 +7,116 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Load in datasets and merge them
+# Load in datasets and merge them
+
+## Download datasets from GEO
+
+Some of the data included in this model come from publically available datasets from published studies, housed in GEO.
+
+```{bash}
+mkdir data/external_scRNA
+cd data/external_scRNA
+
+#download Ji et al 2018 data of Chondrocytes from OA patients run through STRT single cell RNA protocol from GEO (Series GSE104782)
+mkdir Jietal2018
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE104nnn/GSE104782/suppl/GSE104782_allcells_UMI_count.txt.gz #raw count data
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE104nnn/GSE104782/suppl/GSE104782_Table_Cell_quality_information_and_clustering_information.xlsx # clustering information for cells in the raw data
+
+#download Wu et al 2021 data of iPSC-Chondrocyte chondrogenic pellet differentiation time course from GEO (Series GSE160625). Data include barcodes, genes, and count matrices from samples taken from iPSCs and samples from 7, 14, 28, and 42 day chondrogenic pellets treated with chondrogenic media containing a WNT and MITF inhibitor
+cd ..
+mkdir Wuetal2021
+cd Wuetal2021
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876128/suppl/GSM4876128_hiPSC_barcodes.tsv.gz # iPSC barcodes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876128/suppl/GSM4876128_hiPSC_genes.tsv.gz # iPSC genes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876128/suppl/GSM4876128_hiPSC_matrix.mtx.gz # iPSC count matrix
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876136/suppl/GSM4876136_C59_D7_barcodes.tsv.gz # day 7 pellet barcodes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876136/suppl/GSM4876136_C59_D7_genes.tsv.gz # day 7 pellet genes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876136/suppl/GSM4876136_C59_D7_matrix.mtx.gz # day 7 pellet count matrix
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876137/suppl/GSM4876137_C59_D14_barcodes.tsv.gz # day 14 pellet barcodes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876137/suppl/GSM4876137_C59_D14_genes.tsv.gz # day 14 pellet genes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876137/suppl/GSM4876137_C59_D14_matrix.mtx.gz  # day 14 pellet count matrix
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876138/suppl/GSM4876138_C59_D28_barcodes.tsv.gz # day 28 pellet barcodes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876138/suppl/GSM4876138_C59_D28_genes.tsv.gz # day 28 pellet genes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876138/suppl/GSM4876138_C59_D28_matrix.mtx.gz # day 28 pellet count matrix
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876139/suppl/GSM4876139_C59_D42_barcodes.tsv.gz # day 42 pellet barcodes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876139/suppl/GSM4876139_C59_D42_genes.tsv.gz # day 42 pellet genes
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4876nnn/GSM4876139/suppl/GSM4876139_C59_D42_matrix.mtx.gz # day 42 pellet count matrix
+```
 
 Load in datasets and create Seurat objects for each of them. Add metadata about the cell type they were assigned in their original contexts. Merge the Seurat object into one large object.
 
 ```{r Loading in data matrices}
-
-if (file.exists("data/external_scRNA/Combined_singlecell_data_first.rds") & file.exists("data/external_scRNA/Combined_singlecell_data_allGenes.rds")){
-Combined.common <- readRDS("data/external_scRNA/Combined_singlecell_data_first.rds")
-Combined.common.allGenes <- readRDS("data/external_scRNA/Combined_singlecell_data_allGenes.rds")
-} else {
-
-#Pilot data
+#iPSC-Chondrocyte data from the current study
 ANT1.2 <- readRDS("data/ANT1_2.rds")
 ANT1.2 <- Seurat::AddMetaData(ANT1.2, "iPSC-Chondrocyte", col.name = "Cell.Type")
 dim(ANT1.2)
 
 #Chondrocytes from OA patients (https://www.ncbi.nlm.nih.gov/pubmed/30026257) run through STRT protocol
-chondro <- read.table("data/external_scRNA/GSE104782_allcells_UMI_count.txt.gz", header = T)
-chondro_genes <- chondro[,1]
-chondro_data <- chondro[,-1]
-chondro <- chondro_data
-rownames(chondro) <- chondro_genes
-#load chondro cluster data from paper
-chondro_metadata <- read_csv("data/external_scRNA/GSE104782_Table_Cell_quality_information_and_clustering_information.csv")
-#subset data to include only those that were assigned to a chondrocyte cluster in the paper
-chondro.filtered <- chondro[,!is.na(chondro_metadata$Cluster)]
-cluster.ident <- paste0("Chondro ", chondro_metadata$Cluster[!is.na(chondro_metadata$Cluster)])
-#Create seurat object from chondrocytes
-chondro.seurat <- CreateSeuratObject(chondro.filtered, project="Chondrocytes")
-chondro.seurat <- Seurat::AddMetaData(chondro.seurat, cluster.ident, col.name = "Cell.Type")
-dim(chondro.seurat)
+# load raw count data
+ji_chondro <- read.table("data/external_scRNA/GSE104782_allcells_UMI_count.txt.gz", header = T)
+ji_chondro_genes <- ji_chondro[,1]
+ji_chondro_data <- ji_chondro[,-1]
+ji_chondro <- ji_chondro_data
+rownames(ji_chondro) <- ji_chondro_genes
+# load clustering assignment data from paper
+ji_chondro_metadata <- read_csv("data/external_scRNA/GSE104782_Table_Cell_quality_information_and_clustering_information.csv")
+# subset count data to include only those cells that were assigned to a cluster labeled as being a chondrocyte in the original paper
+ji_chondro.filtered <- ji_chondro[,!is.na(ji_chondro_metadata$Cluster)]
+cluster.ident <- paste0("Chondro ", ji_chondro_metadata$Cluster[!is.na(ji_chondro_metadata$Cluster)])
+# Create seurat object from chondrocytes data
+ji_chondro.seurat <- CreateSeuratObject(ji_chondro.filtered, project="Chondrocytes")
+ji_chondro.seurat <- Seurat::AddMetaData(ji_chondro.seurat, cluster.ident, col.name = "Cell.Type")
+dim(ji_chondro.seurat)
 
-#iPSC chondrogenic cells from teratoma (human iPSC injected into mouse); https://github.com/yanwu2014/teratoma-analysis-code
-teratoma_data <- readRDS("/project2/gilad/anthonyhung/Projects/OAStrain_project/OAStrain/data/external_scRNA/McDonaldWu_etal/dm-ter-human-merged_clustering_v3.seurat.Robj") #they accidentally saved this as robj not rds
-teratoma_metadata <- read.table("/project2/gilad/anthonyhung/Projects/OAStrain_project/OAStrain/data/external_scRNA/McDonaldWu_etal/dm-ter-human-merged_metadata.tsv", header = T, sep = "\t")
-teratoma_data <- AddMetaData(teratoma_data, metadata = teratoma_metadata$cluster, col.name = "Cell.Type")
-teratoma_chond <- subset(teratoma_data, Cell.Type == "Chondrogenic MSC/Fib")#subset to chondrogenic MSC/fib
-DefaultAssay(object = teratoma_chond) <- "RNA"
-dim(teratoma_chond)
+#iPSC chondrogenic cells from directed differentiation time course  from iPSC chondrogenic pellet culture. https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE160625 
 
-#iPSC chondrogenic cells from directed differentiation (28 days of pellet) should have both mesenchymal like and chondrocyte like cells (without contaminants they claim) https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE160625 
+count_data_wu_iPSC <- readMM("data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_matrix.mtx.gz")
+genes_wu_iPSC <- read_tsv("data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_genes.tsv.gz", col_names = F)
+barcodes_wu_iPSC <- as.data.frame(read_tsv( "data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_barcodes.tsv.gz", col_names = F))
+rownames(count_data_wu_iPSC) <- genes_wu_iPSC$X2
+colnames(count_data_wu_iPSC) <- barcodes_wu_iPSC$X1
+wu_iPSC_seurat <- CreateSeuratObject(counts = count_data_wu_iPSC, project = "iPSC")
+wu_iPSC_seurat <- Seurat::AddMetaData(wu_iPSC_seurat, "Wu_iPSC", col.name = "Cell.Type")
 
-count_data_dicks_d7 <- readMM("data/external_scRNA/dicks_etal/GSM4876136_C59_D7_matrix.mtx.gz")
-genes_dicks_d7 <- read_tsv("data/external_scRNA/dicks_etal/GSM4876136_C59_D7_genes.tsv.gz", col_names = F)
-barcodes_dicks_d7 <- as.data.frame(read_tsv( "data/external_scRNA/dicks_etal/GSM4876136_C59_D7_barcodes.tsv.gz", col_names = F))
-rownames(count_data_dicks_d7) <- genes_dicks_d7$X2
-colnames(count_data_dicks_d7) <- barcodes_dicks_d7$X1
-dicks_d7_seurat <- CreateSeuratObject(counts = count_data_dicks_d7, project = "d7")
-dicks_d7_seurat <- Seurat::AddMetaData(dicks_d7_seurat, "dicks_d7", col.name = "Cell.Type")
+count_data_wu_d7 <- readMM("data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_matrix.mtx.gz")
+genes_wu_d7 <- read_tsv("data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_genes.tsv.gz", col_names = F)
+barcodes_wu_d7 <- as.data.frame(read_tsv( "data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_barcodes.tsv.gz", col_names = F))
+rownames(count_data_wu_d7) <- genes_wu_d7$X2
+colnames(count_data_wu_d7) <- barcodes_wu_d7$X1
+wu_d7_seurat <- CreateSeuratObject(counts = count_data_wu_d7, project = "d7")
+wu_d7_seurat <- Seurat::AddMetaData(wu_d7_seurat, "Wu_chondrogenic_pellet_d7", col.name = "Cell.Type")
+
+count_data_wu_d14 <- readMM("data/external_scRNA/Wuetal2021/GSM4876137_C59_D14_matrix.mtx.gz")
+genes_wu_d14 <- read_tsv("data/external_scRNA/Wuetal2021/GSM4876137_C59_D14_genes.tsv.gz", col_names = F)
+barcodes_wu_d14 <- as.data.frame(read_tsv( "data/external_scRNA/Wuetal2021/GSM4876137_C59_D14_barcodes.tsv.gz", col_names = F))
+rownames(count_data_wu_d14) <- genes_wu_d14$X2
+colnames(count_data_wu_d14) <- barcodes_wu_d14$X1
+wu_d14_seurat <- CreateSeuratObject(counts = count_data_wu_d14, project = "d14")
+wu_d14_seurat <- Seurat::AddMetaData(wu_d14_seurat, "Wu_chondrogenic_pellet_d14", col.name = "Cell.Type")
+
+count_data_wu_d28 <- readMM("data/external_scRNA/Wuetal2021/GSM4876138_C59_D28_matrix.mtx.gz")
+genes_wu_d28 <- read_tsv("data/external_scRNA/Wuetal2021/GSM4876138_C59_D28_genes.tsv.gz", col_names = F)
+barcodes_wu_d28 <- as.data.frame(read_tsv( "data/external_scRNA/Wuetal2021/GSM4876138_C59_D28_barcodes.tsv.gz", col_names = F))
+rownames(count_data_wu_d28) <- genes_wu_d28$X2
+colnames(count_data_wu_d28) <- barcodes_wu_d28$X1
+wu_d28_seurat <- CreateSeuratObject(counts = count_data_wu_d28, project = "d28")
+wu_d28_seurat <- Seurat::AddMetaData(wu_d28_seurat, "Wu_chondrogenic_pellet_d28", col.name = "Cell.Type")
+
+count_data_wu_d42 <- readMM("data/external_scRNA/Wuetal2021/GSM4876139_C59_D42_matrix.mtx.gz")
+genes_wu_d42 <- read_tsv("data/external_scRNA/Wuetal2021/GSM4876139_C59_D42_genes.tsv.gz", col_names = F)
+barcodes_wu_d42 <- as.data.frame(read_tsv( "data/external_scRNA/Wuetal2021/GSM4876139_C59_D42_barcodes.tsv.gz", col_names = F))
+rownames(count_data_wu_d42) <- genes_wu_d42$X2
+colnames(count_data_wu_d42) <- barcodes_wu_d42$X1
+wu_d42_seurat <- CreateSeuratObject(counts = count_data_wu_d42, project = "d42")
+wu_d42_seurat <- Seurat::AddMetaData(wu_d42_seurat, "Wu_chondrogenic_pellet_d42", col.name = "Cell.Type")
+
+wu_combined <- merge(wu_iPSC_seurat, y = c(wu_d7_seurat, wu_d14_seurat, wu_d28_seurat, wu_d42_seurat), project = "Combined.common")
+
+wu_combined[["percent.mt"]] <- PercentageFeatureSet(wu_combined, pattern = "^MT-")
+wu_combined <- subset(wu_combined, subset = percent.mt < 25)
+dim(wu_combined)
 
 
-count_data_dicks_d14 <- readMM("data/external_scRNA/dicks_etal/GSM4876137_C59_D14_matrix.mtx.gz")
-genes_dicks_d14 <- read_tsv("data/external_scRNA/dicks_etal/GSM4876137_C59_D14_genes.tsv.gz", col_names = F)
-barcodes_dicks_d14 <- as.data.frame(read_tsv( "data/external_scRNA/dicks_etal/GSM4876137_C59_D14_barcodes.tsv.gz", col_names = F))
-rownames(count_data_dicks_d14) <- genes_dicks_d14$X2
-colnames(count_data_dicks_d14) <- barcodes_dicks_d14$X1
-dicks_d14_seurat <- CreateSeuratObject(counts = count_data_dicks_d14, project = "d14")
-dicks_d14_seurat <- Seurat::AddMetaData(dicks_d14_seurat, "dicks_d14", col.name = "Cell.Type")
-
-count_data_dicks_d28 <- readMM("data/external_scRNA/dicks_etal/GSM4876138_C59_D28_matrix.mtx.gz")
-genes_dicks_d28 <- read_tsv("data/external_scRNA/dicks_etal/GSM4876138_C59_D28_genes.tsv.gz", col_names = F)
-barcodes_dicks_d28 <- as.data.frame(read_tsv( "data/external_scRNA/dicks_etal/GSM4876138_C59_D28_barcodes.tsv.gz", col_names = F))
-rownames(count_data_dicks_d28) <- genes_dicks_d28$X2
-colnames(count_data_dicks_d28) <- barcodes_dicks_d28$X1
-dicks_d28_seurat <- CreateSeuratObject(counts = count_data_dicks_d28, project = "d28")
-dicks_d28_seurat <- Seurat::AddMetaData(dicks_d28_seurat, "dicks_d28", col.name = "Cell.Type")
-
-count_data_dicks_d42 <- readMM("data/external_scRNA/dicks_etal/GSM4876139_C59_D42_matrix.mtx.gz")
-genes_dicks_d42 <- read_tsv("data/external_scRNA/dicks_etal/GSM4876139_C59_D42_genes.tsv.gz", col_names = F)
-barcodes_dicks_d42 <- as.data.frame(read_tsv( "data/external_scRNA/dicks_etal/GSM4876139_C59_D42_barcodes.tsv.gz", col_names = F))
-rownames(count_data_dicks_d42) <- genes_dicks_d42$X2
-colnames(count_data_dicks_d42) <- barcodes_dicks_d42$X1
-dicks_d42_seurat <- CreateSeuratObject(counts = count_data_dicks_d42, project = "d42")
-dicks_d42_seurat <- Seurat::AddMetaData(dicks_d42_seurat, "dicks_d42", col.name = "Cell.Type")
-
-dicks_combined <- merge(dicks_d7_seurat, y = c(dicks_d14_seurat, dicks_d28_seurat, dicks_d42_seurat), project = "Combined.common")
-
-dicks_combined[["percent.mt"]] <- PercentageFeatureSet(dicks_combined, pattern = "^MT-")
-dicks_combined <- subset(dicks_combined, subset = percent.mt < 25)
-dicks_combined <- NormalizeData(object = dicks_combined, normalization.method = "LogNormalize", 
-    scale.factor = 10000)
-dim(dicks_combined)
 
 #Chondrocytes from healthy oLT of a male human with OA (outer lateral tibia) https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4626766
 ## link to directories containing data files (count matrices)
@@ -105,6 +133,9 @@ colnames(chond_counts) <- chond_barcodes$X1
 Chond_seurat <- CreateSeuratObject(counts = chond_counts, project = "Chondrocytes") %>% 
   AddMetaData("Chondrocyte_", col.name = "Cell.Type")
 dim(Chond_seurat)
+
+
+
 
 #iPSCs/MSCs/osteoblasts from Human/chimp panel. Combine all the datasets and subset for humans
 ghousman_data_dir <- ("/project2/gilad/ghousman/skeletal-human-chimp/human-chimp-skeletal-scRNA/data/cellranger-data-full/")
@@ -127,7 +158,9 @@ gh_big_humans <- subset(gh_big_humans, subset = percent.mt < 25)
 gh_big_humans <- Seurat::AddMetaData(gh_big_humans, "Ghousman", col.name = "orig.ident")
 dim(gh_big_humans)
 
-#Human Liver samples run through 10x (https://doi.org/10.1038/s41467-018-06318-7). This is a subset of the entire dataset, which is from whole liver homogenate. I used scViz to subset the data for clusters that were called hepatocytes in the original study (3490 cells)
+
+
+#Human Liver samples run through 10x (https://doi.org/10.1038/s41467-018-06318-7). This is a subset of the entire dataset, which is from whole liver homogenate. Following the example from the original paper, scViz was used to subset the data for clusters that were called hepatocytes in the original study (subset contains a total of 3490 cells)
 liver <- readRDS("data/external_scRNA/humanLiverSubset_hepatocytes.rds")
 liver <- Seurat::AddMetaData(liver, "Hepatocyte", col.name = "Cell.Type")
 dim(liver)
@@ -139,21 +172,18 @@ dim(liver)
 # Merge the seurat objects into one large one, keeping metadata about which study they originated in as well as their assigned cell type.
 
 # merge based on common genes between ALL datasets
-common.features <- Reduce(intersect, list(rownames(ANT1.2), rownames(chondro.seurat), rownames(Chond_seurat), rownames(gh_big_humans), rownames(liver), rownames(teratoma_chond), rownames(dicks_combined)))
+common.features <- Reduce(intersect, list(rownames(ANT1.2), rownames(chondro.seurat), rownames(Chond_seurat), rownames(gh_big_humans), rownames(liver), rownames(teratoma_chond), rownames(wu_combined)))
 length(x = common.features)
 Combined.common <- merge(ANT1.2[common.features, ], y = c(chondro.seurat[common.features, ], Chond_seurat[common.features, ], gh_big_humans[common.features, ], liver[common.features, ], teratoma_chond[common.features, ]), project = "Combined.common")
-Combined.common <- merge(Combined.common[common.features, ], dicks_combined[common.features, ], project = "Combined.common")
+Combined.common <- merge(Combined.common[common.features, ], wu_combined[common.features, ], project = "Combined.common")
 
 #merge keeping all genes
 Combined.common.allGenes <- merge(ANT1.2, y = c(chondro.seurat, Chond_seurat, gh_big_humans, liver, teratoma_chond), project = "Combined.common")
-Combined.common.allGenes <- merge(Combined.common.allGenes, dicks_combined, project = "Combined.common")
+Combined.common.allGenes <- merge(Combined.common.allGenes, wu_combined, project = "Combined.common")
 Combined.common.allGenes_noliver <- merge(ANT1.2, y = c(chondro.seurat, Chond_seurat, gh_big_humans, teratoma_chond), project = "Combined.common.noliver")
-Combined.common.allGenes_noliver <- merge(Combined.common.allGenes_noliver, dicks_combined, project = "Combined.common.noliver")
+Combined.common.allGenes_noliver <- merge(Combined.common.allGenes_noliver, wu_combined, project = "Combined.common.noliver")
 
-
-saveRDS(Combined.common, "data/external_scRNA/Combined_singlecell_data_first.rds")
-saveRDS(Combined.common.allGenes, "data/external_scRNA/Combined_singlecell_data_allGenes.rds")
-saveRDS(Combined.common.allGenes_noliver, "data/external_scRNA/Combined_singlecell_data_allGenes_noliver.rds")
+saveRDS(Combined.common.allGenes, "data/topic_model/merged_external_scRNA.rds")
 
 }
 ```
