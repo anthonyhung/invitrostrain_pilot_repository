@@ -148,27 +148,31 @@ chou_chondro_seurat <- CreateSeuratObject(counts = chou_chondro_counts, project 
 dim(chou_chondro_seurat)
 
 
-#iPSCs/MSCs/osteoblasts from Genevieve Housman. Combine all the datasets located in the data directory. Each of these datasets contain single cell data from cells from the same human individual from which iPSCs were created. 10x single cell RNA sequencing data from iPSCs, MSCs, iPSC-Osteoblasts, and iPSC-chondrocytes are included after filtering for barcodes with fewer than 25% reads coming from mitochondria.
-gh_big <- merge(gh_ipsc_1.1, y = c(gh_msc_1.1, gh_chondro, gh_osteo), 
-                add.cell.ids = c("ipsc1.1", "msc1.1", "chondrogh", "osteo"), project = "ghousman")
-gh_big_humans <- Seurat::AddMetaData(gh_big_humans, "Ghousman", col.name = "orig.ident")
-dim(gh_big_humans)
-
+#iPSCs/MSCs/ipsc-chondrocytes/ipsc-osteoblasts from Genevieve Housman. Combine all the datasets located in the data directory. Each of these datasets contain single cell data from cells from the same human individual from which iPSCs were created. 10x single cell RNA sequencing data from iPSCs, MSCs, iPSC-Osteoblasts, and iPSC-chondrocytes are included after filtering for barcodes with fewer than 25% reads coming from mitochondria.
+GH_iPSC <- readRDS("data/external_scRNA/gh_ipsc.rds")
+GH_iPSCMSC <- readRDS("data/external_scRNA/gh_msc.rds")
+GH_iPSCChond <- readRDS("data/external_scRNA/gh_ipscChond.rds")
+GH_iPSCOsteo <- readRDS("data/external_scRNA/gh_ipscOsteo.rds")
+#merge all the datasets into one seurat object
+GH_merged <- merge(GH_iPSC, y = c(GH_iPSCMSC, GH_iPSCChond, GH_iPSCOsteo), 
+                add.cell.ids = c("ipsc", "msc", "chondrogh", "osteo"), project = "ghousman")
+GH_merged <- Seurat::AddMetaData(GH_merged, "Ghousman", col.name = "orig.ident")
+dim(GH_merged)
 
 
 #Human Liver samples run through 10x (https://doi.org/10.1038/s41467-018-06318-7). This is a subset of the entire dataset, which is from whole liver homogenate. Following the example from the original paper, scViz was used to subset the data for clusters that were called hepatocytes in the original study (subset contains a total of 3490 cells)
-liver <- readRDS("data/external_scRNA/humanLiverSubset_hepatocytes.rds")
-liver <- Seurat::AddMetaData(liver, "Hepatocyte", col.name = "Cell.Type")
-dim(liver)
+liver_data <- readRDS("data/external_scRNA/humanLiverSubset_hepatocytes.rds")
+liver_data <- Seurat::AddMetaData(liver_data, "Hepatocyte", col.name = "Cell.Type")
+dim(liver_data)
 
 
 
 # Merge Datasets
 
 # Merge the seurat objects into one large one, keeping metadata about which study they originated in as well as their assigned cell type.
-Combined.common.allGenes <- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, gh_big_humans, liver), project = "Combined.common")
-Combined.common.allGenes <- merge(Combined.common.allGenes, wu_combined, project = "Combined.common")
+Merged_external_data <- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, GH_merged, liver_data), project = "Combined.common")
+Merged_external_data <- merge(Merged_external_data, wu_combined, project = "Combined.common")
 
-saveRDS(Combined.common.allGenes, "data/topic_model/merged_external_scRNA.rds")
+saveRDS(Merged_external_data, "data/external_scRNA/merged_external_scRNA.rds")
 ```
 
