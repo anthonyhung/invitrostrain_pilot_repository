@@ -4,3 +4,6 @@
 .Ruserdata
 .Rapp.history
 .DS_Store
+data/external_scRNA/Jietal2018/*
+data/external_scRNA/Wuetal2021/*
+
