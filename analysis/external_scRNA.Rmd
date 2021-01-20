@@ -19,6 +19,7 @@ cd data/external_scRNA
 
 #download Ji et al 2018 data of Chondrocytes from OA patients run through STRT single cell RNA protocol from GEO (Series GSE104782)
 mkdir Jietal2018
+cd Jietal2018
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE104nnn/GSE104782/suppl/GSE104782_allcells_UMI_count.txt.gz #raw count data
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE104nnn/GSE104782/suppl/GSE104782_Table_Cell_quality_information_and_clustering_information.xlsx # clustering information for cells in the raw data
 
