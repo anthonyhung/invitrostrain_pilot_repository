@@ -53,10 +53,16 @@ wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM46267
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM4626766_OA_oLT_113.matrix.mtx.gz # count matrix
 ```
 
-Load in datasets and create Seurat objects for each of them. Add metadata about the cell type they were assigned in their original contexts. Merge the Seurat object into one large object.
+## Load in datasets 
+
+Load in the datasets and create Seurat objects for each of them. Add metadata about the cell type they were assigned in their original contexts. Merge the Seurat object into one large object.
 
 ```{r Loading in data matrices}
 library(Matrix)
+library(Seurat)
+library(tidyverse)
+library(readxl)
+
 #iPSC-Chondrocyte data from the current study
 ANT1.2 <- readRDS("data/ANT1_2.rds")
 ANT1.2 <- Seurat::AddMetaData(ANT1.2, "iPSC-Chondrocyte", col.name = "Cell.Type")
@@ -65,13 +71,13 @@ dim(ANT1.2)
 
 #Chondrocytes from OA patients (https://www.ncbi.nlm.nih.gov/pubmed/30026257) run through STRT protocol
 # load raw count data
-ji_chondro <- read.table("data/external_scRNA/GSE104782_allcells_UMI_count.txt.gz", header = T)
+ji_chondro <- read.table("data/external_scRNA/Jietal2018/GSE104782_allcells_UMI_count.txt.gz", header = T)
 ji_chondro_genes <- ji_chondro[,1]
 ji_chondro_data <- ji_chondro[,-1]
 ji_chondro <- ji_chondro_data
 rownames(ji_chondro) <- ji_chondro_genes
 # load clustering assignment data from paper
-ji_chondro_metadata <- read_csv("data/external_scRNA/GSE104782_Table_Cell_quality_information_and_clustering_information.csv")
+ji_chondro_metadata <- read_excel("data/external_scRNA/Jietal2018/GSE104782_Table_Cell_quality_information_and_clustering_information.xlsx")
 # subset count data to include only those cells that were assigned to a cluster labeled as being a chondrocyte in the original paper
 ji_chondro.filtered <- ji_chondro[,!is.na(ji_chondro_metadata$Cluster)]
 cluster.ident <- paste0("Chondro ", ji_chondro_metadata$Cluster[!is.na(ji_chondro_metadata$Cluster)])
@@ -134,9 +140,9 @@ dim(wu_combined)
 
 
 #Chondrocytes from healthy oLT of a male human with OA (outer lateral tibia) https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4626766
-chou_chondro_counts <- readMM("data/external_scRNA/Chou_et_al/GSM4626766_OA_oLT_113.matrix.mtx.gz")
-chou_chondro_genes <- read_tsv("data/external_scRNA/Chou_et_al/GSM4626766_OA_oLT_113.genes.tsv.gz", col_names = F)
-chou_chondro_barcodes <- as.data.frame(read_tsv("data/external_scRNA/Chou_et_al/GSM4626766_OA_oLT_113.barcodes.tsv.gz", col_names = F))
+chou_chondro_counts <- readMM("data/external_scRNA/Chou_et_al2020/GSM4626766_OA_oLT_113.matrix.mtx.gz")
+chou_chondro_genes <- read_tsv("data/external_scRNA/Chou_et_al2020/GSM4626766_OA_oLT_113.genes.tsv.gz", col_names = F)
+chou_chondro_barcodes <- as.data.frame(read_tsv("data/external_scRNA/Chou_et_al2020/GSM4626766_OA_oLT_113.barcodes.tsv.gz", col_names = F))
 #make Seurat object
 rownames(chou_chondro_counts) <- chou_chondro_genes$X2
 colnames(chou_chondro_counts) <- chou_chondro_barcodes$X1
@@ -162,16 +168,20 @@ dim(GH_merged)
 liver_data <- readRDS("data/external_scRNA/humanLiverSubset_hepatocytes.rds")
 liver_data <- Seurat::AddMetaData(liver_data, "Hepatocyte", col.name = "Cell.Type")
 dim(liver_data)
+```
 
 
+## Merge and Save the combined data
 
+```{r merge and save}
 # Merge Datasets
 
 # Merge the seurat objects into one large one, keeping metadata about which study they originated in as well as their assigned cell type.
 Merged_external_data <- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, GH_merged, liver_data), project = "Combined.common")
 Merged_external_data <- merge(Merged_external_data, wu_combined, project = "Combined.common")
-dim()
+dim(Merged_external_data)
 
 saveRDS(Merged_external_data, "data/external_scRNA/merged_external_scRNA.rds")
 ```
+
 
