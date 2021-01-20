@@ -9,7 +9,7 @@ editor_options:
 
 # Introduction
 
-This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product is a seurat object containing the raw count matrix and assignment to one of the three individuals and two treatment groups (strain or unstrain).
+This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product are seurat objects containing the raw count matrices and assignment to one of the three individuals and two treatment groups (strain or unstrain) for each of the two 10x lanes used in the sequencing experiment.
 
 
 # Run the Snakemake Pipeline after downloading necessary files
@@ -109,8 +109,7 @@ barcodes_singlets2 <- barcodes2_labeled[singlets_index2,] #use index to subset m
 count_data_singlets2 <- count_data2[,singlets_index2]
 ```
 
-# Create Seurat object for each dataset (for singlet barcodes) and add metadata in the form of singlet identity for each barcode. Rest
-of analysis adapted from: https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html
+# Create Seurat object for each dataset (for singlet barcodes) and add metadata in the form of singlet identity for each barcode.
 
 ```{r seurat}
 #Change labels to reflect strain/unstrain
@@ -139,3 +138,11 @@ ANT2_seurat <- CreateSeuratObject(counts = count_data_singlets2, project = "ANT2
   AddMetaData(strainIndlabels2, col.name = "labels")
 
 ```
+
+# Save Seurat objects
+
+```{r save}
+saveRDS(ANT1, "data/ANT1.rds")
+saveRDS(ANT2, "data/ANT2.rds")
+```
+
