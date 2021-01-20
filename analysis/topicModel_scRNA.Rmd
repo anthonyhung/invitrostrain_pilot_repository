@@ -21,7 +21,7 @@ merged_data <- readRDS("data/external_scRNA/merged_external_scRNA.rds")
 
 #Extract raw count matrix from seurat object and get it in correct format for fastTopics
 #need to fit the model to the count data (unintegrated)
-raw_counts_allGenes <- Combined.common.allGenes@assays$RNA@counts
+raw_counts_allGenes <- merged_data@assays$RNA@counts
 raw_counts_allGenes <- as.matrix(raw_counts_allGenes)
 #remove genes without any counts in droplets
 raw_counts_allGenes <- raw_counts_allGenes[rowSums(raw_counts_allGenes > 0) > 0,] 

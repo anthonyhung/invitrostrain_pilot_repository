@@ -1,5 +1,5 @@
 ---
-title: "preProcess_scRNA"
+title: "Pre-processing of raw 10x files into count matrices and demultiplexing"
 author: "Anthony Hung"
 date: "2021-01-19"
 output: workflowr::wflow_html
@@ -7,9 +7,135 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Introduction
+# Introduction
 
-```{r}
+This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product is a seurat object containing the raw count matrix and assignment to one of the three individuals and two treatment groups (strain or unstrain).
 
+
+# Run the Snakemake Pipeline after downloading necessary files
+
+1. Move the fastq files from all samples (these are output files from 10x runs, containing both forward and reverse sequences) into the folder
+code/single_cell_preprocessing/fastq/. Undetermined data files are not required.
+
+2. Modify the code/single_cell_preprocessing/Pipeline/cluster_solo.json file to correspond to the computing cluster you are working with.
+
+3. Unzip the whitelist file in the code/single_cell_preprocessing/ directory.
+
+4. Place the human.YRI.cellranger.exons.vcf file into the code/single_cell_preprocessing/ directory.
+
+5. Install the conda working by running
+"conda env create --file environment.yaml"
+
+6. Run the file "submit.sh".
+
+# Load files into R
+
+After running the pipeline, two directories will be created corresponding to the two 10x lanes involved in the sequencing experiment ("YG-AH-2S-ANT-1_S1_L008" and "YG-AH-2S-ANT-2_S2_L008"). These directories contain the demuxlet and STAR SOLO outputs for each 10x lane.
+
+Details about the two lanes:
+ANT1: (NA19160 unstrained; NA18856 unstrained; NA18855 strained)
+ANT2: (NA19160 strained; NA18855 unstrained)
+
+```{r load libraries}
+library(data.table)
+library(Matrix)
+library(Seurat)
+library(readr)
+library(stringr)
+library(plyr)
+library(dplyr)
+
+
+library(tidyverse)
+library(gridExtra)
+library(heplots)
+library(DT)
+library(gplots)
+library(cowplot)
 ```
 
+```{r specify directory structure}
+## link to directories containing data files (count matrices)
+proj_dir <- "code/invitroOA_pilot_repository/"
+ANT1_dir <- paste0(proj_dir, "YG-AH-2S-ANT-1_S1_L008/")
+ANT2_dir <- paste0(proj_dir, "YG-AH-2S-ANT-2_S2_L008/")
+
+#read in data
+
+##Gene Output from STARSOLO
+#ANT1
+demuxlet1 <- fread(paste0(ANT1_dir, "demuxlet.best", sep = ""))
+count_data1 <- readMM(paste0(ANT1_dir, "Gene/filtered/matrix.mtx"))
+genes1 <- read_tsv(paste0(ANT1_dir, "Gene/filtered/genes.tsv"), col_names = F)
+barcodes1 <- as.data.frame(read_tsv(paste0(ANT1_dir, "Gene/filtered/barcodes.tsv"), col_names = F))
+#ANT2
+demuxlet2 <- fread(paste0(ANT2_dir, "demuxlet.best", sep = ""))
+count_data2 <- readMM(paste0(ANT2_dir, "Gene/filtered/matrix.mtx"))
+genes2 <- read_tsv(paste0(ANT2_dir, "Gene/filtered/genes.tsv"), col_names = F)
+barcodes2 <- as.data.frame(read_tsv(paste0(ANT2_dir, "Gene/filtered/barcodes.tsv"), col_names = F))
+```
+
+# Based on the demuxlet output, assign label for barcodes based on "BEST" output and filter for "SNG-" barcodes
+
+```{r Filter droplets for singlets}
+#function returns a dataframe with two columns, one corresponding to the barcodes and one corresponding to the label given by demuxlet
+return_singlet_label <- function(barcodes, demuxlet.out){
+  labels <- demuxlet.out$BEST[match(unlist(barcodes), demuxlet.out$BARCODE)]
+  return(cbind(barcodes, labels))
+}
+
+barcodes1_labeled <- return_singlet_label(barcodes1, demuxlet1)
+barcodes2_labeled <- return_singlet_label(barcodes2, demuxlet2)
+
+#table of singlets/multiplets in the filtered data based on demuxlet
+table(barcodes1_labeled$labels)
+table(barcodes2_labeled$labels)
+
+## filter for droplets that are singlets
+#ANT1
+demuxlet_single1 <- demuxlet1 %>%
+     dplyr::filter(grepl("SNG-", BEST))
+singlets_index1 <- unlist(lapply(barcodes1_labeled$X1,"%in%", table = demuxlet_single1$BARCODE), use.names = F) #get index of barcodes
+that are singlets
+barcodes_singlets1 <- barcodes1_labeled[singlets_index1,] #use index to subset matrix + barcode names
+count_data_singlets1 <- count_data1[,singlets_index1]
+
+#ANT2
+demuxlet_single2 <- demuxlet2 %>%
+     dplyr::filter(grepl("SNG-", BEST))
+singlets_index2 <- unlist(lapply(barcodes2_labeled$X1,"%in%", table = demuxlet_single2$BARCODE), use.names = F) #get index of barcodes
+that are singlets
+barcodes_singlets2 <- barcodes2_labeled[singlets_index2,] #use index to subset matrix + barcode names
+count_data_singlets2 <- count_data2[,singlets_index2]
+```
+
+# Create Seurat object for each dataset (for singlet barcodes) and add metadata in the form of singlet identity for each barcode. Rest
+of analysis adapted from: https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html
+
+```{r seurat}
+#Change labels to reflect strain/unstrain
+
+strainIndlabels1 <- revalue(barcodes_singlets1$labels,
+                            c("SNG-NA18856"= "NA18856_Unstrain",
+                              "SNG-NA18855" = "NA18855_Strain",
+                              "SNG-NA19160" = "NA19160_Unstrain"))
+
+strainIndlabels2 <- revalue(barcodes_singlets2$labels,
+                            c("SNG-NA18855" = "NA18855_Unstrain",
+                              "SNG-NA19160" = "NA19160_Strain"))
+
+
+rownames(count_data_singlets1) <- genes1$X2
+colnames(count_data_singlets1) <- barcodes_singlets1$X1
+
+ANT1_seurat <- CreateSeuratObject(counts = count_data_singlets1, project = "ANT1") %>%
+  AddMetaData(strainIndlabels1, col.name = "labels")
+
+
+rownames(count_data_singlets2) <- genes2$X2
+colnames(count_data_singlets2) <- barcodes_singlets2$X1
+
+ANT2_seurat <- CreateSeuratObject(counts = count_data_singlets2, project = "ANT2") %>%
+  AddMetaData(strainIndlabels2, col.name = "labels")
+
+```

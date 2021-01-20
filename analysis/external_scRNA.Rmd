@@ -1,5 +1,5 @@
 ---
-title: "external_scRNA"
+title: "Aggregation of external scRNA-seq data for topic model"
 author: "Anthony Hung"
 date: "2021-01-19"
 output: workflowr::wflow_html

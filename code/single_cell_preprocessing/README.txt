@@ -7,7 +7,9 @@ fastq/. Undetermined data files are not required.
 
 3. Unzip the whitelist file in the main directory.
 
-4. Install the conda working by running
+4. Place the human.YRI.cellranger.exons.vcf file into the main directory of this pipeline.
+
+5. Install the conda working by running
 "conda env create --file environment.yaml"
 
-5. Run the file "submit.sh"
+6. Run the file "submit.sh"
