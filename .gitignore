@@ -6,4 +6,8 @@
 .DS_Store
 data/external_scRNA/Jietal2018/*
 data/external_scRNA/Wuetal2021/*
+data/external_scRNA/Chou_et_al2020/*
+data/external_scRNA/merged_external_scRNA.rds
+data/data/ANT1_2.rds
+output/*
 
