@@ -7,9 +7,261 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Introduction
+# Analysis of processed sc pilot data ANT1/ANT2
 
-```{r}
+ANT1_ANT2 contain multiplexed samples from replicate of the pilot. Equal numbers of cells from NA18855 (OA strained), NA19160 (unstrained), and NA18856 (unstrained) were pooled into one collection for ANT1, and equal numbers of cells from 18855 (Unstrained), 19160 (OA strained) were pooled into one collection for ANT2. The collections were sequenced using the 10x chromium technology.
+
+ANT1: (19160 unstrained; 18856 unstrained; 18855 strained)
+
+ANT2: (19160 strained; 18856 strained; 18855 unstrained)
+  
+Raw FASTQ files were processed through pipeline located in the code directory, which aligns reads to hg38 using STAR solo and runs demuxlet on the output.
+
+## Load libraries
+
+```{r load libraries}
+library(data.table)
+library(tidyverse)
+library(plyr)
+library(dplyr)
+library(stringr)
+library(readr)
+library(Matrix)
+library(Seurat)
+library(gridExtra)
+library(heplots)
+library(DT)
+library(gplots)
+library(cowplot)
+library("ggpubr")
+```
+
+## Load in data
+
+```{r specify directory structure}
+## link to directories containing data files (count matrices)
+proj_dir <- "/project2/gilad/anthonyhung/Projects/OAStrain_project/YriMultiplex/"
+ANT1_dir <- paste0(proj_dir, "YG-AH-2S-ANT-1_S1_L008/")
+ANT2_dir <- paste0(proj_dir, "YG-AH-2S-ANT-2_S2_L008/")
+
+#read in data
+
+##Gene Output from STARSOLO
+#ANT1
+demuxlet1 <- fread(paste0(ANT1_dir, "demuxlet.best", sep = ""))
+count_data1 <- readMM(paste0(ANT1_dir, "Gene/filtered/matrix.mtx"))
+genes1 <- read_tsv(paste0(ANT1_dir, "Gene/filtered/genes.tsv"), col_names = F)
+barcodes1 <- as.data.frame(read_tsv(paste0(ANT1_dir, "Gene/filtered/barcodes.tsv"), col_names = F))
+UMIperCell1 <- read.table(paste0(ANT1_dir, "Gene/UMIperCellSorted.txt"), header = F)
+#ANT2
+demuxlet2 <- fread(paste0(ANT2_dir, "demuxlet.best", sep = ""))
+count_data2 <- readMM(paste0(ANT2_dir, "Gene/filtered/matrix.mtx"))
+genes2 <- read_tsv(paste0(ANT2_dir, "Gene/filtered/genes.tsv"), col_names = F)
+barcodes2 <- as.data.frame(read_tsv(paste0(ANT2_dir, "Gene/filtered/barcodes.tsv"), col_names = F))
+UMIperCell2 <- read.table(paste0(ANT2_dir, "Gene/UMIperCellSorted.txt"), header = F)
+```
+
+# Based on the demuxlet output, assign label for barcodes based on "BEST" output and filter for "SNG-" barcodes
+
+```{r Filter droplets for singlets}
+#returns a dataframe with two columns, one corresponding to the barcodes and one corresponding to the label given by demuxlet
+return_singlet_label <- function(barcodes, demuxlet.out){
+  labels <- demuxlet.out$BEST[match(unlist(barcodes), demuxlet.out$BARCODE)]
+  return(cbind(barcodes, labels))
+}
+
+barcodes1_labeled <- return_singlet_label(barcodes1, demuxlet1)
+barcodes2_labeled <- return_singlet_label(barcodes2, demuxlet2)
+
+#table of singlets/multiplets in the filtered data based on demuxlet
+table(barcodes1_labeled$labels)
+table(barcodes2_labeled$labels)
+
+## filter for droplets that are singlets
+#ANT1
+demuxlet_single1 <- demuxlet1 %>%
+     dplyr::filter(grepl("SNG-", BEST))
+singlets_index1 <- unlist(lapply(barcodes1_labeled$X1,"%in%", table = demuxlet_single1$BARCODE), use.names = F) #get index of barcodes that are singlets
+barcodes_singlets1 <- barcodes1_labeled[singlets_index1,] #use index to subset matrix + barcode names
+count_data_singlets1 <- count_data1[,singlets_index1]
+
+#ANT2
+demuxlet_single2 <- demuxlet2 %>%
+     dplyr::filter(grepl("SNG-", BEST))
+singlets_index2 <- unlist(lapply(barcodes2_labeled$X1,"%in%", table = demuxlet_single2$BARCODE), use.names = F) #get index of barcodes that are singlets
+barcodes_singlets2 <- barcodes2_labeled[singlets_index2,] #use index to subset matrix + barcode names
+count_data_singlets2 <- count_data2[,singlets_index2]
+```
+
+# Create Seurat object for each dataset (for singlet barcodes) and add metadata in the form of singlet identity for each barcode.
+
+```{r seurat}
+#Change labels to reflect strain/unstrain
+
+strainIndlabels1 <- revalue(barcodes_singlets1$labels, 
+                            c("SNG-NA18856"= "NA18856_Unstrain", 
+                              "SNG-NA18855" = "NA18855_Strain", 
+                              "SNG-NA19160" = "NA19160_Unstrain"))
+
+strainIndlabels2 <- revalue(barcodes_singlets2$labels, 
+                            c("SNG-NA18855" = "NA18855_Unstrain", 
+                              "SNG-NA19160" = "NA19160_Strain"))
+
+
+rownames(count_data_singlets1) <- genes1$X2
+colnames(count_data_singlets1) <- barcodes_singlets1$X1
+
+ANT1_seurat <- CreateSeuratObject(counts = count_data_singlets1, project = "ANT1") %>% 
+  AddMetaData(strainIndlabels1, col.name = "labels")
+
+
+rownames(count_data_singlets2) <- genes2$X2
+colnames(count_data_singlets2) <- barcodes_singlets2$X1
+
+ANT2_seurat <- CreateSeuratObject(counts = count_data_singlets2, project = "ANT2") %>% 
+  AddMetaData(strainIndlabels2, col.name = "labels")
 
 ```
 
+# Data Integration
+
+```{r log_transform_integrate}
+# Merge into one dataset (https://satijalab.org/seurat/v3.2/integration.html)
+
+n_dim <- 10
+#filter (use same criteria for both), normalize and find variable features
+#filter
+ANT1_seurat[["percent.mt"]] <- PercentageFeatureSet(ANT1_seurat, pattern = "^MT-")
+VlnPlot(ANT1_seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, group.by = "labels")
+ANT1_seurat <- subset(ANT1_seurat, subset = nFeature_RNA > 2000 & percent.mt < 10)
+VlnPlot(ANT1_seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, group.by = "labels")
+#normalize
+ANT1_seurat <- NormalizeData(ANT1_seurat, normalization.method = "LogNormalize", scale.factor = 10000)
+#find var features
+ANT1_seurat <- FindVariableFeatures(ANT1_seurat, selection.method = "vst", nfeatures = 5000)
+
+#filter
+ANT2_seurat[["percent.mt"]] <- PercentageFeatureSet(ANT2_seurat, pattern = "^MT-")
+VlnPlot(ANT2_seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, group.by = "labels")
+ANT2_seurat <- subset(ANT2_seurat, subset = nFeature_RNA > 2000 & percent.mt < 10)
+VlnPlot(ANT2_seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, group.by = "labels")
+#normalize
+ANT2_seurat <- NormalizeData(ANT2_seurat, normalization.method = "LogNormalize", scale.factor = 10000)
+#find var features
+ANT2_seurat <- FindVariableFeatures(ANT2_seurat, selection.method = "vst", nfeatures = 5000)
+
+#Integrate using FindIntegrationAnchors
+reference.list <- list(ANT1_seurat, ANT2_seurat)
+anchors <- FindIntegrationAnchors(object.list = reference.list, dims = 1:n_dim)
+integrated <- IntegrateData(anchorset = anchors, dims = 1:n_dim)
+```
+
+Visualize integrated data
+
+```{r viz_log_integrate}
+DefaultAssay(integrated) <- "integrated"
+integrated <- ScaleData(integrated, verbose = FALSE)
+integrated <- RunPCA(integrated, npcs = 100, verbose = FALSE)
+DimPlot(integrated, reduction = "pca", group.by = "orig.ident")
+DimPlot(integrated, reduction = "pca", group.by = "labels")
+ElbowPlot(integrated, ndims = 100) #34 PCs?
+integrated <- FindNeighbors(integrated, dims = 1:34)
+integrated <- FindClusters(integrated, resolution = 0.5)
+integrated <- RunUMAP(integrated, reduction = "pca", dims = 1:34)
+p1 <- DimPlot(integrated, reduction = "umap", group.by = "orig.ident")
+p2 <- DimPlot(integrated, reduction = "umap", group.by = "labels", label = TRUE, 
+    repel = TRUE) + NoLegend()
+p3 <- DimPlot(integrated, reduction = "umap", group.by = "seurat_clusters")
+
+grid.arrange(p1, p2, p3, nrow = 3)
+
+saveRDS(integrated, "data/log_normalized_ANT12_integrated.rds")
+```
+
+```{r viz_log_integrated_markers}
+#Chondrocyte markers
+VlnPlot(integrated, features = c("COL2A1", "SOX9", "ACAN"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(integrated, features = c("COL10A1", "COL11A1", "SOX5"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(integrated, features = c("TGFB3", "SOX6"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+
+#Strain markers
+VlnPlot(integrated, features = c("MMP1", "MMP13", "IL1B", "MMP3"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(integrated, features = c("MMP2", "COMP", "TNF"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(integrated, features = c("IBSP", "TIMP1",  "MMP9"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(integrated, features = c("ADAMTS4", "ADAMTS5"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+
+```
+
+
+
+
+# Integrate using SCTransform
+
+```{r integrate_SCT}
+seurat.list <- list(ANT1_seurat, ANT2_seurat)
+for (i in 1:length(seurat.list)) {
+    seurat.list[[i]] <- SCTransform(seurat.list[[i]], verbose = FALSE)
+}
+
+SCT.features <- SelectIntegrationFeatures(object.list = seurat.list, nfeatures = 3000)
+seurat.list <- PrepSCTIntegration(object.list = seurat.list, anchor.features = SCT.features, 
+    verbose = FALSE)
+
+#find anchors
+seurat.anchors <- FindIntegrationAnchors(object.list = seurat.list, normalization.method = "SCT", 
+    anchor.features = SCT.features, verbose = FALSE)
+SCT.integrated <- IntegrateData(anchorset = seurat.anchors, normalization.method = "SCT", 
+    verbose = FALSE)
+```
+
+# Visualize SCT Transform Integration
+
+```{r visualize_SCT_integration}
+SCT.integrated <- RunPCA(SCT.integrated, verbose = FALSE, npcs = 100)
+ElbowPlot(SCT.integrated, ndims = 100) #38 PCs?
+SCT.integrated <- FindNeighbors(SCT.integrated, dims = 1:38)
+SCT.integrated <- FindClusters(SCT.integrated, resolution = 0.5)
+SCT.integrated <- RunUMAP(SCT.integrated, dims = 1:38)
+p1_SCT <- DimPlot(SCT.integrated, group.by = c("orig.ident"))
+p2_SCT <- DimPlot(SCT.integrated, group.by = c("labels"))
+p3_SCT <- DimPlot(SCT.integrated, group.by = c("seurat_clusters"))
+grid.arrange(p1_SCT, p2_SCT, p3_SCT, nrow = 3)
+
+saveRDS(SCT.integrated, "data/SCT_ANT12_integrated.rds")
+```
+
+```{r visualize_SCT_markers}
+#Chondrocyte markers
+VlnPlot(SCT.integrated, features = c("COL2A1", "SOX9", "ACAN"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(SCT.integrated, features = c("COL10A1", "COL11A1", "SOX5"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(SCT.integrated, features = c("TGFB3", "SOX6"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+
+#Strain markers
+VlnPlot(SCT.integrated, features = c("MMP1", "MMP13", "IL1B", "MMP3"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(SCT.integrated, features = c("MMP2", "COMP", "TNF"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(SCT.integrated, features = c("IBSP", "TIMP1",  "MMP9"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+VlnPlot(SCT.integrated, features = c("ADAMTS4", "ADAMTS5"), 
+    pt.size = 0.2, ncol = 3, group.by = "labels")
+
+
+```
+
+# Save seurat object
+
+```{r save}
+# save reorganized sample information
+saveRDS(ANT1.2, "data/ANT1_2.rds")
+```
