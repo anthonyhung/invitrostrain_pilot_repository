@@ -11,16 +11,16 @@ editor_options:
 
 This code takes as input the filtered count data and two factors of unwanted variation fit by RUVs. It then uses limma and voom to perform differential expression analysis between treatment conditions using the data. After we have a set of differentially expressed genes, we look for enrichments amongst DE genes in GO pathways and previously published osteoarthritis datasets.
 
+# Load libraries and data
+
 ```{r loading libraries and data, message=F, warning=F}
 library("limma")
 library("plyr")
-library("edgeR")
 library("dplyr")
+library("edgeR")
 library("tidyr")
 library("ashr")
 library("ggplot2")
-library("cowplot")
-library("VennDiagram")
 library("RUVSeq")
 library("topGO")
 
@@ -37,57 +37,28 @@ gene_anno <- read.delim("data/gene-annotation.txt",
 sampleinfo <- readRDS("data/Sample.info.RNAseq.reordered.rds")
 ```
 
-# Limma doesn't deal with technical replicates, so here I randomly sample 1 replicate for each of the 6 individualxcondition
-
-```{r random sample}
-# #randomly sample 1 replicate from each set of 3 replicates
-# individuals <- c("18855", "18856", "19160")
-# treatments <- c("S", "U")
-# 
-# set.seed(1234)
-# selected_samples <- c()
-# for(i in c("18856", "18855")){
-#      for(t in treatments){
-#           sample_num <- base::sample(c(1:3), 1)
-#           selected_samples <- c(selected_samples, paste0(i, sep = "_", sample_num, sep = "_", t))
-#      }
-# }
-# 
-# sample_num <- base::sample(c(2:3), 1)
-# selected_samples <- c(selected_samples, paste0("19160", sep = "_", sample_num, sep = "_", "U"))
-# sample_num <- base::sample(c(1:3), 1)
-# selected_samples <- c(selected_samples, paste0("19160", sep = "_", sample_num, sep = "_", "S"))
-# 
-# selected_samples
-# randomly_sampled_indices <- match(selected_samples, colnames(filt_counts))
-# 
-# single_filt_counts <- filt_counts[,randomly_sampled_indices]
-# anno <- pData(RUVsOut)[randomly_sampled_indices,]
-```
-
+# Specify design matrix for Linear mixed model
 
 ```{r design-matrix}
-single_filt_counts <- filt_counts
 anno <- pData(RUVsOut)
 x <- paste0(anno$Individual, anno$treatment)
 
 anno$LibraryPrepBatch <- factor(anno$LibraryPrepBatch, levels = c("1", "2"))
 anno$Replicate <- factor(anno$Replicate, levels = c("1", "2", "3"))
 
-design <- model.matrix(~treatment + Sex + Individual + W_1 + W_2 + RIN,
+design <- model.matrix(~treatment + Individual + W_1 + W_2 + RIN,
                        data = anno)
 colnames(design) <- gsub("treatment", "", colnames(design))
 colnames(design)
 ```
 
 ```{r fit-model, fig.width=8}
-# Model individual as a random effect (use duplicate correlation function); treatment as a fixed effect, covariates = RUV factors
-     # Because of issues with duplicateCorrelation with the number of covariates I include in the design matrix, I elect intead to include all samples (all technical replicates) and use duplicateCorrelation for technical replicates and instead include Individual as a fixed effect in the linear model
+# Model replicate as a random effect
 # Recommended to run both voom and duplicateCorrelation twice.
 # https://support.bioconductor.org/p/59700/#67620
 
 #TMM Normalization
-y <- DGEList(single_filt_counts)
+y <- DGEList(filt_counts)
 y <- calcNormFactors(y, method = "TMM")
 #Voom for differential expression
 v1 <- voom(y, design)
@@ -102,7 +73,6 @@ fit <- eBayes(fit)
 
 saveRDS(v2, "output/voom_results.rds")
 ```
-
 
 ## Assess model results
 
@@ -131,51 +101,6 @@ hist_treatment <- ggplot(results_treatment, aes(x = P.Value)) +
   geom_histogram(binwidth = 0.01) +
   labs(x = "p-value", y = "Number of genes", title = "Treatment effect")
 hist_treatment
-```
-
-
-## Explore top hits
-
-Boxplot function.
-
-```{r boxplot-function}
-plot_gene <- function(v, g) {
-  # v - An EList object containing log2 counts per million
-  # g - character vector of a single gene
-  stopifnot(class(v) == "EList",
-            is.character(g), length(g) == 1)
-  library("tidyr")
-  single_gene <- v$E[g, ]
-  single_gene_long <- as.data.frame(single_gene)
-  colnames(single_gene_long) <- "log2cpm"
-  single_gene_long$sample <- rownames(single_gene_long)
-  single_gene_long <- separate(single_gene_long, col = "sample", sep = "_",
-                                into = c("Individual", "Replicate", "Treatment"))
-  single_gene_long$Treatment <- factor(single_gene_long$Treatment, levels = c("S", "U"))
-  single_gene_long$Treatment <- revalue(single_gene_long$Treatment, c("S"="Strain", "U"="No Strain"))
-  
-  ggplot(single_gene_long, aes(x = Treatment, y = log2cpm, fill = Treatment)) +
-       labs(title = g, x = "Treatment", y = expression("Expression level (" * log[2] * " cpm)")) + 
-       geom_dotplot(binaxis = "y", stackdir = "center") + 
-       stat_summary(fun.data = "mean_sdl", fun.args = list(mult=1))
-  
-}
-```
-
-Treatment
-
-```{r treatment}
-#rename top_treatment genes to gene symbols for easier interpretation
-top_treatment_top4 <- gene_anno$external_gene_name[match(head(rownames(top_treatment), n=4), gene_anno$ensembl_gene_id)]
-top_treatment_top4
-
-p_treatment_1 <- plot_gene(v2, rownames(top_treatment)[1])
-p_treatment_2 <- plot_gene(v2, rownames(top_treatment)[2]) 
-p_treatment_3 <- plot_gene(v2, rownames(top_treatment)[3]) 
-p_treatment_4 <- plot_gene(v2, rownames(top_treatment)[4]) 
-ggsave("fig-limma-treatment-hit-1.eps", plot = p_treatment_1,
-       width = 7, height = 7, units = "in")
-plot_grid(p_treatment_1, p_treatment_2, p_treatment_3, p_treatment_4)
 ```
 
 ## Use ash for mutliple testing correction
@@ -276,17 +201,6 @@ for (test in tests[c(1:4, 6:8)]) {
                            svalue = output_ash$svalue)
 }
 
-#FDR 0.1
-plot_ma(results[["Unstrain"]], 0.1)
-plot_volcano(results[["Unstrain"]], 0.1)
-plot_pval_hist(results[["Unstrain"]], 0.1)
-table(results[["Unstrain"]]$qvalue < 0.1)
-significant_genes_10 <- row.names(results[["Unstrain"]])[results[["Unstrain"]]$qvalue < 0.1]
-significant_symbols_10 <- gene_anno$external_gene_name[match(significant_genes_10, gene_anno$ensembl_gene_id)]
-head(significant_symbols_10)
-significant_anno_10 <- gene_anno[match(significant_genes_10, gene_anno$ensembl_gene_id),]
-
-
 #FDR 0.05
 plot_ma(results[["Unstrain"]], 0.05)
 plot_volcano(results[["Unstrain"]], 0.05)
@@ -296,102 +210,7 @@ significant_genes_05 <- row.names(results[["Unstrain"]])[results[["Unstrain"]]$q
 significant_symbols_05 <- gene_anno$external_gene_name[match(significant_genes_05, gene_anno$ensembl_gene_id)]
 head(significant_symbols_05)
 significant_anno_05 <- gene_anno[match(significant_genes_05, gene_anno$ensembl_gene_id),]
-save(significant_genes_05, file="data/DEgenes_FDR05.rda")
-
-#FDR 0.01
-plot_ma(results[["Unstrain"]], 0.01)
-plot_volcano(results[["Unstrain"]], 0.01)
-plot_pval_hist(results[["Unstrain"]], 0.01)
-table(results[["Unstrain"]]$qvalue < 0.01)
-significant_genes_01 <- row.names(results[["Unstrain"]])[results[["Unstrain"]]$qvalue < 0.01]
-significant_symbols_01 <- gene_anno$external_gene_name[match(significant_genes_01, gene_anno$ensembl_gene_id)]
-head(significant_symbols_01)
-significant_anno_01 <- gene_anno[match(significant_genes_01, gene_anno$ensembl_gene_id),]
 ```
-
-## Examining top Differentially expressed genes (FDR 0.05)
-
-```{r DE genes analysis}
-#abs(logFC) > 1
-significant_genes_05_FC1 <- row.names(results[["Unstrain"]])[results[["Unstrain"]]$qvalue < 0.05 & abs(results[["Unstrain"]]$logFC) > 1]
-significant_symbols_05_FC1 <- gene_anno$external_gene_name[match(significant_genes_05_FC1, gene_anno$ensembl_gene_id)]
-significant_anno_05_FC1 <- gene_anno[match(significant_genes_05_FC1, gene_anno$ensembl_gene_id),]
-
-significant_anno_05_FC1
-
-
-#separate into up and downregulated
-# upregulated
-#logFC > 1
-significant_genes_05_FC1_up <- row.names(results[["Unstrain"]])[results[["Unstrain"]]$qvalue < 0.05 & results[["Unstrain"]]$logFC > 1]
-significant_symbols_05_FC1_up <- gene_anno$external_gene_name[match(significant_genes_05_FC1_up, gene_anno$ensembl_gene_id)]
-significant_anno_05_FC1_up <- gene_anno[match(significant_genes_05_FC1_up, gene_anno$ensembl_gene_id),]
-
-significant_anno_05_FC1_up
-
-# downregulated
-#logFC < -1
-significant_genes_05_FC1_down <- row.names(results[["Unstrain"]])[results[["Unstrain"]]$qvalue < 0.05 & results[["Unstrain"]]$logFC < -1]
-significant_symbols_05_FC1_down <- gene_anno$external_gene_name[match(significant_genes_05_FC1_down, gene_anno$ensembl_gene_id)]
-significant_anno_05_FC1_down <- gene_anno[match(significant_genes_05_FC1_down, gene_anno$ensembl_gene_id),]
-
-significant_anno_05_FC1_down
-```
-
-# boxplot of expression levels of the top DE genes separated by individual x treatment
-
-```{r}
-plot_gene <- function(v, g) {
-  # v - An EList object containing log2 counts per million
-  # g - character vector of a single gene
-  stopifnot(class(v) == "EList",
-            is.character(g), length(g) == 1)
-  library("tidyr")
-  single_gene <- v$E[g, ]
-  single_gene_long <- as.data.frame(single_gene)
-  colnames(single_gene_long) <- "log2cpm"
-  single_gene_long$sample <- rownames(single_gene_long)
-  single_gene_long <- separate(single_gene_long, col = "sample", sep = "_",
-                                into = c("Individual", "Replicate", "Treatment"))
-
-  single_gene_long$Treatment <- gsub('S', 'Strain', single_gene_long$Treatment)
-  single_gene_long$Treatment <- gsub('U', 'Control', single_gene_long$Treatment)
-  single_gene_long$Treatment <- factor(single_gene_long$Treatment, levels(factor(single_gene_long$Treatment))[c(1,2)])
-  
-  return(ggplot(single_gene_long, aes(x = Individual, y = log2cpm, fill = Individual)) +
-              labs(title = g, y = expression("Expression level (" * log[2] * " cpm)")) + 
-              geom_dotplot(binaxis = "y", stackdir = "center", key_glyph = 'rect', dotsize = 0.75) + 
-              facet_wrap(~Treatment, strip.position = 'bottom') + 
-              stat_summary(fun.data = "mean_sdl", fun.args = list(mult=1)) +
-              theme(axis.title.x=element_blank())
-              )
-}
-
-#all top genes
-for (gene in 1:length(significant_anno_05_FC1[,1])) {
-     print(plot_gene(v2, as.character(significant_anno_05_FC1[gene,1])))
-}
-#SOX9
-plot_gene(v2, "ENSG00000125398")
-
-
-
-
-#all top upregulated
-
-for (gene in 1:length(significant_anno_05_FC1_up[,1])) {
-     print(plot_gene(v2, as.character(significant_anno_05_FC1_up[gene,1])))
-}
-
-#all top downregulated
-
-for (gene in 1:length(significant_anno_05_FC1_down[,1])) {
-     print(plot_gene(v2, as.character(significant_anno_05_FC1_down[gene,1])))
-}
-
-```
-
-
 
 ## Gene ontology analysis with topGO
 
@@ -400,49 +219,6 @@ It accounts for the nested graph structure of GO terms to prune the number of GO
 Essentially, it decreases the redundancy of the results.
 
 [Alexa2006]: http://www.ncbi.nlm.nih.gov/pubmed/16606683
-
-First create the gene universe.
-This is all the genes tested for differential expression assigned a 1 for differentially expressed and 0 if not.
-
-```{r gene-universe}
-saveRDS(results, "data/DE_results.rds")
-threshold <- 0.05
-gene_universe <- as.numeric(results[["Unstrain"]]$qvalue < threshold)
-gene_universe <- factor(gene_universe)
-names(gene_universe) <- rownames(results[["Unstrain"]])
-head(gene_universe)
-```
-
-Create the topGO data object.
-Only consider "Biological Process" categories and use the Mouse Ensembl database for annotation.
-
-```{r go-data}
-go_data <- new("topGOdata",
-               ontology = "BP",
-               allGenes = gene_universe,
-               nodeSize = 5,
-               annotationFun = annFUN.org,
-               mapping = "org.Hs.eg.db",
-               ID = "ensembl")
-```
-
-Use the weight01 algorithm and score the tests with Fisher's exact test.
-
-```{r go-test}
-go_test <- runTest(go_data, algorithm = "weight01", statistic = "fisher")
-```
-
-Keep the results with a Fisher's exact test p-value < 0.01.
-
-```{r go-table}
-go_table <- GenTable(go_data, weightFisher = go_test,
-                     orderBy = "weightFisher", ranksOf = "weightFisher",
-                     topNodes = sum(score(go_test) < .01))
-go_table
-go_table[,-1]
-
-write.csv(go_table, "output/GO_terms_enriched.csv")
-```
 
 ```{r ks test}
 # k-s test making use of ranked based on p-values
@@ -472,7 +248,6 @@ goEnrichment$Term <- paste(goEnrichment$GO.ID, goEnrichment$Term, sep=", ")
 goEnrichment$Term <- factor(goEnrichment$Term, levels=rev(goEnrichment$Term))
 goEnrichment$KS <- as.numeric(goEnrichment$KS)
 
-require(ggplot2)
 ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
     stat_summary(geom = "bar", fun = mean, position = "dodge") +
     xlab("Biological process") +
@@ -497,302 +272,6 @@ ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
 ```
 
 
-# Pathway enrichment
-
-Use pathfindR to perform enrichment analysis of pathways enriched amongst DE genes
-
-```{r pathfindR}
-# library(pathfindR)
-# #Get data in corrrect format: DF with "gene symbols", "change values" (optional), "associated p values"
-# results_df <- results[["Unstrain"]] %>% 
-#      dplyr::select(logFC, qvalue) %>% 
-#      tibble::rownames_to_column()
-# 
-# results_df$rowname <- gene_anno$external_gene_name[match(results_df$rowname, gene_anno$ensembl_gene_id)]
-# results_df <- results_df %>% 
-#      dplyr::mutate(Gene.symbol = rowname) %>% 
-#      dplyr::select(Gene.symbol, logFC, qvalue)
-# results_df$Gene.symbol <- as.character(results_df$Gene.symbol)
-# 
-# Unstrain_processed <- input_processing(input = results_df, # the input: in this case, differential expression results
-#                                  p_val_threshold = 0.05, # p value threshold to filter significant genes
-#                                  pin_name_path  = "Biogrid", # the name of the PIN to use for active subnetwork search
-#                                  convert2alias = TRUE) # boolean indicating whether or not to convert missing symbols to alias symbols in the PIN
-# 
-# # using "BioCarta" as our gene sets for enrichment
-# biocarta_list <- fetch_gene_set(gene_sets = "BioCarta",
-#                                 min_gset_size = 10,
-#                                 max_gset_size = 300)
-# biocarta_gsets <- biocarta_list[[1]]
-# biocarta_descriptions <- biocarta_list[[2]]
-# 
-# # using "KEGG" as our gene sets for enrichment
-# KEGG_list <- fetch_gene_set(gene_sets = "KEGG",
-#                                 min_gset_size = 10,
-#                                 max_gset_size = 300)
-# KEGG_gsets <- KEGG_list[[1]]
-# KEGG_descriptions <- KEGG_list[[2]]
-# 
-# n_iter <- 15 ## number of iterations
-# combined_res <- NULL ## to store the result of each iteration
-# 
-# for (i in 1:n_iter) {
-#   
-#   ###### Active Subnetwork Search
-#   snws_file <- paste0("active_snws_", i) # Name of output file
-#   active_snws <- active_snw_search(input_for_search = Unstrain_processed, 
-#                                    pin_name_path = "Biogrid", 
-#                                    snws_file = snws_file,
-#                                    score_quan_thr = 0.8, # you may tweak these arguments for optimal filtering of subnetworks
-#                                    sig_gene_thr = 0.02, # you may tweak these arguments for optimal filtering of subnetworks
-#                                    search_method = "GR")
-#   
-#   ###### Enrichment Analyses
-#   current_res <- enrichment_analyses(snws = active_snws,
-#                                      sig_genes_vec = Unstrain_processed$GENE,
-#                                      pin_name_path = "Biogrid", 
-#                                      genes_by_term = KEGG_gsets,
-#                                      term_descriptions = KEGG_descriptions,
-#                                      adj_method = "bonferroni",
-#                                      enrichment_threshold = 0.05,
-#                                      list_active_snw_genes = TRUE) # listing the non-input active snw genes in output
-#   
-#   ###### Combine results via `rbind`
-#   combined_res <- rbind(combined_res, current_res)
-# }
-# 
-# 
-# 
-# ###### Summarize Combined Enrichment Results
-# summarized_df <- summarize_enrichment_results(combined_res, 
-#                                               list_active_snw_genes = TRUE)
-# 
-# ###### Annotate Affected Genes Involved in Each Enriched Term
-# final_res <- annotate_term_genes(result_df = summarized_df, 
-#                                  input_processed = Unstrain_processed, 
-#                                  genes_by_term = KEGG_gsets)
-# 
-# #visualization
-# visualize_terms(result_df = final_res, 
-#                 hsa_KEGG = FALSE, # boolean to indicate whether human KEGG gene sets were used for enrichment analysis or not
-#                 pin_name_path = "Biogrid")
-# 
-# enrichment_chart(final_res, top_terms = 10)
-
-```
-
-
-
-## Gene ontology analysis with topGO (separate up and downregulated genes)
-
-Use topGO for GO analysis.
-Essentially, it decreases the redundancy of the results.
-
-
-First create the gene universe for upregulated genes
-This is all the genes tested for differential expression assigned a 1 for differentially expressed and 0 if not.
-
-```{r gene-universe-up}
-threshold <- 0.05
-gene_universe_up <- as.numeric(results[["Unstrain"]]$qvalue < threshold & results[["Unstrain"]]$logFC > 0)
-gene_universe_up <- factor(gene_universe_up)
-names(gene_universe_up) <- rownames(results[["Unstrain"]])
-head(gene_universe_up)
-```
-
-Create the topGO data object.
-Only consider "Biological Process" categories and use the human Ensembl database for annotation.
-
-```{r go-data-up}
-go_data <- new("topGOdata",
-               ontology = "BP",
-               allGenes = gene_universe_up,
-               nodeSize = 5,
-               annotationFun = annFUN.org,
-               mapping = "org.Hs.eg.db",
-               ID = "ensembl")
-```
-
-Use the weight01 algorithm and score the tests with Fisher's exact test.
-
-```{r go-test-up}
-go_test <- runTest(go_data, algorithm = "weight01", statistic = "fisher")
-```
-
-Keep the results with a Fisher's exact test p-value < 0.01.
-
-```{r go-table-up}
-go_table <- GenTable(go_data, weightFisher = go_test,
-                     orderBy = "weightFisher", ranksOf = "weightFisher",
-                     topNodes = sum(score(go_test) < .01))
-go_table
-go_table[,-1]
-```
-
-
-
-
-
-
-First create the gene universe for downregulated genes
-This is all the genes tested for differential expression assigned a 1 for differentially expressed and 0 if not.
-
-```{r gene-universe-down}
-threshold <- 0.05
-gene_universe_down <- as.numeric(results[["Unstrain"]]$qvalue < threshold & results[["Unstrain"]]$logFC < 0)
-gene_universe_down <- factor(gene_universe_down)
-names(gene_universe_down) <- rownames(results[["Unstrain"]])
-head(gene_universe_down)
-```
-
-Create the topGO data object.
-Only consider "Biological Process" categories and use the Mouse Ensembl database for annotation.
-
-```{r go-data-down}
-go_data <- new("topGOdata",
-               ontology = "BP",
-               allGenes = gene_universe_down,
-               nodeSize = 5,
-               annotationFun = annFUN.org,
-               mapping = "org.Hs.eg.db",
-               ID = "ensembl")
-```
-
-Use the weight01 algorithm and score the tests with Fisher's exact test.
-
-```{r go-test-down}
-go_test <- runTest(go_data, algorithm = "weight01", statistic = "fisher")
-```
-
-Keep the results with a Fisher's exact test p-value < 0.01.
-
-```{r go-table-down}
-go_table <- GenTable(go_data, weightFisher = go_test,
-                     orderBy = "weightFisher", ranksOf = "weightFisher",
-                     topNodes = sum(score(go_test) < .01))
-go_table
-go_table[,-1]
-```
-
-
-# Volcano plots broken down by individual
-
-```{r individual volcano plots}
-single_filt_counts <- filt_counts
-anno <- pData(RUVsOut)
-
-NA18855_index <- which(anno$Individual == "NA18855 ")
-NA18855 <- single_filt_counts[, NA18855_index]
-NA18855_anno <- anno[NA18855_index, ]
-     
-NA18856_index <- which(anno$Individual == "NA18856 ")
-NA18856 <- single_filt_counts[, NA18856_index]
-NA18856_anno <- anno[NA18856_index, ]
-     
-NA19160_index <- which(anno$Individual == "NA19160 ")
-NA19160 <- single_filt_counts[, NA19160_index]
-NA19160_anno <- anno[NA19160_index, ]
-
-
-plot_volcano <- function(x, qval) {
-  # Create volcano plot.
-  #
-  # x - data frame with topTable and ASH output
-  #     (columns logFC, P.Value, and qvalue)
-  # qval - qvalue cutoff for calling a gene DE
-  #
-  stopifnot(is.data.frame(x), c("logFC", "P.Value", "qvalue") %in% colnames(x),
-            is.numeric(qval), qval <= 1, qval >= 0)
-  x$highlight <- ifelse(x$qvalue < qval, "darkred", "gray75")
-  x$highlight <- factor(x$highlight, levels = c("darkred", "gray75"))
-  ggplot(x, aes(x = logFC, y = -log10(P.Value), color = highlight)) +
-    geom_point(shape = 1) +
-    labs(x = "Log fold change",
-         y = expression(-log[10] * " p-value")) +
-    scale_color_identity(drop = FALSE) +
-    theme(legend.position = "none")
-}
-
-volcano_plot_ind <- function(annotation, filtered_counts){
-     design <- model.matrix(~treatment + W_1 + W_2 + RIN,
-                            data = annotation)
-     colnames(design) <- gsub("treatment", "", colnames(design))
-     
-     #TMM Normalization
-     y <- DGEList(filtered_counts)
-     y <- calcNormFactors(y, method = "TMM")
-     #Voom for differential expression
-     v1 <- voom(y, design)
-     fit <- lmFit(v1, design, block = annotation$treatment,
-                  correlation = corfit2$consensus.correlation)
-     fit <- eBayes(fit)
-     
-     #extract results and run ash
-     tests <- colnames(fit$coefficients)
-     results <- vector(length = length(tests), mode = "list")
-     names(results) <- tests
-     
-     for (test in tests) {
-          # Extract limma results
-          results[[test]] <- get_results(fit, coef = test)
-          # Add mutliple testing correction with ASH
-          output_ash <- run_ash(fit, coef = test)$result
-          results[[test]] <- cbind(results[[test]], lfsr = output_ash$lfsr,
-                                   lfdr = output_ash$lfdr, qvalue = output_ash$qvalue,
-                                   svalue = output_ash$svalue)
-          }
-
-     #FDR 0.05
-     print(plot_volcano(results[["Unstrain"]], 0.05))
-     
-     print(table(results[["Unstrain"]]$logFC > 0))
-     print(table(results[["Unstrain"]]$logFC > 0.25))
-     print(table(results[["Unstrain"]]$logFC < -0.25))
-}
-
-
-#make plots
-volcano_plot_ind(NA18855_anno, NA18855)
-volcano_plot_ind(NA18856_anno, NA18856)
-#volcano_plot_ind(NA19160_anno, NA19160)
-
-#19160
-design <- model.matrix(~treatment + W_1 + W_2,
-                            data = NA19160_anno)
-colnames(design) <- gsub("treatment", "", colnames(design))
-     
-#TMM Normalization
-y <- DGEList(NA19160)
-y <- calcNormFactors(y, method = "TMM")
-#Voom for differential expression
-v1 <- voom(y, design)
-fit <- lmFit(v1, design, block = NA19160_anno$treatment,
-                  correlation = corfit2$consensus.correlation)
-fit <- eBayes(fit)
-     
-#extract results and run ash
-tests <- colnames(fit$coefficients)
-results <- vector(length = length(tests), mode = "list")
-names(results) <- tests
-     
-for (test in tests) {
-     # Extract limma results
-     results[[test]] <- get_results(fit, coef = test)
-     # Add mutliple testing correction with ASH
-     output_ash <- run_ash(fit, coef = test)$result
-     results[[test]] <- cbind(results[[test]], lfsr = output_ash$lfsr,
-                              lfdr = output_ash$lfdr, qvalue = output_ash$qvalue,
-                              svalue = output_ash$svalue)
-     }
-
-#FDR 0.05
-plot_volcano(results[["Unstrain"]], 0.05)
-
-table(results[["Unstrain"]]$logFC > 0)
-table(results[["Unstrain"]]$logFC > 0.25)
-table(results[["Unstrain"]]$logFC < -0.25)
-```
-
 
 
 # Additional analysis permuting samples:
@@ -801,57 +280,57 @@ From Ben Fair: "i have a suggestion for an analysis as a check that all your DE 
 
 ```{r permute samples}
 #scramble treatment labels (x3) and store the DE genes (each time, randomly assign 9 samples to be strain)
-# permuted_results <- vector("list", 12)
-# for(time in 1:6){
-#      #set up DE and scramble labels
-#      anno <- pData(RUVsOut)
-#      x <- paste0(anno$Individual, anno$treatment)
-# 
-#      anno$LibraryPrepBatch <- factor(anno$LibraryPrepBatch, levels = c("1", "2"))
-#      anno$Replicate <- factor(anno$Replicate, levels = c("1", "2", "3"))
-# 
-#      strain_indices <- sample(nrow(anno), 9)
-#      anno$treatment <- "Unstrain"
-#      anno$treatment[strain_indices] <- "Strain"
-#      design <- model.matrix(~treatment + Sex + Individual + W_1 + W_2 + RIN,
-#                        data = anno)
-#      colnames(design) <- gsub("treatment", "", colnames(design))
-# 
-#      permuted_results[[time]] <- anno
-# 
-#      #perform DE
-#      #TMM Normalization
-#      y <- DGEList(single_filt_counts)
-#      y <- calcNormFactors(y, method = "TMM")
-#      #Voom for differential expression
-#      v1 <- voom(y, design)
-#      corfit1 <- duplicateCorrelation(v1, design, block = x)
-#      corfit1$consensus.correlation
-#      v2 <- voom(y, design, block = x, correlation = corfit1$consensus.correlation)
-#      corfit2 <- duplicateCorrelation(v2, design, block = x)
-#      corfit2$consensus.correlation
-#      fit <- lmFit(v2, design, block = x,
-#              correlation = corfit2$consensus.correlation)
-#      fit <- eBayes(fit)
-# 
-#      tests <- colnames(fit$coefficients)
-#      results <- vector(length = length(tests), mode = "list")
-#      names(results) <- tests
-# 
-#      for (test in tests[c(1:4, 6:8)]) {
-#      # Extract limma results
-#       results[[test]] <- get_results(fit, coef = test)
-#      # Add mutliple testing correction with ASH
-#      output_ash <- run_ash(fit, coef = test)$result
-#      results[[test]] <- cbind(results[[test]], lfsr = output_ash$lfsr,
-#                               lfdr = output_ash$lfdr, qvalue = output_ash$qvalue,
-#                               svalue = output_ash$svalue)
-#      }
-# 
-#      #store results
-#      permuted_results[[6+time]] <- results[["Unstrain"]]
-# }
-# saveRDS(permuted_results, "output/permuted_results_DE.rds")
+permuted_results <- vector("list", 12)
+for(time in 1:6){
+     #set up DE and scramble labels
+     anno <- pData(RUVsOut)
+     x <- paste0(anno$Individual, anno$treatment)
+
+     anno$LibraryPrepBatch <- factor(anno$LibraryPrepBatch, levels = c("1", "2"))
+     anno$Replicate <- factor(anno$Replicate, levels = c("1", "2", "3"))
+
+     strain_indices <- sample(nrow(anno), 9)
+     anno$treatment <- "Unstrain"
+     anno$treatment[strain_indices] <- "Strain"
+     design <- model.matrix(~treatment + Sex + Individual + W_1 + W_2 + RIN,
+                       data = anno)
+     colnames(design) <- gsub("treatment", "", colnames(design))
+
+     permuted_results[[time]] <- anno
+
+     #perform DE
+     #TMM Normalization
+     y <- DGEList(single_filt_counts)
+     y <- calcNormFactors(y, method = "TMM")
+     #Voom for differential expression
+     v1 <- voom(y, design)
+     corfit1 <- duplicateCorrelation(v1, design, block = x)
+     corfit1$consensus.correlation
+     v2 <- voom(y, design, block = x, correlation = corfit1$consensus.correlation)
+     corfit2 <- duplicateCorrelation(v2, design, block = x)
+     corfit2$consensus.correlation
+     fit <- lmFit(v2, design, block = x,
+             correlation = corfit2$consensus.correlation)
+     fit <- eBayes(fit)
+
+     tests <- colnames(fit$coefficients)
+     results <- vector(length = length(tests), mode = "list")
+     names(results) <- tests
+
+     for (test in tests[c(1:4, 6:8)]) {
+     # Extract limma results
+      results[[test]] <- get_results(fit, coef = test)
+     # Add mutliple testing correction with ASH
+     output_ash <- run_ash(fit, coef = test)$result
+     results[[test]] <- cbind(results[[test]], lfsr = output_ash$lfsr,
+                              lfdr = output_ash$lfdr, qvalue = output_ash$qvalue,
+                              svalue = output_ash$svalue)
+     }
+
+     #store results
+     permuted_results[[6+time]] <- results[["Unstrain"]]
+}
+saveRDS(permuted_results, "output/permuted_results_DE.rds")
 permuted_results <- readRDS("output/permuted_results_DE.rds")
 permuted_results
 
@@ -954,22 +433,7 @@ for (permutation in 7:12){
 ```
 
 
-
-
-
-
-
-
----
-title: "Enrichment of genes of interest amongst DE genes"
-author: "Anthony Hung"
-date: "2020-05-18"
-output: workflowr::wflow_html
-editor_options:
-  chunk_output_type: console
----
-
-# Load packages/data
+# Look at enrichment of DE genes amongst previously published datasets of OA related genes
 
 ```{r load}
 library(dplyr)
@@ -1042,28 +506,8 @@ enrich <- function(genes_of_interest, DEgenes, backgroundgenes){
 }
 
 
-
-
 enrich(fungenomic, DE_genes_ensg, other_genes_ensg)
 enrich(cross_omic, DE_genes_ensg, other_genes_ensg)
-
-#enrich(genes_GWAS_share_eQTL, DE_genes, other_genes)
-#enrich(OA_GWAS_genes, DE_genes, other_genes)
-```
-
-# Store the overlapping genes for futher analysis
-
-```{r overlap}
-overlap_fungenomic <- intersect(fungenomic, DE_genes_ensg)
-GWAS_descriptions <- read.csv("data/GWAS_genes_within_500kb.csv", stringsAsFactors = FALSE)
-GWAS_descriptions <- GWAS_descriptions[match(overlap_fungenomic, GWAS_descriptions$Ensembl.ID), ] %>% 
-     dplyr::select(-c(Biotype, MostSevereConsequencef, PPC_Gene_MODERATEandHIGHg, Prot_logFCn, Prot_FDRo, RNASeq_logFCp, RNASeq_FDRq))
-write.csv(GWAS_descriptions, "output/GWAS_descriptions.csv")
-saveRDS(overlap_fungenomic, "output/overlap_fungenomic.rds")
-
-
-overlap_crossomic <- intersect(cross_omic, DE_genes_ensg)
-saveRDS(overlap_crossomic, "output/overlap_crossomic.rds")
 ```
 
 # Look at enrichments from permuted DE analysis (scrambled strain labels to make sure the FET results aren't just because some genes are more likely to be detected as DE in these cells)
@@ -1084,7 +528,4 @@ for(permutation in 7:12){
      print(enrich(cross_omic, DE_genes_ensg, other_genes_ensg))
 }
 ```
-
-
-
 

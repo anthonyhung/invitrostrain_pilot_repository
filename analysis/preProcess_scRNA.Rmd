@@ -9,7 +9,7 @@ editor_options:
 
 # Introduction
 
-This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product are seurat objects containing the raw count matrices and assignment to one of the three individuals and two treatment groups (strain or unstrain) for each of the two 10x lanes used in the sequencing experiment.
+This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product are seurat objects containing the raw count matrices and assignment to one of the three individuals and two treatment groups (strain or unstrain) for each of the two 10x GEM wells used in the sequencing experiment.
 
 
 # Run the Snakemake Pipeline after downloading necessary files and creating the conda environment (see README.txt)
@@ -32,9 +32,9 @@ code/single_cell_preprocessing/fastq/. Undetermined data files are not required.
 
 # Load files into R
 
-After running the pipeline, two directories will be created corresponding to the two 10x lanes involved in the sequencing experiment ("YG-AH-2S-ANT-1_S1_L008" and "YG-AH-2S-ANT-2_S2_L008"). These directories contain the demuxlet and STAR SOLO outputs for each 10x lane.
+After running the pipeline, two directories will be created corresponding to the two 10x GEM well involved in the sequencing experiment ("YG-AH-2S-ANT-1_S1_L008" and "YG-AH-2S-ANT-2_S2_L008"). These directories contain the demuxlet and STAR SOLO outputs for each 10x GEM well
 
-Details about the individualXtreatment status of the samples that were pooled for each of the two lanes:
+Details about the individualXtreatment status of the samples that were pooled for each of the two GEM wells:
 ANT1: (NA19160 unstrained; NA18856 unstrained; NA18855 strained)
 ANT2: (NA19160 strained; NA18855 unstrained)
 
@@ -128,13 +128,63 @@ colnames(count_data_singlets2) <- barcodes_singlets2$X1
 
 ANT2_seurat <- CreateSeuratObject(counts = count_data_singlets2, project = "ANT2") %>%
   AddMetaData(strainIndlabels2, col.name = "labels")
+```
 
+# Merge the two seurat objects (without any data integration) and filter out unwanted cells based on QC metrics
+
+This merged dataset is used to fit the topic model in a later file. Based on the clustering results, which show that the cells from the same individual from different 10x GEM well overlap, there does not seem to be a large contribution of technical effects from 10x GEM well on gene expression.
+
+```{r merge}
+ANT1.2 <- merge(x = ANT1_seurat,
+                   y = ANT2_seurat,
+                   add.cell.ids = c("ANT1", "ANT2"),
+                   merge.data = F,
+                   project = "OAStrain")
+
+#compute the percentage of reads coming from mitochondrial genes for each droplet
+ANT1.2[["percent.mt"]] <- PercentageFeatureSet(ANT1.2, pattern = "^MT-")
+
+#visualize QC metrics as violin plot
+VlnPlot(ANT1.2, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+VlnPlot(ANT1.2, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, group.by = "labels")
+
+# FeatureScatter is typically used to visualize feature-feature relationships, but can be used
+# for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
+plot1 <- FeatureScatter(ANT1.2, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(ANT1.2, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+CombinePlots(plots = list(plot1, plot2))
+
+#Filter barcodes based on nFeatures and %MT 
+ANT1.2 <- subset(ANT1.2, subset = nFeature_RNA > 2000 & percent.mt < 10)
+table(ANT1.2$labels)
+
+#Look at QC metrics after filtering
+VlnPlot(ANT1.2, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, group.by = "labels")
+dim(ANT1.2)
+
+# Look at how the samples cluster after merging without any integration methods applied
+#normalize
+ANT1.2 <- NormalizeData(ANT1.2, normalization.method = "LogNormalize", scale.factor = 10000)
+#find variable features and run a PCA
+ANT1.2 <- FindVariableFeatures(ANT1.2, selection.method = "vst", nfeatures = 2000)
+ANT1.2 <- ScaleData(ANT1.2, verbose = FALSE)
+nPC <- 100
+ANT1.2 <- RunPCA(ANT1.2, features = VariableFeatures(object = ANT1.2), npcs = nPC)
+#Run clustering and UMAP
+num_PCs <- 50
+ANT1.2 <- FindNeighbors(ANT1.2, dims = 1:num_PCs)
+ANT1.2 <- FindClusters(ANT1.2, resolution = 0.5)
+
+#Run UMAP
+ANT1.2 <- RunUMAP(ANT1.2, dims = 1:num_PCs)
+p1 <- DimPlot(ANT1.2, reduction = "umap")
+p2 <- DimPlot(ANT1.2, reduction = "umap", group.by = "orig.ident")
+p3 <- DimPlot(ANT1.2, reduction = "umap", group.by = "labels")
+grid.arrange(p1, p2, p3, nrow = 2)
 ```
 
 # Save Seurat objects
 
 ```{r save}
-saveRDS(ANT1_seurat, "data/ANT1.rds")
-saveRDS(ANT2_seurat, "data/ANT2.rds")
+saveRDS(ANT1.2, "data/ANT1_2.rds")
 ```
-

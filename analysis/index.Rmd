@@ -18,7 +18,7 @@ If you are running the files in this repository to recreate the analyses, runnin
 
 * [Pre-processing of raw 10x files into count matrices and demultiplexing](preProcess_scRNA.html)
 
-* [Integration and clustering of scRNA sequencing data](clustering_scRNA.html) ::::
+* [Integration and clustering of scRNA sequencing data](clustering_scRNA.html)
 
     + Figures 2B, 2C, 2D
 
@@ -42,7 +42,7 @@ If you are running the files in this repository to recreate the analyses, runnin
 
     + Figures 3A, 3B, S5, S6, S7
 
-* [Differential expression using limma/voom](DEanalysis_bulkRNA.html) ::::
+* [Differential expression using limma/voom](DEanalysis_bulkRNA.html)
 
     + Figure 4
 
@@ -56,6 +56,6 @@ If you are running the files in this repository to recreate the analyses, runnin
 
 ## Power Analysis
 
-* [Conducting power analysis for eQTL mapping](powerAnalysis.html) ::::
+* [Conducting power analysis for eQTL mapping](powerAnalysis.html)
 
     + Figure 6

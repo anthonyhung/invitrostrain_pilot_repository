@@ -13,6 +13,15 @@ Here, we plot power curves under the assumptions of different sample sizes for a
 
 Power Curve derivations based on Abhishek Sarkar's calculations: https://users.rcc.uchicago.edu/~aksarkar/hypoxia/reqtl.html
 
+# Load libraries
+
+```{r load}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(ashr)
+```
+
 # Plot a power curve
 
 First, we need to specify the heritability for our model.
@@ -80,35 +89,12 @@ p <- ggplot(data.frame(x = c(0, 2)), aes(x = x)) +
 p
 ```
 
-# Compute the SES thresholds for 80% power at each sample size
-
-```{r finding SES}
-alpha <- 5e-6 #for FWER of 0.05 (assuming 10,000 genes)
-#for Power = 0.8, what is the Standardized effect size?
-#n = 100
-n100_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
-#n = 58
-n58_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(58)
-#n = 30
-n30_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
-#n = 10
-n10_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
-```
-
 # Import outside data on eQTLs to see distributions of standardized effect sizes
 
 After plotting our power curve, we would like to get a sense of the range of standardized effect sizes in several previously published response-eQTL papers. 
 
-```{r ecdf and cdf functions}
-plot_cdf <- function(ash_obj){
-     grid_of_effects <- seq(-1, 1, length.out = 1e5)
-     vector_of_percentiles <- cdf.ash(ash_obj, grid_of_effects)
-     percentiles_df <- tibble(latent = vector_of_percentiles$x, percentile = as.vector(vector_of_percentiles$y))
-     plot <- ggplot(percentiles_df, aes(x = latent, y = percentile)) +
-               geom_point()
-     print(plot)
-}
-
+```{r ecdf function}
+#This function creates an empirical cdf from a vector of effect sizes and prints out several quantiles of the ecdf
 get_ecdf <- function(vector_of_SES){
      SES_ecdf <- ecdf(vector_of_SES)
      print(quantile(SES_ecdf, c(.75, .95, .99)))
@@ -116,7 +102,7 @@ get_ecdf <- function(vector_of_SES){
 }
 ```
 
-## Michelle Ward's Hypoxia study 
+# Ward et al hypoxia response eQTL study
 
 ```{r hypoxia}
 #michelle hypoxia reQTL study
@@ -125,18 +111,14 @@ conditionB <- as_tibble(read.table('data/poweranalysis/ward_et_al_2020/B-adjust.
 conditionC <- as_tibble(read.table('data/poweranalysis/ward_et_al_2020/C-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
 conditionD <- as_tibble(read.table('data/poweranalysis/ward_et_al_2020/D-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
 
-
 zz <- gzfile('data/poweranalysis/ward_et_al_2020/reqtls.txt.gz','rt')  
 hypoxia <- as_tibble(read.table(zz, fill = TRUE, stringsAsFactors = FALSE))
-library(tidyverse)
 
 names(hypoxia) <- hypoxia %>% 
      dplyr::slice(1) %>% 
      unlist()
 hypoxia <- hypoxia %>% 
      dplyr::slice(-1)
-
-
 
 ## find SNP-gene pairs that were tested in all conditions and compute allelic effect sizes
 common <- sort(Reduce(intersect, list(paste0(conditionA$TEST.SNP.CHROM, conditionA$TEST.SNP.POS, " ", conditionA$PHENO),
@@ -175,15 +157,7 @@ dim(conditionB)
 dim(conditionC)
 dim(conditionD)
 
-# obtain SE for effect sizes using bootstrapping
-
-
-# Plot standardized effect sizes (adjust for the sqrt(n) term in the SE equation)
-hist(conditionA$zscore/sqrt(15))
-hist(conditionB$zscore/sqrt(15))
-hist(conditionC$zscore/sqrt(15))
-hist(conditionD$zscore/sqrt(15))
-
+# For each condiiton in the study, compute the empirical CDF and quantiles after obtaining the effect sizes by dividing the zscore by the sqrt of the number of individuals in the study (15).
 #conditionA
 get_ecdf(conditionA$zscore/sqrt(15))
 #conditionB
@@ -192,21 +166,6 @@ get_ecdf(conditionB$zscore/sqrt(15))
 get_ecdf(conditionC$zscore/sqrt(15))
 #conditionD
 get_ecdf(conditionD$zscore/sqrt(15))
-
-# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition
-n_egenes_ward <- matrix(NA, nrow = 4, ncol = 4)
-colnames(n_egenes_ward) <- c("n=100", "n=58", "n=30", "n=10")
-rownames(n_egenes_ward) <- c("conditionA", "conditionB", "conditionC", "conditionD")
-i <- 1
-for(condition in list(conditionA, conditionB, conditionC, conditionD)){
-     j <- 1
-     for(threshold in c(n100_ses_threshold, n58_ses_threshold, n30_ses_threshold, n10_ses_threshold)){
-         n_egenes_ward[i,j] <- length(unique(condition %>% dplyr::filter(zscore/sqrt(15) > threshold | zscore/sqrt(15) < -threshold) %>% pull(PHENO)))
-         j <- j + 1
-     }
-     i <- i + 1
-}
-n_egenes_ward
 ```
 
 ## Alasoo et al 2019 IFN gamma and salmonella reQTL study
@@ -214,15 +173,23 @@ n_egenes_ward
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6548559/#FN5
 data on Zenodo: https://zenodo.org/record/1158560
 
+Run the following chunk to download the data to the repository.
+
+```{bash, eval=FALSE}
+cd data/poweranalysis/alasoo_et_al/
+
+#load in data from eQTL analysis downloaded using wget from zenodo 
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz  
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz 
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz 
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz 
+```
+
 ```{r ifn_salmonella}
-#load in data from eQTL analysis downloaded using wget from zenodo (wget https://zenodo.org/record/1158560/files/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_SL1344_500kb_permuted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_naive_500kb_permuted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_SL1344_500kb_permuted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_500kb_permuted.txt.gz)
-
+# load data into R
 n_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz"))
-
 sal_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz"))
-
 IFN_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz"))
-
 salIFN_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz"))
 
 #for sorted data, 
@@ -233,7 +200,6 @@ salIFN_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQ
 #V5 = distance to gene from SNP?
 #V6 = p-value
 #v7 = slope of regression
-head(n_sorted)
 
 #We can use the p-value to obtain the zscore (pvalue -> Zscore)
 #then use slopes and zscores to obtain SE (slope/zscore = SE)
@@ -256,18 +222,10 @@ salIFN_sorted <- salIFN_sorted %>%
 
 
 # use ashr to estimate true effect sizes from the data in order to compute SES
-# n_sorted_ash_out <- ash(betahat = n_sorted$V7, sebetahat = n_sorted$SE, df = 84)
-# saveRDS(n_sorted_ash_out, "output/ash_power_analysis/alasoo_naive_ash_out.rds")
-# sal_sorted_ash_out <- ash(betahat = sal_sorted$V7, sebetahat = sal_sorted$SE, df = 84)
-# saveRDS(sal_sorted_ash_out, "output/ash_power_analysis/alasoo_sal_ash_out.rds")
-# IFN_sorted_ash_out <- ash(betahat = IFN_sorted$V7, sebetahat = IFN_sorted$SE, df = 84)
-# saveRDS(IFN_sorted_ash_out, "output/ash_power_analysis/alasoo_IFN_ash_out.rds")
-# salIFN_sorted_ash_out <- ash(betahat = salIFN_sorted$V7, sebetahat = salIFN_sorted$SE, df = 84)
-# saveRDS(salIFN_sorted_ash_out, "output/ash_power_analysis/alasoo_salIFN_ash_out.rds")
-n_sorted_ash_out <- readRDS("output/ash_power_analysis/alasoo_naive_ash_out.rds")
-sal_sorted_ash_out <- readRDS("output/ash_power_analysis/alasoo_sal_ash_out.rds")
-IFN_sorted_ash_out <- readRDS("output/ash_power_analysis/alasoo_IFN_ash_out.rds")
-salIFN_sorted_ash_out <- readRDS("output/ash_power_analysis/alasoo_salIFN_ash_out.rds")
+n_sorted_ash_out <- ash(betahat = n_sorted$V7, sebetahat = n_sorted$SE, df = 84)
+sal_sorted_ash_out <- ash(betahat = sal_sorted$V7, sebetahat = sal_sorted$SE, df = 84)
+IFN_sorted_ash_out <- ash(betahat = IFN_sorted$V7, sebetahat = IFN_sorted$SE, df = 84)
+salIFN_sorted_ash_out <- ash(betahat = salIFN_sorted$V7, sebetahat = salIFN_sorted$SE, df = 84)
 
 #add columns to datasets corresponding to the SES computed from ash betas and sds
 n_sorted$SES <- n_sorted_ash_out$result$PosteriorMean/n_sorted_ash_out$result$PosteriorSD
@@ -275,49 +233,23 @@ sal_sorted$SES <- sal_sorted_ash_out$result$PosteriorMean/sal_sorted_ash_out$res
 IFN_sorted$SES <- IFN_sorted_ash_out$result$PosteriorMean/IFN_sorted_ash_out$result$PosteriorSD
 salIFN_sorted$SES <- salIFN_sorted_ash_out$result$PosteriorMean/salIFN_sorted_ash_out$result$PosteriorSD
 
+#Run the ecdf function separately on each of the different conditions
 #naive
 get_ecdf(n_sorted$SES)
 get_ecdf(n_sorted_ash_out$result$PosteriorMean)
-
-#sal
+#salmonella condition
 get_ecdf(sal_sorted$SES)
-#IFN
+#IFN treated condition
 get_ecdf(IFN_sorted$SES)
-#sal_IFN
+#salmonella and ifn treated condition
 get_ecdf(salIFN_sorted$SES)
-
-alpha <- 0.05/15786 #for FWER of 0.05 (assuming 15786 genes)
-#for Power = 0.8, what is the SES?
-#n = 100
-n100_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
-#n = 58
-n58_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(58)
-#n = 30
-n30_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
-#n = 10
-n10_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
-
-# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition
-n_egenes_alasoo <- matrix(NA, nrow = 4, ncol = 4)
-colnames(n_egenes_alasoo) <- c("n=100", "n=58", "n=30", "n=10")
-rownames(n_egenes_alasoo) <- c("naive", "IFN", "salmonella", "IFN + salmonella")
-i <- 1
-for(condition in list(n_sorted, IFN_sorted, sal_sorted, salIFN_sorted)){
-     j <- 1
-     for(threshold in c(n100_ses_threshold, n58_ses_threshold, n30_ses_threshold, n10_ses_threshold)){
-         n_egenes_alasoo[i,j] <- length(unique(condition %>% dplyr::filter(SES > threshold | SES < -threshold) %>% pull(V1)))
-         j <- j + 1
-     }
-     i <- i + 1
-}
-n_egenes_alasoo
 ```
 
 ## Caliskan et al 2015 Rhinovirus reQTL study
 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4395341/
 
-Data output from MatrixeQTL kindly provided by Dr. Minal Caliskan
+Data output from MatrixeQTL kindly provided by Dr. Minal Caliskan.
 
 ```{r rhinovirus}
 rhinovirus_data <- as.tibble(read.table("data/poweranalysis/caliskan_et_al/eQTL_results_cis_response.txt.gz", 
@@ -342,21 +274,81 @@ rhinovirus_data_r <- rhinovirus_data %>%
 rhinovirus_f_ashr_out <- ash(betahat = rhinovirus_data_f$beta, sebetahat = rhinovirus_data_f$se, df = 96)
 rhinovirus_r_ashr_out <- ash(betahat = rhinovirus_data_r$beta, sebetahat = rhinovirus_data_r$se, df = 96)
 
-#look for the effect sizes that correspond to percentiles of interest
-
 #add column for SES (based on ash output)
 rhinovirus_data_f$SES <- rhinovirus_f_ashr_out$result$PosteriorMean/rhinovirus_f_ashr_out$result$PosteriorSD
 rhinovirus_data_r$SES <- rhinovirus_r_ashr_out$result$PosteriorMean/rhinovirus_r_ashr_out$result$PosteriorSD
 
+#Run the ecdf function separately on each of the different conditions
 #uninfected
 get_ecdf(rhinovirus_data_f$SES)
 get_ecdf(rhinovirus_f_ashr_out$result$PosteriorMean)
-
 #rhinovirus
 get_ecdf(rhinovirus_data_r$SES)
 get_ecdf(rhinovirus_r_ashr_out$result$PosteriorMean)
+```
+
+# Number of genes meeting the SES threshold
+
+For the supplementary table, we are interested in the number of eQTLs that meet the SES threshold in each study for each sample size.
+
+```{r SES Threshold}
+# Compute the SES thresholds for 80% power at each sample size
+alpha <- 5e-6 #for FWER of 0.05 (assuming 10,000 genes)
+#for Power = 0.8, what is the Standardized effect size?
+#n = 100
+n100_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
+#n = 58
+n58_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(58)
+#n = 30
+n30_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
+#n = 10
+n10_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
+
+#Ward et al study
+# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition. 
+n_egenes_ward <- matrix(NA, nrow = 4, ncol = 4)
+colnames(n_egenes_ward) <- c("n=100", "n=58", "n=30", "n=10")
+rownames(n_egenes_ward) <- c("conditionA", "conditionB", "conditionC", "conditionD")
+i <- 1
+for(condition in list(conditionA, conditionB, conditionC, conditionD)){
+     j <- 1
+     for(threshold in c(n100_ses_threshold, n58_ses_threshold, n30_ses_threshold, n10_ses_threshold)){
+         n_egenes_ward[i,j] <- length(unique(condition %>% dplyr::filter(zscore/sqrt(15) > threshold | zscore/sqrt(15) < -threshold) %>% pull(PHENO)))
+         j <- j + 1
+     }
+     i <- i + 1
+}
 
 
+#Alasoo et al study
+# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition. 
+alpha <- 0.05/15786 #for FWER of 0.05 (assuming 15786 genes)
+#for Power = 0.8, what is the SES?
+#n = 100
+n100_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
+#n = 58
+n58_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(58)
+#n = 30
+n30_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
+#n = 10
+n10_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
+
+n_egenes_alasoo <- matrix(NA, nrow = 4, ncol = 4)
+colnames(n_egenes_alasoo) <- c("n=100", "n=58", "n=30", "n=10")
+rownames(n_egenes_alasoo) <- c("naive", "IFN", "salmonella", "IFN + salmonella")
+i <- 1
+for(condition in list(n_sorted, IFN_sorted, sal_sorted, salIFN_sorted)){
+     j <- 1
+     for(threshold in c(n100_ses_threshold, n58_ses_threshold, n30_ses_threshold, n10_ses_threshold)){
+         n_egenes_alasoo[i,j] <- length(unique(condition %>% dplyr::filter(SES > threshold | SES < -threshold) %>% pull(V1)))
+         j <- j + 1
+     }
+     i <- i + 1
+}
+
+
+#Caliskan et al study
+# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition. 
 alpha <- 0.05/length(unique(rhinovirus_data_f$gene)) #for FWER of 0.05 (assuming 10893 genes)
 #for Power = 0.8, what is the SES?
 #n = 100
@@ -368,7 +360,6 @@ n30_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
 #n = 10
 n10_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
 
-# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition
 n_egenes_caliskan <- matrix(NA, nrow = 2, ncol = 4)
 colnames(n_egenes_caliskan) <- c("n=100", "n=58", "n=30", "n=10")
 rownames(n_egenes_caliskan) <- c("f", "r")
@@ -381,14 +372,8 @@ for(condition in list(rhinovirus_data_f, rhinovirus_data_r)){
      }
      i <- i + 1
 }
-n_egenes_caliskan
-```
 
-# Number of genes meeting the SES threshold
-
-For the supplementary table, we are interested in the number of eQTLs that meet the SES threshold in each study for each sample size.
-
-```{r}
+#These values populate the supplementary table
 n_egenes_ward
 n_egenes_alasoo
 n_egenes_caliskan
