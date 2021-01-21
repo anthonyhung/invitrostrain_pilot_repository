@@ -12,11 +12,13 @@ editor_options:
 
 LCL-derived iPSCs from 3 Yoruba individuals were differentiated into mesenchymal stem cells and subsequently into chondrocytes. iPSC-derived chondrocytes were either placed under control conditions or treated with cyclic tensile strain for 24 hours (Total of 6 individual x treatment pairs). 3 technical replicates of the MSC-chondrocyte differentiation + strain/control treatment were conducted.Single cell RNAseq using the 10x platform was conducted for one replicate of the experiment (collection of one sample failed, meaning only 5 samples were single-cell sequenced). Bulk RNA sequencing was conducted for all 3 technical replicates.
 
+If you are running the files in this repository to recreate the analyses, running them in the order they appear on this list is recommended.
+
 __single-cell data__
 
 * [Pre-processing of raw 10x files into count matrices and demultiplexing](preProcess_scRNA.html)
 
-* [Clustering of scRNA sequencing data](clustering_scRNA.html)
+* [Integration and clustering of scRNA sequencing data](clustering_scRNA.html)
 
 * [Aggregation of external scRNA-seq data for topic model](external_scRNA.html)
 

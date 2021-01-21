@@ -13,7 +13,7 @@
 
 <meta name="date" content="2021-01-19" />
 
-<title>external_scRNA</title>
+<title>Aggregation of external scRNA-seq data for topic model</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -411,7 +411,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">external_scRNA</h1>
+<h1 class="title toc-ignore">Aggregation of external scRNA-seq data for topic model</h1>
 <h4 class="author">Anthony Hung</h4>
 <h4 class="date">2021-01-19</h4>
 
@@ -420,7 +420,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -429,7 +429,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -441,7 +441,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-01-20
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -457,12 +457,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytreec0ba69d6f35afe8a85bf7490485460cbc29d3871targetblankc0ba69da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/c0ba69d6f35afe8a85bf7490485460cbc29d3871" target="_blank">c0ba69d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytreefdbdb0ada6670b83882843f064481a5b727f27c1targetblankfdbdb0aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/fdbdb0ada6670b83882843f064481a5b727f27c1" target="_blank">fdbdb0a</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytreec0ba69d6f35afe8a85bf7490485460cbc29d3871targetblankc0ba69da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytreefdbdb0ada6670b83882843f064481a5b727f27c1targetblankfdbdb0aa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/c0ba69d6f35afe8a85bf7490485460cbc29d3871" target="_blank">c0ba69d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/fdbdb0ada6670b83882843f064481a5b727f27c1" target="_blank">fdbdb0a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -559,6 +559,8 @@ Ignored files:
     Ignored:    code/single_cell_preprocessing/.snakemake/locks/
     Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
     Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
     Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
     Ignored:    code/single_cell_preprocessing/fastq/
     Ignored:    data/ANT1_2.rds
@@ -566,9 +568,17 @@ Ignored files:
     Ignored:    data/external_scRNA/Jietal2018/
     Ignored:    data/external_scRNA/Wuetal2021/
     Ignored:    data/external_scRNA/merged_external_scRNA.rds
+    Ignored:    output/topicModel_k=7.rds
+
+Untracked files:
+    Untracked:  data/Sample.info.RNAseq.csv
 
 Unstaged changes:
-    Modified:   code/single_cell_preprocessing/README.txt
+    Modified:   analysis/clustering_scRNA.Rmd
+    Modified:   analysis/external_scRNA.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/preProcess_scRNA.Rmd
+    Modified:   analysis/topicModel_scRNA.Rmd
 
 </code></pre>
 <p>
@@ -607,6 +617,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/1ec66ea82cb6f4c6fc39b238c58fca311f44cf64/analysis/external_scRNA.Rmd" target="_blank">1ec66ea</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-20
+</td>
+<td>
+add information desribing preprocessing scran
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/1ec66ea82cb6f4c6fc39b238c58fca311f44cf64/docs/external_scRNA.html" target="_blank">1ec66ea</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-20
+</td>
+<td>
+add information desribing preprocessing scran
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -786,8 +830,9 @@ Add files for analysis
 </div>
 <div id="load-in-datasets-for-topic-model-and-merge-them-into-one-seurat-object" class="section level1">
 <h1>Load in datasets for topic model and merge them into one seurat object</h1>
-<div id="download-datasets-from-geo" class="section level2">
-<h2>Download datasets from GEO</h2>
+</div>
+<div id="download-datasets-from-geo" class="section level1">
+<h1>Download datasets from GEO</h1>
 <p>Some of the data included in this model come from publically available datasets from published studies, housed in GEO. Run the following code from the home directory of this repo to download the necessary datasets.</p>
 <pre class="bash"><code>mkdir data/external_scRNA
 cd data/external_scRNA
@@ -826,8 +871,8 @@ wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM46267
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM4626766_OA_oLT_113.genes.tsv.gz # genes
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM4626766_OA_oLT_113.matrix.mtx.gz # count matrix</code></pre>
 </div>
-<div id="load-in-datasets" class="section level2">
-<h2>Load in datasets</h2>
+<div id="load-in-datasets" class="section level1">
+<h1>Load in datasets</h1>
 <p>Load in the datasets and create Seurat objects for each of them. Add metadata about the cell type they were assigned in their original contexts. Merge the Seurat object into one large object.</p>
 <pre class="r"><code>library(Matrix)
 library(Seurat)
@@ -864,7 +909,7 @@ rownames(ji_chondro) &lt;- ji_chondro_genes
 ji_chondro_metadata &lt;- read_excel(&quot;data/external_scRNA/Jietal2018/GSE104782_Table_Cell_quality_information_and_clustering_information.xlsx&quot;)
 # subset count data to include only those cells that were assigned to a cluster labeled as being a chondrocyte in the original paper
 ji_chondro.filtered &lt;- ji_chondro[,!is.na(ji_chondro_metadata$Cluster)]
-cluster.ident &lt;- paste0(&quot;Chondro &quot;, ji_chondro_metadata$Cluster[!is.na(ji_chondro_metadata$Cluster)])
+cluster.ident &lt;- &quot;ji_chondrocyte&quot;
 # Create seurat object from chondrocytes data
 ji_chondro.seurat &lt;- CreateSeuratObject(ji_chondro.filtered, project=&quot;Chondrocytes&quot;)</code></pre>
 <pre><code>Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes
@@ -873,28 +918,6 @@ ji_chondro.seurat &lt;- CreateSeuratObject(ji_chondro.filtered, project=&quot;Ch
 dim(ji_chondro.seurat)</code></pre>
 <pre><code>[1] 24153  1464</code></pre>
 <pre class="r"><code>#iPSC chondrogenic cells from directed differentiation time course  from iPSC chondrogenic pellet culture. https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE160625 
-count_data_wu_iPSC &lt;- readMM(&quot;data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_matrix.mtx.gz&quot;)
-genes_wu_iPSC &lt;- read_tsv(&quot;data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_genes.tsv.gz&quot;, col_names = F)</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  X1 = col_character(),
-  X2 = col_character()
-)</code></pre>
-<pre class="r"><code>barcodes_wu_iPSC &lt;- as.data.frame(read_tsv( &quot;data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_barcodes.tsv.gz&quot;, col_names = F))</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  X1 = col_character()
-)</code></pre>
-<pre class="r"><code>rownames(count_data_wu_iPSC) &lt;- genes_wu_iPSC$X2
-colnames(count_data_wu_iPSC) &lt;- barcodes_wu_iPSC$X1
-wu_iPSC_seurat &lt;- CreateSeuratObject(counts = count_data_wu_iPSC, project = &quot;iPSC&quot;)</code></pre>
-<pre><code>Warning: Non-unique features (rownames) present in the input matrix, making
-unique
-
-Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes
-(&#39;-&#39;)</code></pre>
-<pre class="r"><code>wu_iPSC_seurat &lt;- Seurat::AddMetaData(wu_iPSC_seurat, &quot;Wu_iPSC&quot;, col.name = &quot;Cell.Type&quot;)
-
 count_data_wu_d7 &lt;- readMM(&quot;data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_matrix.mtx.gz&quot;)
 genes_wu_d7 &lt;- read_tsv(&quot;data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_genes.tsv.gz&quot;, col_names = F)</code></pre>
 <pre><code>Parsed with column specification:
@@ -983,14 +1006,14 @@ Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with das
 (&#39;-&#39;)</code></pre>
 <pre class="r"><code>wu_d42_seurat &lt;- Seurat::AddMetaData(wu_d42_seurat, &quot;Wu_chondrogenic_pellet_d42&quot;, col.name = &quot;Cell.Type&quot;)
 
-wu_combined &lt;- merge(wu_iPSC_seurat, y = c(wu_d7_seurat, wu_d14_seurat, wu_d28_seurat, wu_d42_seurat), project = &quot;Combined.common&quot;)</code></pre>
+wu_combined &lt;- merge(wu_d7_seurat, y = c(wu_d14_seurat, wu_d28_seurat, wu_d42_seurat), project = &quot;Combined.common&quot;)</code></pre>
 <pre><code>Warning in CheckDuplicateCellNames(object.list = objects): Some cell names
 are duplicated across objects provided. Renaming to enforce unique cell
 names.</code></pre>
 <pre class="r"><code>wu_combined[[&quot;percent.mt&quot;]] &lt;- PercentageFeatureSet(wu_combined, pattern = &quot;^MT-&quot;)
 wu_combined &lt;- subset(wu_combined, subset = percent.mt &lt; 25)
 dim(wu_combined)</code></pre>
-<pre><code>[1] 45924 19123</code></pre>
+<pre><code>[1] 45924  9434</code></pre>
 <pre class="r"><code>#Chondrocytes from healthy oLT of a male human with OA (outer lateral tibia) https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4626766
 chou_chondro_counts &lt;- readMM(&quot;data/external_scRNA/Chou_et_al2020/GSM4626766_OA_oLT_113.matrix.mtx.gz&quot;)
 chou_chondro_genes &lt;- read_tsv(&quot;data/external_scRNA/Chou_et_al2020/GSM4626766_OA_oLT_113.genes.tsv.gz&quot;, col_names = F)</code></pre>
@@ -1009,7 +1032,7 @@ rownames(chou_chondro_counts) &lt;- chou_chondro_genes$X2
 colnames(chou_chondro_counts) &lt;- chou_chondro_barcodes$X1
 
 chou_chondro_seurat &lt;- CreateSeuratObject(counts = chou_chondro_counts, project = &quot;Chondrocytes&quot;) %&gt;% 
-  AddMetaData(&quot;Chondrocyte_&quot;, col.name = &quot;Cell.Type&quot;)</code></pre>
+  AddMetaData(&quot;chou_chondrocyte&quot;, col.name = &quot;Cell.Type&quot;)</code></pre>
 <pre><code>Warning: Non-unique features (rownames) present in the input matrix, making
 unique
 
@@ -1034,15 +1057,15 @@ liver_data &lt;- Seurat::AddMetaData(liver_data, &quot;Hepatocyte&quot;, col.nam
 dim(liver_data)</code></pre>
 <pre><code>[1] 20007  3490</code></pre>
 </div>
-<div id="merge-and-save-the-combined-data" class="section level2">
-<h2>Merge and Save the combined data</h2>
+<div id="merge-and-save-the-combined-data" class="section level1">
+<h1>Merge and Save the combined data</h1>
 <pre class="r"><code># Merge Datasets
 
 # Merge the seurat objects into one large one, keeping metadata about which study they originated in as well as their assigned cell type.
-Merged_external_data &lt;- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, GH_merged, liver_data), project = &quot;Combined.common&quot;)
-Merged_external_data &lt;- merge(Merged_external_data, wu_combined, project = &quot;Combined.common&quot;)
+Merged_external_data &lt;- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, GH_merged, liver_data), project = &quot;Merged_external&quot;)
+Merged_external_data &lt;- merge(Merged_external_data, wu_combined, project = &quot;Merged_external&quot;)
 dim(Merged_external_data)</code></pre>
-<pre><code>[1] 61987 43238</code></pre>
+<pre><code>[1] 61987 33549</code></pre>
 <pre class="r"><code>saveRDS(Merged_external_data, &quot;data/external_scRNA/merged_external_scRNA.rds&quot;)</code></pre>
 <br>
 <p>
@@ -1117,7 +1140,6 @@ loaded via a namespace (and not attached):
 [115] data.table_1.13.0     git2r_0.26.1          reprex_0.3.0         
 [118] digest_0.6.27         xtable_1.8-4          httpuv_1.5.1         
 [121] munsell_0.5.0         viridisLite_0.3.0    </code></pre>
-</div>
 </div>
 </div>
 

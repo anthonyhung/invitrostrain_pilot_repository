@@ -9,7 +9,7 @@ editor_options:
 
 # Load in datasets for topic model and merge them into one seurat object
 
-## Download datasets from GEO
+# Download datasets from GEO
 
 Some of the data included in this model come from publically available datasets from published studies, housed in GEO.
 Run the following code from the home directory of this repo to download the necessary datasets.
@@ -53,7 +53,7 @@ wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM46267
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4626nnn/GSM4626766/suppl/GSM4626766_OA_oLT_113.matrix.mtx.gz # count matrix
 ```
 
-## Load in datasets 
+# Load in datasets 
 
 Load in the datasets and create Seurat objects for each of them. Add metadata about the cell type they were assigned in their original contexts. Merge the Seurat object into one large object.
 
@@ -80,7 +80,7 @@ rownames(ji_chondro) <- ji_chondro_genes
 ji_chondro_metadata <- read_excel("data/external_scRNA/Jietal2018/GSE104782_Table_Cell_quality_information_and_clustering_information.xlsx")
 # subset count data to include only those cells that were assigned to a cluster labeled as being a chondrocyte in the original paper
 ji_chondro.filtered <- ji_chondro[,!is.na(ji_chondro_metadata$Cluster)]
-cluster.ident <- paste0("Chondro ", ji_chondro_metadata$Cluster[!is.na(ji_chondro_metadata$Cluster)])
+cluster.ident <- "ji_chondrocyte"
 # Create seurat object from chondrocytes data
 ji_chondro.seurat <- CreateSeuratObject(ji_chondro.filtered, project="Chondrocytes")
 ji_chondro.seurat <- Seurat::AddMetaData(ji_chondro.seurat, cluster.ident, col.name = "Cell.Type")
@@ -89,14 +89,6 @@ dim(ji_chondro.seurat)
 
 
 #iPSC chondrogenic cells from directed differentiation time course  from iPSC chondrogenic pellet culture. https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE160625 
-count_data_wu_iPSC <- readMM("data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_matrix.mtx.gz")
-genes_wu_iPSC <- read_tsv("data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_genes.tsv.gz", col_names = F)
-barcodes_wu_iPSC <- as.data.frame(read_tsv( "data/external_scRNA/Wuetal2021/GSM4876128_hiPSC_barcodes.tsv.gz", col_names = F))
-rownames(count_data_wu_iPSC) <- genes_wu_iPSC$X2
-colnames(count_data_wu_iPSC) <- barcodes_wu_iPSC$X1
-wu_iPSC_seurat <- CreateSeuratObject(counts = count_data_wu_iPSC, project = "iPSC")
-wu_iPSC_seurat <- Seurat::AddMetaData(wu_iPSC_seurat, "Wu_iPSC", col.name = "Cell.Type")
-
 count_data_wu_d7 <- readMM("data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_matrix.mtx.gz")
 genes_wu_d7 <- read_tsv("data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_genes.tsv.gz", col_names = F)
 barcodes_wu_d7 <- as.data.frame(read_tsv( "data/external_scRNA/Wuetal2021/GSM4876136_C59_D7_barcodes.tsv.gz", col_names = F))
@@ -129,7 +121,7 @@ colnames(count_data_wu_d42) <- barcodes_wu_d42$X1
 wu_d42_seurat <- CreateSeuratObject(counts = count_data_wu_d42, project = "d42")
 wu_d42_seurat <- Seurat::AddMetaData(wu_d42_seurat, "Wu_chondrogenic_pellet_d42", col.name = "Cell.Type")
 
-wu_combined <- merge(wu_iPSC_seurat, y = c(wu_d7_seurat, wu_d14_seurat, wu_d28_seurat, wu_d42_seurat), project = "Combined.common")
+wu_combined <- merge(wu_d7_seurat, y = c(wu_d14_seurat, wu_d28_seurat, wu_d42_seurat), project = "Combined.common")
 
 wu_combined[["percent.mt"]] <- PercentageFeatureSet(wu_combined, pattern = "^MT-")
 wu_combined <- subset(wu_combined, subset = percent.mt < 25)
@@ -148,7 +140,7 @@ rownames(chou_chondro_counts) <- chou_chondro_genes$X2
 colnames(chou_chondro_counts) <- chou_chondro_barcodes$X1
 
 chou_chondro_seurat <- CreateSeuratObject(counts = chou_chondro_counts, project = "Chondrocytes") %>% 
-  AddMetaData("Chondrocyte_", col.name = "Cell.Type")
+  AddMetaData("chou_chondrocyte", col.name = "Cell.Type")
 dim(chou_chondro_seurat)
 
 
@@ -171,14 +163,14 @@ dim(liver_data)
 ```
 
 
-## Merge and Save the combined data
+# Merge and Save the combined data
 
 ```{r merge and save}
 # Merge Datasets
 
 # Merge the seurat objects into one large one, keeping metadata about which study they originated in as well as their assigned cell type.
-Merged_external_data <- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, GH_merged, liver_data), project = "Combined.common")
-Merged_external_data <- merge(Merged_external_data, wu_combined, project = "Combined.common")
+Merged_external_data <- merge(ANT1.2, y = c(ji_chondro.seurat, chou_chondro_seurat, GH_merged, liver_data), project = "Merged_external")
+Merged_external_data <- merge(Merged_external_data, wu_combined, project = "Merged_external")
 dim(Merged_external_data)
 
 saveRDS(Merged_external_data, "data/external_scRNA/merged_external_scRNA.rds")

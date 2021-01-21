@@ -1,5 +1,5 @@
 ---
-title: "Fitting a topic model k = 7 to iPSC-chondrocytes and external data"
+title: "Fitting and interpreting topic model with external data"
 author: "Anthony Hung"
 date: "2021-01-19"
 output: workflowr::wflow_html
@@ -11,6 +11,10 @@ editor_options:
 
 This code will load in the combined scRNA seq data from external datasets combined with the iPSC-chondrocytes from the current study and fit a topic model (k=7) to the data. It then interprets the topics.
 
+# Load data and packages
+
+The merged data were created by running the code located in [Aggregation of external scRNA-seq data for topic model](external_scRNA.html).
+
 ```{r load data and packages}
 library(fastTopics)
 library(Seurat)
@@ -21,24 +25,22 @@ merged_data <- readRDS("data/external_scRNA/merged_external_scRNA.rds")
 
 #Extract raw count matrix from seurat object and get it in correct format for fastTopics
 #need to fit the model to the count data (unintegrated)
-raw_counts_allGenes <- merged_data@assays$RNA@counts
-raw_counts_allGenes <- as.matrix(raw_counts_allGenes)
+raw_counts <- merged_data@assays$RNA@counts
 #remove genes without any counts in droplets
-raw_counts_allGenes <- raw_counts_allGenes[rowSums(raw_counts_allGenes > 0) > 0,] 
+raw_counts <- raw_counts[rowSums(raw_counts > 0) > 0,] 
 #get into correct orientation (barcodes x features)
-raw_counts_allGenes <- Matrix(raw_counts_allGenes, sparse = TRUE)
-raw_counts_allGenes <- t(raw_counts_allGenes)
-dim(raw_counts_allGenes)
+raw_counts <- t(raw_counts_allGenes)
+dim(raw_counts)
 ```
 
 # Use fastTopics functions to fit a topic model k=7 to the data
 
 ```{r fit topic model}
-if (file.exists("output/fasttopics/Combined_external_data_allGenes_k=7.rds")) {
-  fit <- readRDS("output/fasttopics/Combined_external_data_allGenes_k=7.rds")
+if (file.exists("output/topicModel_k=7.rds")) {
+  fit <- readRDS("output/topicModel_k=7.rds")
 } else {
-  fit <- fit_poisson_nmf(raw_counts_allGenes,k = 7,numiter = 100)
-  saveRDS(fit, "output/fasttopics/Combined_external_data_allGenes_k=7.rds")
+  fit <- fit_poisson_nmf(raw_counts,k = 7,numiter = 100)
+  saveRDS(fit, "output/topicModel_k=7.rds")
 }
 
 #compute weights and topics (rescale each of l and f to add up to 1)
@@ -50,6 +52,9 @@ weights <- weights / scale
 topics <- f / colSums(f) # add up to 1
 ```
 
+# Heatmap
+
+Here we select a few marker genes to represent iPSCs, MSCs, Hepatocytes, and Chondrocytes and visualize the relative loadings of these marker genes in each of the 7 fitted topics using a scaled heatmap.
 
 ```{r plot correlations external}
 library(stringr)
@@ -57,46 +62,55 @@ library(pheatmap)
 library(dummies)
 library(tidyverse)
 
+#selected markers for different cell types
 MSC_markers <- c("THY1", "NT5E", "ENG")
 Chondrocyte_markers <- c("COL2A1", "ACAN", "SOX9", "SOX5", "SOX6", "COL9A1")
 Hepatocyte_markers <- c("ALB")
 iPSC_markers <- c("POU5F1", "SOX2", "NANOG")
 markers <- c(iPSC_markers, Hepatocyte_markers, Chondrocyte_markers, MSC_markers)
-
+#annotate the markers with the cell type they represent
 markers_description <- data.frame(marker_type = c(rep("iPSC", 3), rep("Hepatocyte", 1), rep("Chondrocyte", 6), rep("MSC", 3)))
 rownames(markers_description) <- markers
 
 #plot heatmap of relative expression of marker genes in each topic
 topics_markers <- topics[markers,]
 pheatmap(topics_markers, cluster_cols = FALSE, cluster_rows = FALSE, annotation_row = markers_description, scale = "row")
-topics_markers <- topics[markers[-4],]
-pheatmap(topics_markers, cluster_cols = FALSE, cluster_rows = FALSE, annotation_row = markers_description)
 ```
 
-Look at structure plot
+# Structure Plot
+
+The structure plot represents the 
 
 ```{r structure plot external}
+#get labels of cells (cell type) and reorder to group them
+sample <- as.data.frame(merged_data@meta.data$Cell.Type)
+sample_labels <- sample %>% 
+     dplyr::transmute(Cell.Type = stringr::word(`merged_data@meta.data$Cell.Type`, start = 1))
+rownames(sample_labels) <- rownames(merged_data@meta.data)
+sample <- sample_labels %>% 
+     dplyr::arrange(Cell.Type)
+
+
 set.seed(1)
 topic_colors <- c("grey", "firebrick","turquoise","gold","royalblue", "salmon", "forestgreen", "black",
                   "orangered")
-topics_order <- c(1, 2, 4, 6, 3, 5, 7)
+topics_order <- c(7, 1, 2, 3, 4, 5, 6)
 rows_keep <- sort(c(sample(which(sample_labels$Cell.Type == "Hepatocyte"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC-MSC"), 800),
                which(sample_labels$Cell.Type == "iPSC-Chondrocyte"),
                sample(which(sample_labels$Cell.Type == "iPSC-Chondro_GAH"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC-Osteo"), 800),
-               #which(sample_labels$Cell.Type == "Chondrogenic"),
-               sample(which(sample_labels$Cell.Type == "dicks_d7"), 800),
-               sample(which(sample_labels$Cell.Type == "dicks_d14"), 800),
-               sample(which(sample_labels$Cell.Type == "dicks_d28"), 800),
-               sample(which(sample_labels$Cell.Type == "dicks_d42"), 800),
-               sample(which(sample_labels$Cell.Type == "Chondrocyte_"), 800),
-               sample(which(sample_labels$Cell.Type == "Chondro"), 800)))
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d7"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d14"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d28"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d42"), 800),
+               sample(which(sample_labels$Cell.Type == "chou_chondrocyte"), 800),
+               sample(which(sample_labels$Cell.Type == "ji_chondrocyte"), 800)))
 structure_plot <- structure_plot(select(poisson2multinom(fit),loadings = rows_keep),
                       grouping = factor(sample_labels[rows_keep,"Cell.Type"], 
                                         c("Hepatocyte", "iPSC", "iPSC-MSC", "iPSC-Osteo", 
-                                          "iPSC-Chondro_GAH", "iPSC-Chondrocyte", "dicks_d7", "dicks_d14", "dicks_d28", "dicks_d42", "Chondrocyte_", "Chondro")),
+                                          "iPSC-Chondro_GAH", "iPSC-Chondrocyte", "Wu_chondrogenic_pellet_d7", "Wu_chondrogenic_pellet_d14", "Wu_chondrogenic_pellet_d28", "Wu_chondrogenic_pellet_d42", "chou_chondrocyte", "ji_chondrocyte")),
                       topics = topics_order,
                       colors = topic_colors[topics_order],
                       perplexity = c(50),
