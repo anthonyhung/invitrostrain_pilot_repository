@@ -46,6 +46,7 @@ library(readr)
 library(stringr)
 library(plyr)
 library(dplyr)
+library(gridExtra)
 ```
 
 ```{r specify directory structure}
