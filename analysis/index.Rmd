@@ -18,7 +18,7 @@ __single-cell data__
 
 * [Pre-processing of raw 10x files into count matrices and demultiplexing](preProcess_scRNA.html)
 
-* [Integration and clustering of scRNA sequencing data](clustering_scRNA.html)
+::::* [Integration and clustering of scRNA sequencing data](clustering_scRNA.html)
 
 * [Aggregation of external scRNA-seq data for topic model](external_scRNA.html)
 
@@ -30,16 +30,14 @@ __Bulk Data__
 
 * [Download Gene Annotations for GO analysis](download_gene_annotation.html)
 
-* [Analysis of Raw bulkRNAseq data](rawAnalysis_bulkRNA.html)
+::::* [Normalization and filtering of bulkRNAseq data](normFilter_bulkRNA.html)
 
-* [Normalization and filtering of bulkRNAseq data](normFilter_bulkRNA.html)
+::::* [Modeling and removing unwanted technical variation](removeUnwantedVariation_bulkRNA.html)
 
-* [Modeling and removing unwanted technical variation](removeUnwantedVariation_bulkRNA.html)
+::::* [Differential expression using limma/voom](DEanalysis_bulkRNA.html)
 
-* [Differential expression using limma/voom](DEanalysis_bulkRNA.html)
-
-* [Sources of variation in bulk RNAseq data](variation_bulkRNA.html)
+::::* [Sources of variation in bulk RNAseq data](variation_bulkRNA.html)
 
 __Power Analysis__
 
-* [Conducting power analysis for eQTL mapping](powerAnalysis.html)
+::::* [Conducting power analysis for eQTL mapping](powerAnalysis.html)

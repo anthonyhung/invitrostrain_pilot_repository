@@ -1,5 +1,5 @@
 ---
-title: "normFilter_bulkRNA"
+title: "Normalization and filtering of bulkRNAseq data"
 author: "Anthony Hung"
 date: "2021-01-19"
 output: workflowr::wflow_html
@@ -7,9 +7,105 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Introduction
+# Introduction
 
-```{r}
+This code takes the raw count data from bulk RNA sequencing and performs upper quartile normalziation on the data, filtering out lowly expressed genes. Here we also plot PCA plots to visualize the structure of the data set.
 
+# Load data and libraries
+
+Here we are loading both the full data and the data without the one sample that failed QC.
+
+```{r load libraries and data}
+library("gplots")
+library("ggplot2")
+library("reshape")
+library("edgeR")
+library("RColorBrewer")
+library("scales")
+library("cowplot")
+theme_set(theme_cowplot())
+library("dplyr")
+
+# Load colors 
+colors <- colorRampPalette(c(brewer.pal(9, "Blues")[1],brewer.pal(9, "Blues")[9]))(100)
+pal <- c(brewer.pal(9, "Set1"), brewer.pal(8, "Set2"), brewer.pal(12, "Set3"))
+
+
+# load in relabeled counts
+raw_counts <- readRDS("data/raw_counts_relabeled.rds")
+raw_counts_includeNA19160 <- readRDS("data/raw_counts_relabeled_includeNA19160.rds")
+
+# Create DGEList object to allow for easier application of different normalization methods
+raw_counts <- DGEList(raw_counts, group = colnames(raw_counts))
+
+# load in reordered sample information
+sampleinfo <- readRDS("data/Sample.info.RNAseq.reordered.rds")
+sampleinfo_includeNA19160 <- readRDS("data/Sample.info.RNAseq.reordered_includeNA19160.rds")
 ```
 
+# upperquartile Normalization
+
+```{r upperquartile normalization}
+upperquartile <- calcNormFactors(raw_counts, method = "upperquartile")
+upperquartile <- cpm(upperquartile, log=TRUE, normalized.lib.sizes = T)
+head(upperquartile)
+
+strained <- sampleinfo$treatment == "Strain"
+unstrained <- sampleinfo$treatment == "Unstrain"
+ind_1 <- sampleinfo$Individual == "NA18855 "
+ind_2 <- sampleinfo$Individual == "NA18856 "
+ind_3 <- sampleinfo$Individual == "NA19160 "
+
+
+# Look at density plots for all individuals broken down by each treatment type
+col = as.data.frame(pal[as.numeric(sampleinfo$Individual)])
+
+plotDensities(upperquartile[,strained], col=col[strained, ], legend="topright")
+plotDensities(upperquartile[,unstrained], col=col[unstrained, ], legend="topright")
+
+# Look at density plots broken down by individual
+col = as.data.frame(pal[as.numeric(sampleinfo$treatment)])
+
+plotDensities(upperquartile[,ind_1], col=col[ind_1, ], legend="topright")
+plotDensities(upperquartile[,ind_2], col=col[ind_2, ], legend="topright")
+plotDensities(upperquartile[,ind_3], col=col[ind_3, ], legend="topright")
+```
+
+## Boxplots of upperquartile across samples
+
+```{r boxplot upperquartile}
+meltupperquartile <- melt(upperquartile)
+names(meltupperquartile) <- c("gene", "sampleID", "upperquartile")
+p <- ggplot(meltupperquartile, aes(factor(sampleID), upperquartile)) 
+p + geom_boxplot() + theme(axis.text.x = element_text(angle = 90))
+```
+
+## Filtering for lowly expressed genes (avg log2upperquartile > 2.5 in at least 4 samples)
+
+```{r filter upperquartile}
+cutoff <- 2.5
+
+keep <- rowSums( upperquartile > cutoff ) >=4
+
+counts_upperquartile <- raw_counts[keep,]
+filtered_upperquartile <- upperquartile[keep,]
+dim(filtered_upperquartile)
+```
+
+## Boxplots of normalized+filtered counts across samples
+
+```{r boxplot filt upperquartile}
+melt_filt_upperquartile <- melt(filtered_upperquartile)
+names(melt_filt_upperquartile) <- c("gene", "sampleID", "log2upperquartile")
+p1 <- ggplot(melt_filt_upperquartile, aes(factor(sampleID), log2upperquartile)) 
+p1 + geom_boxplot() + theme(axis.text.x = element_text(angle = 90))
+
+plotDensities(filtered_upperquartile, legend = F)
+```
+
+# Save normalized/filtered count matrix and filtered count matrix
+
+```{r save}
+saveRDS(counts_upperquartile, "data/filtered_counts.rds")
+saveRDS(filtered_upperquartile, "data/norm_filtered_counts.rds")
+```
