@@ -120,13 +120,13 @@ get_ecdf <- function(vector_of_SES){
 
 ```{r hypoxia}
 #michelle hypoxia reQTL study
-conditionA <- as_tibble(read.table('/project2/gilad/mcward/eqtls/A-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
-conditionB <- as_tibble(read.table('/project2/gilad/mcward/eqtls/B-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
-conditionC <- as_tibble(read.table('/project2/gilad/mcward/eqtls/C-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
-conditionD <- as_tibble(read.table('/project2/gilad/mcward/eqtls/D-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
+conditionA <- as_tibble(read.table('data/poweranalysis/ward_et_al_2020/A-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
+conditionB <- as_tibble(read.table('data/poweranalysis/ward_et_al_2020/B-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
+conditionC <- as_tibble(read.table('data/poweranalysis/ward_et_al_2020/C-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
+conditionD <- as_tibble(read.table('data/poweranalysis/ward_et_al_2020/D-adjust.txt.gz', fill = TRUE, stringsAsFactors = FALSE))
 
 
-zz <- gzfile('/project2/gilad/mcward/eqtls/reqtls.txt.gz','rt')  
+zz <- gzfile('data/poweranalysis/ward_et_al_2020/reqtls.txt.gz','rt')  
 hypoxia <- as_tibble(read.table(zz, fill = TRUE, stringsAsFactors = FALSE))
 library(tidyverse)
 
@@ -217,19 +217,13 @@ data on Zenodo: https://zenodo.org/record/1158560
 ```{r ifn_salmonella}
 #load in data from eQTL analysis downloaded using wget from zenodo (wget https://zenodo.org/record/1158560/files/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_SL1344_500kb_permuted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_naive_500kb_permuted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_SL1344_500kb_permuted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_500kb_permuted.txt.gz)
 
-n_sorted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz"))
-#n_permuted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_naive_500kb_permuted.txt.gz"))
+n_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz"))
 
-sal_sorted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz"))
-#sal_permuted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_SL1344_500kb_permuted.txt.gz"))
+sal_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz"))
 
-IFN_sorted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz"))
-#IFN_permuted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_IFNg_500kb_permuted.txt.gz"))
+IFN_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz"))
 
-salIFN_sorted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz"))
-#salIFN_permuted <- as_tibble(read.table("data/alasoo_etal/RNA_FastQTL_IFNg_SL1344_500kb_permuted.txt.gz"))
-
-#seems like the permuted basically takes only the top hit per gene
+salIFN_sorted <- as_tibble(read.table("data/poweranalysis/alasoo_et_al/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz"))
 
 #for sorted data, 
 #V1 = gene 
@@ -326,7 +320,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4395341/
 Data output from MatrixeQTL kindly provided by Dr. Minal Caliskan
 
 ```{r rhinovirus}
-rhinovirus_data <- as.tibble(read.table("data/caliskan_etal/eQTL_results_cis_response.txt.gz", 
+rhinovirus_data <- as.tibble(read.table("data/poweranalysis/caliskan_et_al/eQTL_results_cis_response.txt.gz", 
                               sep = "\t",
                               header = TRUE))
 
@@ -345,12 +339,8 @@ rhinovirus_data_r <- rhinovirus_data %>%
      dplyr::filter(condition == "r")
 
 # use ashr to estimate true effect sizes from the data in order to compute SES (separately for each half of the data)
-# rhinovirus_f_ashr_out <- ash(betahat = rhinovirus_data_f$beta, sebetahat = rhinovirus_data_f$se, df = 96)
-# saveRDS(rhinovirus_f_ashr_out, "output/ash_power_analysis/rhinovirus_f_ash_out.rds")
-rhinovirus_f_ashr_out <- readRDS("output/ash_power_analysis/rhinovirus_f_ash_out.rds")
-# rhinovirus_r_ashr_out <- ash(betahat = rhinovirus_data_r$beta, sebetahat = rhinovirus_data_r$se, df = 96)
-# saveRDS(rhinovirus_r_ashr_out, "output/ash_power_analysis/rhinovirus_r_ash_out.rds")
-rhinovirus_r_ashr_out <- readRDS("output/ash_power_analysis/rhinovirus_r_ash_out.rds")
+rhinovirus_f_ashr_out <- ash(betahat = rhinovirus_data_f$beta, sebetahat = rhinovirus_data_f$se, df = 96)
+rhinovirus_r_ashr_out <- ash(betahat = rhinovirus_data_r$beta, sebetahat = rhinovirus_data_r$se, df = 96)
 
 #look for the effect sizes that correspond to percentiles of interest
 
