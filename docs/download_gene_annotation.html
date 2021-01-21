@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Anthony Hung" />
 
 <meta name="date" content="2021-01-19" />
 
-<title>download_gene_annotation</title>
+<title>Download Gene Annotations for GO analysis</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -96,7 +96,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -245,6 +244,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -257,48 +257,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -312,6 +273,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -411,7 +378,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">download_gene_annotation</h1>
+<h1 class="title toc-ignore">Download Gene Annotations for GO analysis</h1>
 <h4 class="author">Anthony Hung</h4>
 <h4 class="date">2021-01-19</h4>
 
@@ -420,7 +387,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -429,7 +396,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -441,7 +408,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-01-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -457,12 +424,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -486,7 +453,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20210119code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -529,58 +496,38 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree98724f05ddb3f0b4c9051345902c611302f43f11targetblank98724f0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/98724f05ddb3f0b4c9051345902c611302f43f11" target="_blank">98724f0</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree78cfbcd3204249a8673228d684ae77444c63266btargetblank78cfbcda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/78cfbcd3204249a8673228d684ae77444c63266b" target="_blank">78cfbcd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree98724f05ddb3f0b4c9051345902c611302f43f11targetblank98724f0a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree78cfbcd3204249a8673228d684ae77444c63266btargetblank78cfbcda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/98724f05ddb3f0b4c9051345902c611302f43f11" target="_blank">98724f0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/78cfbcd3204249a8673228d684ae77444c63266b" target="_blank">78cfbcd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/shadow/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
-    Ignored:    code/bulkRNA_preprocessing/fastq/
-    Ignored:    code/bulkRNA_preprocessing/out/
-    Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
-    Ignored:    code/single_cell_preprocessing/.snakemake/conda/
-    Ignored:    code/single_cell_preprocessing/.snakemake/locks/
-    Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
-    Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
-    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
-    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
-    Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
-    Ignored:    code/single_cell_preprocessing/fastq/
-    Ignored:    data/ANT1_2.rds
-    Ignored:    data/external_scRNA/Chou_et_al2020/
-    Ignored:    data/external_scRNA/Jietal2018/
-    Ignored:    data/external_scRNA/Wuetal2021/
-    Ignored:    data/external_scRNA/merged_external_scRNA.rds
-    Ignored:    output/topicModel_k=7.rds
-
-Untracked files:
-    Untracked:  data/Sample.info.RNAseq.reordered.rds
-    Untracked:  data/Sample.info.RNAseq.reordered_includeNA19160.rds
-    Untracked:  data/raw_counts_relabeled.rds
-    Untracked:  data/raw_counts_relabeled_includeNA19160.rds
+    Ignored:    data/.DS_Store
+    Ignored:    data/external_scRNA/.DS_Store
 
 Unstaged changes:
-    Modified:   analysis/download_gene_annotation.Rmd
-    Modified:   analysis/preProcess_bulkRNA.Rmd
-    Modified:   analysis/preProcess_scRNA.Rmd
+    Deleted:    analysis/figure/powerAnalysis.Rmd/curve-1.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-1.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-2.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-3.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-4.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-5.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-6.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-7.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-8.png
 
 </code></pre>
 <p>
@@ -619,6 +566,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e0e89e18e26a5e4312f081c98eddb2d0f9577653/analysis/download_gene_annotation.Rmd" target="_blank">e0e89e1</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+download annotations and finish preprocessing of bulkRNA
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/e0e89e18e26a5e4312f081c98eddb2d0f9577653/docs/download_gene_annotation.html" target="_blank">e0e89e1</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+download annotations and finish preprocessing of bulkRNA
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -673,12 +654,8 @@ genes &lt;- rownames(counts)</code></pre>
 <h1>Download human exons (Ensembl 93, Jul 2018, grch38.p12, hg38)</h1>
 <pre class="r"><code>ensembl &lt;- useMart(host = &quot;jul2018.archive.ensembl.org/&quot;,
                    biomart = &quot;ENSEMBL_MART_ENSEMBL&quot;,
-                   dataset = &quot;hsapiens_gene_ensembl&quot;)</code></pre>
-<pre><code>Note: requested host was redirected from
-jul2018.archive.ensembl.org/ to http://jul2018.archive.ensembl.org:80/biomart/martservice</code></pre>
-<pre><code>This often occurs when connecting to the archive URL for the current Ensembl release</code></pre>
-<pre><code>You can check the current version number using listEnsemblArchives()</code></pre>
-<pre class="r"><code># attributePages(ensembl)
+                   dataset = &quot;hsapiens_gene_ensembl&quot;)
+# attributePages(ensembl)
 # [1] &quot;feature_page&quot; &quot;structure&quot; &quot;homologs&quot; &quot;sequences&quot; &quot;snp&quot; &quot;snp_somatic&quot;
 atts &lt;- listAttributes(ensembl, page = &quot;feature_page&quot;)
 
@@ -741,47 +718,43 @@ stopifnot(sort(genes) == combined$ensembl_gene_id)</code></pre>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.1 (2019-07-05)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Scientific Linux 7.4 (Nitrogen)
+<pre><code>R version 3.6.3 (2020-02-29)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS Catalina 10.15.7
 
 Matrix products: default
-BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+BLAS:   /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
 
 locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
- [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
- [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] dplyr_1.0.2    biomaRt_2.40.1
+[1] dplyr_1.0.2    biomaRt_2.40.5
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5           pillar_1.4.7         compiler_3.6.1      
- [4] later_1.1.0.1        git2r_0.26.1         workflowr_1.6.2     
- [7] prettyunits_1.1.1    progress_1.2.2       bitops_1.0-6        
-[10] tools_3.6.1          digest_0.6.27        bit_4.0.4           
-[13] tibble_3.0.4         lifecycle_0.2.0      evaluate_0.14       
-[16] RSQLite_2.1.1        memoise_1.1.0        pkgconfig_2.0.3     
-[19] rlang_0.4.10         DBI_1.1.0            curl_4.3            
-[22] yaml_2.2.1           parallel_3.6.1       xfun_0.8            
-[25] httr_1.4.2           stringr_1.4.0        knitr_1.23          
-[28] generics_0.0.2       hms_0.5.3            fs_1.3.1            
-[31] vctrs_0.3.6          S4Vectors_0.22.1     IRanges_2.18.3      
-[34] tidyselect_1.1.0     stats4_3.6.1         rprojroot_2.0.2     
-[37] bit64_0.9-7          glue_1.4.2           Biobase_2.44.0      
-[40] R6_2.5.0             AnnotationDbi_1.46.0 XML_3.98-1.20       
-[43] rmarkdown_1.13       purrr_0.3.4          blob_1.2.0          
-[46] magrittr_2.0.1       whisker_0.3-2        ellipsis_0.3.1      
-[49] promises_1.1.1       htmltools_0.5.0      BiocGenerics_0.30.0 
-[52] httpuv_1.5.1         stringi_1.4.6        RCurl_1.98-1.1      
-[55] crayon_1.3.4        </code></pre>
+ [1] Rcpp_1.0.5             pillar_1.4.6           compiler_3.6.3        
+ [4] later_1.1.0.1          git2r_0.27.1           workflowr_1.6.2       
+ [7] prettyunits_1.1.1      progress_1.2.2         bitops_1.0-6          
+[10] tools_3.6.3            bit_4.0.4              digest_0.6.25         
+[13] memoise_1.1.0          evaluate_0.14          RSQLite_2.2.0         
+[16] lifecycle_0.2.0        tibble_3.0.3           pkgconfig_2.0.3       
+[19] rlang_0.4.7            DBI_1.1.0              rstudioapi_0.11.0-9000
+[22] curl_4.3               parallel_3.6.3         yaml_2.2.1            
+[25] xfun_0.16              httr_1.4.2             stringr_1.4.0         
+[28] knitr_1.29             generics_0.0.2         hms_0.5.3             
+[31] IRanges_2.18.3         S4Vectors_0.22.1       fs_1.5.0              
+[34] vctrs_0.3.4            tidyselect_1.1.0       stats4_3.6.3          
+[37] rprojroot_1.3-2        bit64_4.0.5            Biobase_2.44.0        
+[40] glue_1.4.2             R6_2.4.1               AnnotationDbi_1.46.1  
+[43] XML_3.98-1.20          rmarkdown_2.3          purrr_0.3.4           
+[46] blob_1.2.1             magrittr_1.5           whisker_0.4           
+[49] BiocGenerics_0.30.0    backports_1.1.9        promises_1.1.1        
+[52] ellipsis_0.3.1         htmltools_0.5.0        httpuv_1.5.4          
+[55] stringi_1.4.6          RCurl_1.98-1.2         crayon_1.3.4          </code></pre>
 </div>
 </div>
 
@@ -815,6 +788,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

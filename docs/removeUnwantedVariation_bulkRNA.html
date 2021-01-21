@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Anthony Hung" />
@@ -27,7 +27,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="site_libs/datatables-binding-0.15/datatables.js"></script>
 <link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -104,7 +104,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -253,6 +252,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,48 +265,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -320,6 +281,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -428,7 +395,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -437,7 +404,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -449,7 +416,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-01-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -465,12 +432,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -494,7 +461,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20210119code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -537,62 +504,42 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0711682d4c989bade81cb5de5cdf2520fd5f9d33targetblank0711682a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0711682d4c989bade81cb5de5cdf2520fd5f9d33" target="_blank">0711682</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree78cfbcd3204249a8673228d684ae77444c63266btargetblank78cfbcda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/78cfbcd3204249a8673228d684ae77444c63266b" target="_blank">78cfbcd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0711682d4c989bade81cb5de5cdf2520fd5f9d33targetblank0711682a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree78cfbcd3204249a8673228d684ae77444c63266btargetblank78cfbcda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0711682d4c989bade81cb5de5cdf2520fd5f9d33" target="_blank">0711682</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/78cfbcd3204249a8673228d684ae77444c63266b" target="_blank">78cfbcd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/shadow/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
-    Ignored:    code/bulkRNA_preprocessing/fastq/
-    Ignored:    code/bulkRNA_preprocessing/out/
-    Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
-    Ignored:    code/single_cell_preprocessing/.snakemake/conda/
-    Ignored:    code/single_cell_preprocessing/.snakemake/locks/
-    Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
-    Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
-    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
-    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
-    Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
-    Ignored:    code/single_cell_preprocessing/fastq/
-    Ignored:    data/ANT1_2.rds
-    Ignored:    data/RUVsOut.rds
-    Ignored:    data/external_scRNA/Chou_et_al2020/
-    Ignored:    data/external_scRNA/Jietal2018/
-    Ignored:    data/external_scRNA/Wuetal2021/
-    Ignored:    data/external_scRNA/merged_external_scRNA.rds
-    Ignored:    data/filtered_counts.rds
-    Ignored:    data/norm_filtered_counts.rds
-    Ignored:    output/topicModel_k=7.rds
+    Ignored:    data/.DS_Store
+    Ignored:    data/external_scRNA/.DS_Store
 
 Untracked files:
-    Untracked:  analysis/heterogeneity_bulkRNA.Rmd
-    Untracked:  code/PCA_fn.R
+    Untracked:  data/filtered_counts.rds
+    Untracked:  data/norm_filtered_counts.rds
 
 Unstaged changes:
-    Modified:   .gitignore
-    Modified:   analysis/DEanalysis_bulkRNA.Rmd
-    Modified:   analysis/index.Rmd
-    Modified:   analysis/normFilter_bulkRNA.Rmd
-    Modified:   analysis/removeUnwantedVariation_bulkRNA.Rmd
-    Modified:   analysis/variation_bulkRNA.Rmd
+    Deleted:    analysis/figure/powerAnalysis.Rmd/curve-1.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-1.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-2.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-3.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-4.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-5.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-6.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-7.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-8.png
 
 </code></pre>
 <p>
@@ -631,6 +578,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/analysis/removeUnwantedVariation_bulkRNA.Rmd" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add ward et al data files to data
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/removeUnwantedVariation_bulkRNA.html" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add ward et al data files to data
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -723,13 +704,12 @@ Attaching package: &#39;BiocGenerics&#39;</code></pre>
     IQR, mad, sd, var, xtabs</code></pre>
 <pre><code>The following objects are masked from &#39;package:base&#39;:
 
-    anyDuplicated, append, as.data.frame, basename, cbind,
-    colnames, dirname, do.call, duplicated, eval, evalq, Filter,
-    Find, get, grep, grepl, intersect, is.unsorted, lapply, Map,
-    mapply, match, mget, order, paste, pmax, pmax.int, pmin,
-    pmin.int, Position, rank, rbind, Reduce, rownames, sapply,
-    setdiff, sort, table, tapply, union, unique, unsplit, which,
-    which.max, which.min</code></pre>
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which, which.max, which.min</code></pre>
 <pre><code>Welcome to Bioconductor
 
     Vignettes contain introductory material; view with
@@ -856,6 +836,43 @@ variances &lt;- pca_genes$sdev^2
 explained &lt;- variances / sum(variances)
 plot(pca_genes, main = &quot;Variance per PC&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-1">
+Past versions of “clustering norm_filt_data-1.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-1.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#Make PCA plots with the factors colored by Individual
 
 ### PCA norm+filt Data
@@ -863,24 +880,361 @@ for (n in 1:5){
   col.v &lt;- pal[as.integer(sampleinfo$Individual)]
   plot_scores(pca_genes, scores, n, n+1, col.v)
 }</code></pre>
-<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-2">
+Past versions of “clustering norm_filt_data-2.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-2.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-3">
+Past versions of “clustering norm_filt_data-3.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-3.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-4">
+Past versions of “clustering norm_filt_data-4.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-4.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-5">
+Past versions of “clustering norm_filt_data-5.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-5.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-6">
+Past versions of “clustering norm_filt_data-6.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-6.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#make PCA plots with symbols as treatment status and colors as individuals for figure
 library(ggfortify)
 autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3) + 
      theme_cowplot() +
      theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-7">
+Past versions of “clustering norm_filt_data-7.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-7.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;) + 
      theme_cowplot()</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-8">
+Past versions of “clustering norm_filt_data-8.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-8.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 3, y = 4) + 
      theme_cowplot() +
      theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-9.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-9">
+Past versions of “clustering norm_filt_data-9.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-9" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-9.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 5, y = 6) + 
      theme_cowplot() +
      theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-10.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-clustering-norm_filt_data-10">
+Past versions of “clustering norm_filt_data-10.png”
+</button>
+</p>
+<div id="fig-no-spaces-clustering-norm_filt_data-10" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/clustering norm_filt_data-10.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="examine-correlations-between-top-pcs-and-experimental-variables" class="section level1">
 <h1>Examine correlations between top PCs and experimental variables</h1>
@@ -908,13 +1262,50 @@ for (pc in p_comps) {
 } 
 datatable(pc_cov_cor) </code></pre>
 <div id="htmlwidget-db719b65ba353fdc915f" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-db719b65ba353fdc915f">{"x":{"filter":"none","data":[["Individual","Sex","Replicate","treatment","RIN","LibraryPrepBatch","LibSize"],[0.937736289463665,0.0122847628521897,0.00592132916245151,0.0129678173600811,0.37821748460673,0.00166231441958058,0.342266497395399],[0.765195249715189,0.724478399122569,0.00280387965877652,0.142440552758671,0.142832774492937,0.000461849062452609,0.0207293901974216],[0.121930163262149,0.113896889224547,0.296562023975296,0.134872656193087,0.00274494981378088,0.0836926868661663,0.054998923578383],[0.0949689052134288,0.0849504554120859,0.0860047598592193,0.310539663977472,0.0253658820477083,0.00128962111817109,0.00292140820122793],[0.0509249920091495,0.0503737189179746,0.168199566460674,3.19822748101372e-07,0.00129890611106488,0.165255163908627,0.300282845797185]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PC1<\/th>\n      <th>PC2<\/th>\n      <th>PC3<\/th>\n      <th>PC4<\/th>\n      <th>PC5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-db719b65ba353fdc915f">{"x":{"filter":"none","data":[["Individual","Sex","Replicate","treatment","RIN","LibraryPrepBatch","LibSize"],[0.937736289463664,0.0122847628521906,0.0059213291624512,0.0129678173600814,0.37821748460673,0.00166231441958043,0.3422664973954],[0.76519524971519,0.724478399122568,0.00280387965877649,0.142440552758671,0.142832774492936,0.000461849062452571,0.0207293901974211],[0.12193016326215,0.113896889224548,0.296562023975295,0.134872656193087,0.00274494981378089,0.0836926868661659,0.0549989235783826],[0.0949689052134293,0.0849504554120863,0.0860047598592195,0.310539663977471,0.0253658820477081,0.0012896211181711,0.00292140820122802],[0.0509249920091501,0.0503737189179753,0.168199566460675,3.1982274810072e-07,0.00129890611106486,0.165255163908628,0.300282845797186]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PC1<\/th>\n      <th>PC2<\/th>\n      <th>PC3<\/th>\n      <th>PC4<\/th>\n      <th>PC5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>#BH adjust for multiple testing for the p-values for correlation
 #Distribution of p-values adjusted by FDR
 fdr_val &lt;- p.adjust(PC_pvalues, method = &quot;fdr&quot;, n = length(PC_pvalues))
 fdr_val_order &lt;- fdr_val[order(fdr_val)]
 hist(fdr_val_order, ylab = &quot;BH-adjusted p-values&quot;, main = &quot;Distribution of Benjamini and Hochberg adjusted p-values&quot;, breaks = 10)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-2">
+Past versions of “corr PC-2.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC-2.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7)
 matrix_fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7, dimnames = list(c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;, &quot;PC4&quot;, &quot;PC5&quot;), c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, &quot;Treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)))
 
@@ -924,18 +1315,18 @@ TorF_matrix_fdr &lt;- matrix_fdr_val &lt;=0.05
 coor_to_check &lt;- which(matrix_fdr_val &lt;= 0.05, arr.ind=T)
 coor_to_check &lt;- as.data.frame(coor_to_check)
 matrix_fdr_val</code></pre>
-<pre><code>      Individual          Sex Replicate Treatment        RIN
-PC1 1.269735e-07 0.9336808625 0.9451743 0.9336809 0.07528095
-PC2 4.590869e-04 0.0002579742 0.9451743 0.3946693 0.39466927
-PC3 7.042737e-01 0.4631185780 0.1041397 0.3958344 0.94517429
-PC4 8.288830e-01 0.5354246637 0.5354247 0.1041397 0.86144953
-PC5 9.336809e-01 0.7042736812 0.3688630 0.9982813 0.94517429
-    LibraryPrepBatch    LibSize
-PC1        0.9451743 0.09539454
-PC2        0.9622445 0.88477997
-PC3        0.5354247 0.70427368
-PC4        0.9451743 0.94517429
-PC5        0.3688630 0.10413971</code></pre>
+<pre><code>      Individual          Sex Replicate Treatment        RIN LibraryPrepBatch
+PC1 1.269735e-07 0.9336808625 0.9451743 0.9336809 0.07528095        0.9451743
+PC2 4.590869e-04 0.0002579742 0.9451743 0.3946693 0.39466927        0.9622445
+PC3 7.042737e-01 0.4631185780 0.1041397 0.3958344 0.94517429        0.5354247
+PC4 8.288830e-01 0.5354246637 0.5354247 0.1041397 0.86144953        0.9451743
+PC5 9.336809e-01 0.7042736812 0.3688630 0.9982813 0.94517429        0.3688630
+       LibSize
+PC1 0.09539454
+PC2 0.88477997
+PC3 0.70427368
+PC4 0.94517429
+PC5 0.10413971</code></pre>
 <pre class="r"><code>coor_to_check # Individual has most significant correlation with pc1 and 2, and sex correlates with pc2 (probably due to the individual effect)</code></pre>
 <pre><code>      row col
 PC1     1   1
@@ -967,6 +1358,43 @@ pca_heat &lt;- ggplot(d_heatmap, aes(x = pc, y = variable)) +
        title = &quot;Correlation between principal components and experimental variables&quot;) 
 pca_heat</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-3">
+Past versions of “corr PC-3.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC-3.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="remove-unwanted-variation-using-ruvseq" class="section level1">
 <h1>Remove unwanted variation using RUVSeq</h1>
@@ -996,42 +1424,42 @@ set &lt;- betweenLaneNormalization(x = set, which = &quot;upper&quot;, round = T
 # 
 set1 &lt;- RUVs(x=set, cIdx = rownames(filt_counts), k=2, scIdx = replicates, round = F)
 pData(set1)</code></pre>
-<pre><code>          Sample_ID Individual Sex Replicate treatment  RIN
-18855_3_S 18855_3_S   NA18855    F         3    Strain 10.0
-19160_3_S 19160_3_S   NA19160    M         3    Strain 10.0
-18856_3_U 18856_3_U   NA18856    M         3  Unstrain 10.0
-18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
-18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
-18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
-19160_3_U 19160_3_U   NA19160    M         3  Unstrain 10.0
-18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0
-19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
-18855_1_S 18855_1_S   NA18855    F         1    Strain  9.9
-18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
-19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
-19160_2_U 19160_2_U   NA19160    M         2  Unstrain 10.0
-18855_1_U 18855_1_U   NA18855    F         1  Unstrain 10.0
-18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6
-18856_2_U 18856_2_U   NA18856    M         2  Unstrain  9.5
-18855_3_U 18855_3_U   NA18855    F         3  Unstrain 10.0
-          LibraryPrepBatch  LibSize          W_1        W_2
-18855_3_S                2 15419569  0.541963415 -1.1181740
-19160_3_S                2 15177653  0.376349314 -1.4100700
-18856_3_U                2 13722909  0.857248982 -0.8808562
-18856_1_U                1 18647599  1.113674153 -1.5466409
-18855_2_S                1 18256163  0.733375747 -0.7617020
-18856_2_S                1 16782764 -0.051863231 -1.3484210
-19160_3_U                2 19839604  0.224499121 -1.5560509
-18855_2_U                1 18618691  0.665015743 -0.9464050
-19160_2_S                1 16622407  0.308745015 -1.5149287
-18855_1_S                1 19712744  0.626769726 -1.5366695
-18856_1_S                1 13571439  1.038716806 -1.2664724
-19160_1_S                1 20979958  0.461484490 -2.0300296
-19160_2_U                1 20924281  0.002654243 -1.9184820
-18855_1_U                1 20146697  0.649711618 -1.4110342
-18856_3_S                2 15807863  0.728747075 -0.9909086
-18856_2_U                1 15142152  0.359175096 -1.0809905
-18855_3_U                2 18157918  0.487681866 -1.2290497</code></pre>
+<pre><code>          Sample_ID Individual Sex Replicate treatment  RIN LibraryPrepBatch
+18855_3_S 18855_3_S   NA18855    F         3    Strain 10.0                2
+19160_3_S 19160_3_S   NA19160    M         3    Strain 10.0                2
+18856_3_U 18856_3_U   NA18856    M         3  Unstrain 10.0                2
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9                1
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0                1
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6                1
+19160_3_U 19160_3_U   NA19160    M         3  Unstrain 10.0                2
+18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0                1
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0                1
+18855_1_S 18855_1_S   NA18855    F         1    Strain  9.9                1
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5                1
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9                1
+19160_2_U 19160_2_U   NA19160    M         2  Unstrain 10.0                1
+18855_1_U 18855_1_U   NA18855    F         1  Unstrain 10.0                1
+18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6                2
+18856_2_U 18856_2_U   NA18856    M         2  Unstrain  9.5                1
+18855_3_U 18855_3_U   NA18855    F         3  Unstrain 10.0                2
+           LibSize          W_1        W_2
+18855_3_S 15419569  0.541963415 -1.1181740
+19160_3_S 15177653  0.376349314 -1.4100700
+18856_3_U 13722909  0.857248982 -0.8808562
+18856_1_U 18647599  1.113674153 -1.5466409
+18855_2_S 18256163  0.733375747 -0.7617020
+18856_2_S 16782764 -0.051863231 -1.3484210
+19160_3_U 19839604  0.224499121 -1.5560509
+18855_2_U 18618691  0.665015743 -0.9464050
+19160_2_S 16622407  0.308745015 -1.5149287
+18855_1_S 19712744  0.626769726 -1.5366695
+18856_1_S 13571439  1.038716806 -1.2664724
+19160_1_S 20979958  0.461484490 -2.0300296
+19160_2_U 20924281  0.002654243 -1.9184820
+18855_1_U 20146697  0.649711618 -1.4110342
+18856_3_S 15807863  0.728747075 -0.9909086
+18856_2_U 15142152  0.359175096 -1.0809905
+18855_3_U 18157918  0.487681866 -1.2290497</code></pre>
 </div>
 <div id="examine-correlations-between-top-pcs-and-experimental-variables-after-ruvs" class="section level1">
 <h1>Examine correlations between top PCs and experimental variables after RUVs</h1>
@@ -1044,6 +1472,43 @@ variances &lt;- pca_genes$sdev^2
 explained &lt;- variances / sum(variances)
 plot(pca_genes, main = &quot;Variance per PC&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-1">
+Past versions of “corr PC after RUVs-1.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-1.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#Make PCA plots with the factors colored by Individual
 
 ### PCA norm+filt Data
@@ -1051,24 +1516,361 @@ for (n in 1:5){
   col.v &lt;- pal[as.integer(sampleinfo$Individual)]
   plot_scores(pca_genes, scores, n, n+1, col.v)
 }</code></pre>
-<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-2">
+Past versions of “corr PC after RUVs-2.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-2.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-3">
+Past versions of “corr PC after RUVs-3.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-3.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-4">
+Past versions of “corr PC after RUVs-4.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-4.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-5">
+Past versions of “corr PC after RUVs-5.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-5.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-6">
+Past versions of “corr PC after RUVs-6.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-6.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#make PCA plots with symbols as treatment status and colors as individuals for figure
 library(ggfortify)
 autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3) + 
      theme_cowplot() +
      theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-7">
+Past versions of “corr PC after RUVs-7.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-7.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;) + 
      theme_cowplot()</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-8">
+Past versions of “corr PC after RUVs-8.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-8.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 3, y = 4) + 
      theme_cowplot() +
      theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-9.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-9">
+Past versions of “corr PC after RUVs-9.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-9" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-9.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 5, y = 6) + 
      theme_cowplot() +
      theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-10.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-10">
+Past versions of “corr PC after RUVs-10.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-10" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-10.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Calculate the relationship between each recorded covariate and the top 5 PCs. 
 p_comps &lt;- 1:5
 info &lt;- sampleinfo %&gt;% 
@@ -1092,13 +1894,50 @@ for (pc in p_comps) {
 } 
 datatable(pc_cov_cor) </code></pre>
 <div id="htmlwidget-f1c585e267fc4b2b6184" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f1c585e267fc4b2b6184">{"x":{"filter":"none","data":[["Individual","Sex","Replicate","treatment","RIN","LibraryPrepBatch","LibSize"],[0.941664115382318,0.00726641801581726,0.013020636762138,0.0102255465330808,0.362169301057953,0.00647049867610364,0.288548706852562],[0.77090809449198,0.736977521431836,0.00348897308137742,0.151872495499797,0.158552180394518,0.00171904316241042,0.0342707396883643],[0.249093505193015,0.232237894656003,0.00119991451685144,0.426018113018055,0.0114463519574885,0.0155255654355518,2.77864125506272e-05],[0.0228412947986357,0.0182176282320954,0.00215513570614129,0.0179729290635129,0.00118221215157113,0.0137945766215277,0.116706625101456],[0.0011321166764086,2.20293509258326e-05,0.0358787635228618,0.328105413268445,0.047672883100788,0.0501587518449471,0.0509128808677554]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PC1<\/th>\n      <th>PC2<\/th>\n      <th>PC3<\/th>\n      <th>PC4<\/th>\n      <th>PC5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-f1c585e267fc4b2b6184">{"x":{"filter":"none","data":[["Individual","Sex","Replicate","treatment","RIN","LibraryPrepBatch","LibSize"],[0.941664115382316,0.00726641801581773,0.0130206367621378,0.0102255465330813,0.362169301057956,0.00647049867610347,0.288548706852563],[0.77090809449198,0.736977521431835,0.00348897308137746,0.151872495499797,0.158552180394516,0.00171904316241039,0.0342707396883639],[0.249093505193016,0.232237894656005,0.0011999145168515,0.426018113018054,0.0114463519574884,0.0155255654355522,2.77864125506228e-05],[0.0228412947986351,0.0182176282320949,0.0021551357061414,0.0179729290635132,0.00118221215157121,0.0137945766215274,0.116706625101454],[0.0011321166764086,2.20293509258298e-05,0.0358787635228616,0.328105413268446,0.0476728831007863,0.0501587518449462,0.0509128808677552]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PC1<\/th>\n      <th>PC2<\/th>\n      <th>PC3<\/th>\n      <th>PC4<\/th>\n      <th>PC5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>#BH adjust for multiple testing for the p-values for correlation
 #Distribution of p-values adjusted by FDR
 fdr_val &lt;- p.adjust(PC_pvalues, method = &quot;fdr&quot;, n = length(PC_pvalues))
 fdr_val_order &lt;- fdr_val[order(fdr_val)]
 hist(fdr_val_order, ylab = &quot;BH-adjusted p-values&quot;, main = &quot;Distribution of Benjamini and Hochberg adjusted p-values&quot;, breaks = 10)</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-12.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-12">
+Past versions of “corr PC after RUVs-12.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-12" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-12.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7)
 matrix_fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7, dimnames = list(c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;, &quot;PC4&quot;, &quot;PC5&quot;), c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, &quot;Treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)))
 
@@ -1108,18 +1947,18 @@ TorF_matrix_fdr &lt;- matrix_fdr_val &lt;=0.05
 coor_to_check &lt;- which(matrix_fdr_val &lt;= 0.05, arr.ind=T)
 coor_to_check &lt;- as.data.frame(coor_to_check)
 matrix_fdr_val</code></pre>
-<pre><code>      Individual          Sex Replicate  Treatment        RIN
-PC1 8.046714e-08 0.9797494684 0.9797495 0.97974947 0.07413884
-PC2 3.863803e-04 0.0001807959 0.9797495 0.42711188 0.42711188
-PC3 4.283279e-01 0.2193110404 0.9797495 0.03943709 0.97974947
-PC4 9.797495e-01 0.9797494684 0.9797495 0.97974947 0.97974947
-PC5 9.921020e-01 0.9921020480 0.9797495 0.09477350 0.93296870
-    LibraryPrepBatch   LibSize
-PC1        0.9797495 0.1308890
-PC2        0.9797495 0.9797495
-PC3        0.9797495 0.9921020
-PC4        0.9797495 0.5237645
-PC5        0.9329687 0.9329687</code></pre>
+<pre><code>      Individual          Sex Replicate  Treatment        RIN LibraryPrepBatch
+PC1 8.046714e-08 0.9797494684 0.9797495 0.97974947 0.07413884        0.9797495
+PC2 3.863803e-04 0.0001807959 0.9797495 0.42711188 0.42711188        0.9797495
+PC3 4.283279e-01 0.2193110404 0.9797495 0.03943709 0.97974947        0.9797495
+PC4 9.797495e-01 0.9797494684 0.9797495 0.97974947 0.97974947        0.9797495
+PC5 9.921020e-01 0.9921020480 0.9797495 0.09477350 0.93296870        0.9329687
+      LibSize
+PC1 0.1308890
+PC2 0.9797495
+PC3 0.9921020
+PC4 0.5237645
+PC5 0.9329687</code></pre>
 <pre class="r"><code>coor_to_check # Individual has most significant correlation with pc1 and 2, and sex correlates with pc2 (probably due to the individual effect)</code></pre>
 <pre><code>      row col
 PC1     1   1
@@ -1152,6 +1991,43 @@ pca_heat &lt;- ggplot(d_heatmap, aes(x = pc, y = variable)) +
        title = &quot;Correlation between principal components and experimental variables&quot;) 
 pca_heat</code></pre>
 <p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-13.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-corr-PC-after-RUVs-13">
+Past versions of “corr PC after RUVs-13.png”
+</button>
+</p>
+<div id="fig-no-spaces-corr-PC-after-RUVs-13" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/figure/removeUnwantedVariation_bulkRNA.Rmd/corr PC after RUVs-13.png" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="save-data-and-ruvs-output-for-unwanted-variation-contains-the-normalizedfiltered-count-data-as-well-as-sample-information-data-and-w1w2-values-from-ruvs" class="section level1">
 <h1>Save data and RUVs output for unwanted variation (contains the normalized/filtered count data as well as sample information data and W1+W2 values from RUVs)</h1>
@@ -1164,20 +2040,16 @@ pca_heat</code></pre>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.1 (2019-07-05)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Scientific Linux 7.4 (Nitrogen)
+<pre><code>R version 3.6.3 (2020-02-29)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS Catalina 10.15.7
 
 Matrix products: default
-BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+BLAS:   /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
 
 locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
- [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
- [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 
 attached base packages:
 [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
@@ -1188,48 +2060,49 @@ other attached packages:
  [3] RUVSeq_1.18.0               EDASeq_2.18.0              
  [5] ShortRead_1.42.0            GenomicAlignments_1.20.1   
  [7] SummarizedExperiment_1.14.1 DelayedArray_0.10.0        
- [9] matrixStats_0.57.0          Rsamtools_2.0.0            
+ [9] matrixStats_0.56.0          Rsamtools_2.0.3            
 [11] GenomicRanges_1.36.1        GenomeInfoDb_1.20.0        
 [13] Biostrings_2.52.0           XVector_0.24.0             
 [15] IRanges_2.18.3              S4Vectors_0.22.1           
 [17] BiocParallel_1.18.1         Biobase_2.44.0             
 [19] BiocGenerics_0.30.0         tidyr_1.1.2                
-[21] DT_0.15                     cowplot_1.1.0              
+[21] DT_0.15                     cowplot_1.1.1              
 [23] scales_1.1.1                RColorBrewer_1.1-2         
-[25] edgeR_3.26.5                limma_3.40.6               
-[27] reshape_0.8.8               ggplot2_3.3.3              
-[29] gplots_3.0.1.1             
+[25] edgeR_3.26.8                limma_3.40.6               
+[27] reshape_0.8.8               ggplot2_3.3.2              
+[29] gplots_3.0.4               
 
 loaded via a namespace (and not attached):
- [1] colorspace_2.0-0       hwriter_1.3.2          ellipsis_0.3.1        
- [4] rprojroot_2.0.2        fs_1.3.1               farver_2.0.3          
- [7] bit64_0.9-7            AnnotationDbi_1.46.0   splines_3.6.1         
-[10] R.methodsS3_1.8.1      DESeq_1.36.0           geneplotter_1.62.0    
-[13] knitr_1.23             jsonlite_1.7.2         workflowr_1.6.2       
-[16] annotate_1.62.0        R.oo_1.24.0            compiler_3.6.1        
-[19] httr_1.4.2             Matrix_1.2-18          later_1.1.0.1         
-[22] htmltools_0.5.0        prettyunits_1.1.1      tools_3.6.1           
-[25] gtable_0.3.0           glue_1.4.2             GenomeInfoDbData_1.2.1
-[28] Rcpp_1.0.5             vctrs_0.3.6            gdata_2.18.0          
-[31] rtracklayer_1.44.0     crosstalk_1.1.0.1      xfun_0.8              
-[34] stringr_1.4.0          lifecycle_0.2.0        gtools_3.8.1          
-[37] XML_3.98-1.20          zlibbioc_1.30.0        MASS_7.3-52           
-[40] aroma.light_3.14.0     hms_0.5.3              promises_1.1.1        
-[43] yaml_2.2.1             memoise_1.1.0          gridExtra_2.3         
-[46] biomaRt_2.40.1         latticeExtra_0.6-28    stringi_1.4.6         
-[49] RSQLite_2.1.1          genefilter_1.66.0      GenomicFeatures_1.36.3
-[52] caTools_1.17.1.2       rlang_0.4.10           pkgconfig_2.0.3       
-[55] bitops_1.0-6           evaluate_0.14          lattice_0.20-41       
-[58] purrr_0.3.4            htmlwidgets_1.5.2      labeling_0.4.2        
-[61] bit_4.0.4              tidyselect_1.1.0       plyr_1.8.6            
-[64] magrittr_2.0.1         R6_2.5.0               generics_0.0.2        
-[67] DBI_1.1.0              pillar_1.4.7           whisker_0.3-2         
-[70] withr_2.3.0            survival_2.44-1.1      RCurl_1.98-1.1        
-[73] tibble_3.0.4           crayon_1.3.4           KernSmooth_2.23-15    
-[76] rmarkdown_1.13         progress_1.2.2         locfit_1.5-9.1        
-[79] grid_3.6.1             blob_1.2.0             git2r_0.26.1          
-[82] digest_0.6.27          xtable_1.8-4           httpuv_1.5.1          
-[85] R.utils_2.9.0          munsell_0.5.0         </code></pre>
+ [1] colorspace_1.4-1       hwriter_1.3.2          ellipsis_0.3.1        
+ [4] rprojroot_1.3-2        fs_1.5.0               rstudioapi_0.11.0-9000
+ [7] farver_2.0.3           bit64_4.0.5            AnnotationDbi_1.46.1  
+[10] splines_3.6.3          R.methodsS3_1.8.1      DESeq_1.36.0          
+[13] geneplotter_1.62.0     knitr_1.29             jsonlite_1.7.0        
+[16] workflowr_1.6.2        annotate_1.62.0        png_0.1-7             
+[19] R.oo_1.24.0            compiler_3.6.3         httr_1.4.2            
+[22] backports_1.1.9        Matrix_1.2-18          later_1.1.0.1         
+[25] htmltools_0.5.0        prettyunits_1.1.1      tools_3.6.3           
+[28] gtable_0.3.0           glue_1.4.2             GenomeInfoDbData_1.2.1
+[31] Rcpp_1.0.5             vctrs_0.3.4            gdata_2.18.0          
+[34] rtracklayer_1.44.4     crosstalk_1.1.0.1      xfun_0.16             
+[37] stringr_1.4.0          lifecycle_0.2.0        gtools_3.8.2          
+[40] XML_3.98-1.20          zlibbioc_1.30.0        MASS_7.3-52           
+[43] aroma.light_3.14.0     hms_0.5.3              promises_1.1.1        
+[46] yaml_2.2.1             gridExtra_2.3          memoise_1.1.0         
+[49] biomaRt_2.40.5         latticeExtra_0.6-29    stringi_1.4.6         
+[52] RSQLite_2.2.0          genefilter_1.66.0      GenomicFeatures_1.36.4
+[55] caTools_1.18.0         rlang_0.4.7            pkgconfig_2.0.3       
+[58] bitops_1.0-6           evaluate_0.14          lattice_0.20-41       
+[61] purrr_0.3.4            labeling_0.3           htmlwidgets_1.5.1     
+[64] bit_4.0.4              tidyselect_1.1.0       plyr_1.8.6            
+[67] magrittr_1.5           R6_2.4.1               generics_0.0.2        
+[70] DBI_1.1.0              pillar_1.4.6           whisker_0.4           
+[73] withr_2.2.0            survival_3.2-3         RCurl_1.98-1.2        
+[76] tibble_3.0.3           crayon_1.3.4           KernSmooth_2.23-17    
+[79] rmarkdown_2.3          jpeg_0.1-8.1           progress_1.2.2        
+[82] locfit_1.5-9.4         grid_3.6.3             blob_1.2.1            
+[85] git2r_0.27.1           digest_0.6.25          xtable_1.8-4          
+[88] httpuv_1.5.4           R.utils_2.10.1         munsell_0.5.0         </code></pre>
 </div>
 </div>
 
@@ -1263,6 +2136,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

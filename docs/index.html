@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -91,7 +91,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -240,6 +239,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -251,18 +251,6 @@ $(document).ready(function () {
   display: none;
 }
 </style>
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
 
 <!-- code folding -->
 
@@ -319,7 +307,7 @@ $(document).ready(function () {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -328,7 +316,7 @@ $(document).ready(function () {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -340,7 +328,7 @@ $(document).ready(function () {
 <strong>Last updated:</strong> 2021-01-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -356,71 +344,50 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0711682d4c989bade81cb5de5cdf2520fd5f9d33targetblank0711682a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0711682d4c989bade81cb5de5cdf2520fd5f9d33" target="_blank">0711682</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree78cfbcd3204249a8673228d684ae77444c63266btargetblank78cfbcda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/78cfbcd3204249a8673228d684ae77444c63266b" target="_blank">78cfbcd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0711682d4c989bade81cb5de5cdf2520fd5f9d33targetblank0711682a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree78cfbcd3204249a8673228d684ae77444c63266btargetblank78cfbcda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0711682d4c989bade81cb5de5cdf2520fd5f9d33" target="_blank">0711682</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/78cfbcd3204249a8673228d684ae77444c63266b" target="_blank">78cfbcd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/shadow/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
-    Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
-    Ignored:    code/bulkRNA_preprocessing/fastq/
-    Ignored:    code/bulkRNA_preprocessing/out/
-    Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
-    Ignored:    code/single_cell_preprocessing/.snakemake/conda/
-    Ignored:    code/single_cell_preprocessing/.snakemake/locks/
-    Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
-    Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
-    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
-    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
-    Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
-    Ignored:    code/single_cell_preprocessing/fastq/
-    Ignored:    data/ANT1_2.rds
-    Ignored:    data/external_scRNA/Chou_et_al2020/
-    Ignored:    data/external_scRNA/Jietal2018/
-    Ignored:    data/external_scRNA/Wuetal2021/
-    Ignored:    data/external_scRNA/merged_external_scRNA.rds
-    Ignored:    data/filtered_counts.rds
-    Ignored:    data/norm_filtered_counts.rds
-    Ignored:    output/topicModel_k=7.rds
-
-Untracked files:
-    Untracked:  analysis/heterogeneity_bulkRNA.Rmd
+    Ignored:    data/.DS_Store
+    Ignored:    data/external_scRNA/.DS_Store
 
 Unstaged changes:
-    Modified:   .gitignore
-    Modified:   analysis/DEanalysis_bulkRNA.Rmd
-    Modified:   analysis/index.Rmd
-    Modified:   analysis/removeUnwantedVariation_bulkRNA.Rmd
-    Modified:   analysis/variation_bulkRNA.Rmd
+    Deleted:    analysis/figure/powerAnalysis.Rmd/curve-1.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-1.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-2.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-3.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-4.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-5.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-6.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-7.png
+    Deleted:    analysis/figure/powerAnalysis.Rmd/hypoxia-8.png
 
 </code></pre>
 <p>
@@ -459,6 +426,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/78cfbcd3204249a8673228d684ae77444c63266b/analysis/index.Rmd" target="_blank">78cfbcd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+finish paring down files
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/analysis/index.Rmd" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add ward et al data files to data
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/e3fbd0fe2858abab87d6cc265d85f30638d8e531/docs/index.html" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add ward et al data files to data
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -542,7 +560,7 @@ Start workflowr project.
 <h2>Single-cell data</h2>
 <ul>
 <li><p><a href="preProcess_scRNA.html">Pre-processing of raw 10x files into count matrices and demultiplexing</a></p></li>
-<li><p><a href="clustering_scRNA.html">Integration and clustering of scRNA sequencing data</a> ::::</p>
+<li><p><a href="clustering_scRNA.html">Integration and clustering of scRNA sequencing data</a></p>
 <ul>
 <li>Figures 2B, 2C, 2D</li>
 </ul></li>
@@ -558,15 +576,15 @@ Start workflowr project.
 <ul>
 <li><p><a href="preProcess_bulkRNA.html">Pre-processing of raw bulk RNA sequencing files</a></p></li>
 <li><p><a href="download_gene_annotation.html">Download Gene Annotations for GO analysis</a></p></li>
-<li><p><a href="normFilter_bulkRNA.html">Normalization and filtering of bulkRNAseq data</a>::::</p>
+<li><p><a href="normFilter_bulkRNA.html">Normalization and filtering of bulkRNAseq data</a></p>
 <ul>
-<li>Figures 3A, S6, S7, S8</li>
+<li>Figure S8</li>
 </ul></li>
-<li><p><a href="removeUnwantedVariation_bulkRNA.html">Modeling and removing unwanted technical variation</a>::::</p>
+<li><p><a href="removeUnwantedVariation_bulkRNA.html">Modeling and removing unwanted technical variation</a></p>
 <ul>
-<li>Figures 3B, S5</li>
+<li>Figures 3A, 3B, S5, S6, S7</li>
 </ul></li>
-<li><p><a href="DEanalysis_bulkRNA.html">Differential expression using limma/voom</a> ::::</p>
+<li><p><a href="DEanalysis_bulkRNA.html">Differential expression using limma/voom</a></p>
 <ul>
 <li>Figure 4</li>
 </ul></li>
@@ -574,7 +592,7 @@ Start workflowr project.
 <ul>
 <li>Figures 3C, S5</li>
 </ul></li>
-<li><p><a href="heterogeneity_bulkRNA.html">Selected examples of inter-individual heterogeneity</a>::::</p>
+<li><p><a href="heterogeneity_bulkRNA.html">Selected examples of inter-individual heterogeneity</a></p>
 <ul>
 <li>Figure 5</li>
 </ul></li>
@@ -583,7 +601,7 @@ Start workflowr project.
 <div id="power-analysis" class="section level2">
 <h2>Power Analysis</h2>
 <ul>
-<li><p><a href="powerAnalysis.html">Conducting power analysis for eQTL mapping</a>::::</p>
+<li><p><a href="powerAnalysis.html">Conducting power analysis for eQTL mapping</a></p>
 <ul>
 <li>Figure 6</li>
 </ul></li>
@@ -620,6 +638,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
