@@ -16,4 +16,6 @@ code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
 code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/*
 code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
 code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/*
+code/bulkRNA_preprocessing/out/
+code/bulkRNA_preprocessing/out/*
 output/topicModel_k=7.rds
