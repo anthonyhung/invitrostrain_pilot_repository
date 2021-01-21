@@ -420,7 +420,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -429,7 +429,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -438,10 +438,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-01-20
+<strong>Last updated:</strong> 2021-01-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -457,12 +457,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree446bf4b363cf39fc8bfa6f4868ba662b6793051atargetblank446bf4ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/446bf4b363cf39fc8bfa6f4868ba662b6793051a" target="_blank">446bf4b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree32e5716c8d339917866ab21325353d2cd2d3cc77targetblank32e5716a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/32e5716c8d339917866ab21325353d2cd2d3cc77" target="_blank">32e5716</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree446bf4b363cf39fc8bfa6f4868ba662b6793051atargetblank446bf4ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree32e5716c8d339917866ab21325353d2cd2d3cc77targetblank32e5716a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/446bf4b363cf39fc8bfa6f4868ba662b6793051a" target="_blank">446bf4b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/32e5716c8d339917866ab21325353d2cd2d3cc77" target="_blank">32e5716</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -554,6 +554,7 @@ Ignored files:
     Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
     Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
     Ignored:    code/bulkRNA_preprocessing/fastq/
+    Ignored:    code/bulkRNA_preprocessing/out/
     Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
     Ignored:    code/single_cell_preprocessing/.snakemake/conda/
     Ignored:    code/single_cell_preprocessing/.snakemake/locks/
@@ -563,14 +564,17 @@ Ignored files:
     Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
     Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
     Ignored:    code/single_cell_preprocessing/fastq/
-    Ignored:    data/ANT1_2.rds
     Ignored:    data/external_scRNA/Chou_et_al2020/
     Ignored:    data/external_scRNA/Jietal2018/
     Ignored:    data/external_scRNA/Wuetal2021/
     Ignored:    data/external_scRNA/merged_external_scRNA.rds
+    Ignored:    data/poweranalysis/alasoo_et_al/
+    Ignored:    output/GO_terms_enriched.csv
+    Ignored:    output/topicModel_k=7.rds
+    Ignored:    output/voom_results.rds
 
 Unstaged changes:
-    Modified:   analysis/preProcess_scRNA.Rmd
+    Modified:   .gitignore
 
 </code></pre>
 <p>
@@ -609,6 +613,91 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/32e5716c8d339917866ab21325353d2cd2d3cc77/analysis/preProcess_scRNA.Rmd" target="_blank">32e5716</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add gridextra
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/78cfbcd3204249a8673228d684ae77444c63266b/analysis/preProcess_scRNA.Rmd" target="_blank">78cfbcd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+finish paring down files
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e0e89e18e26a5e4312f081c98eddb2d0f9577653/analysis/preProcess_scRNA.Rmd" target="_blank">e0e89e1</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+download annotations and finish preprocessing of bulkRNA
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/99c70b8e43338b294c4aa7877ea7eccc732be2ac/analysis/preProcess_scRNA.Rmd" target="_blank">99c70b8</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-20
+</td>
+<td>
+update external data
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/99c70b8e43338b294c4aa7877ea7eccc732be2ac/docs/preProcess_scRNA.html" target="_blank">99c70b8</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-20
+</td>
+<td>
+update external data
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -669,23 +758,24 @@ Add files for analysis
 </div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product are seurat objects containing the raw count matrices and assignment to one of the three individuals and two treatment groups (strain or unstrain) for each of the two 10x lanes used in the sequencing experiment.</p>
+<p>This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product are seurat objects containing the raw count matrices and assignment to one of the three individuals and two treatment groups (strain or unstrain) for each of the two 10x GEM wells used in the sequencing experiment.</p>
 </div>
-<div id="run-the-snakemake-pipeline-after-downloading-necessary-files" class="section level1">
-<h1>Run the Snakemake Pipeline after downloading necessary files</h1>
+<div id="run-the-snakemake-pipeline-after-downloading-necessary-files-and-creating-the-conda-environment-see-readme.txt" class="section level1">
+<h1>Run the Snakemake Pipeline after downloading necessary files and creating the conda environment (see README.txt)</h1>
 <ol style="list-style-type: decimal">
 <li><p>Move the fastq files from all samples (these are output files from 10x runs, containing both forward and reverse sequences) into the folder code/single_cell_preprocessing/fastq/. Undetermined data files are not required.</p></li>
 <li><p>Modify the code/single_cell_preprocessing/Pipeline/cluster_solo.json file to correspond to the computing cluster you are working with.</p></li>
 <li><p>Unzip the whitelist file in the code/single_cell_preprocessing/ directory.</p></li>
 <li><p>Place the human.YRI.cellranger.exons.vcf file into the code/single_cell_preprocessing/ directory.</p></li>
 <li><p>Install the conda working by running “conda env create –file environment.yaml”</p></li>
+<li><p>Run “source activate dropseq2” to activate the conda environment.</p></li>
 <li><p>Run the file “submit.sh”.</p></li>
 </ol>
 </div>
 <div id="load-files-into-r" class="section level1">
 <h1>Load files into R</h1>
-<p>After running the pipeline, two directories will be created corresponding to the two 10x lanes involved in the sequencing experiment (“YG-AH-2S-ANT-1_S1_L008” and “YG-AH-2S-ANT-2_S2_L008”). These directories contain the demuxlet and STAR SOLO outputs for each 10x lane.</p>
-<p>Details about the individualXtreatment status of the samples that were pooled for each of the two lanes: ANT1: (NA19160 unstrained; NA18856 unstrained; NA18855 strained) ANT2: (NA19160 strained; NA18855 unstrained)</p>
+<p>After running the pipeline, two directories will be created corresponding to the two 10x GEM well involved in the sequencing experiment (“YG-AH-2S-ANT-1_S1_L008” and “YG-AH-2S-ANT-2_S2_L008”). These directories contain the demuxlet and STAR SOLO outputs for each 10x GEM well</p>
+<p>Details about the individualXtreatment status of the samples that were pooled for each of the two GEM wells: ANT1: (NA19160 unstrained; NA18856 unstrained; NA18855 strained) ANT2: (NA19160 strained; NA18855 unstrained)</p>
 <pre class="r"><code>library(data.table)
 library(Matrix)
 library(Seurat)
@@ -708,6 +798,12 @@ Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>The following objects are masked from &#39;package:base&#39;:
 
     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(gridExtra)</code></pre>
+<pre><code>
+Attaching package: &#39;gridExtra&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:dplyr&#39;:
+
+    combine</code></pre>
 <pre class="r"><code>## link to directories containing data files (count matrices)
 proj_dir &lt;- &quot;code/single_cell_preprocessing/&quot;
 ANT1_dir &lt;- paste0(proj_dir, &quot;YG-AH-2S-ANT-1_S1_L008/&quot;)
@@ -819,10 +915,130 @@ ANT2_seurat &lt;- CreateSeuratObject(counts = count_data_singlets2, project = &q
 <pre><code>Warning: Non-unique features (rownames) present in the input matrix, making
 unique</code></pre>
 </div>
+<div id="merge-the-two-seurat-objects-without-any-data-integration-and-filter-out-unwanted-cells-based-on-qc-metrics" class="section level1">
+<h1>Merge the two seurat objects (without any data integration) and filter out unwanted cells based on QC metrics</h1>
+<p>This merged dataset is used to fit the topic model in a later file. Based on the clustering results, which show that the cells from the same individual from different 10x GEM well overlap, there does not seem to be a large contribution of technical effects from 10x GEM well on gene expression.</p>
+<pre class="r"><code>ANT1.2 &lt;- merge(x = ANT1_seurat,
+                   y = ANT2_seurat,
+                   add.cell.ids = c(&quot;ANT1&quot;, &quot;ANT2&quot;),
+                   merge.data = F,
+                   project = &quot;OAStrain&quot;)
+
+#compute the percentage of reads coming from mitochondrial genes for each droplet
+ANT1.2[[&quot;percent.mt&quot;]] &lt;- PercentageFeatureSet(ANT1.2, pattern = &quot;^MT-&quot;)
+
+#visualize QC metrics as violin plot
+VlnPlot(ANT1.2, features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;, &quot;percent.mt&quot;), ncol = 3)</code></pre>
+<p><img src="figure/preProcess_scRNA.Rmd/merge-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VlnPlot(ANT1.2, features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;, &quot;percent.mt&quot;), ncol = 3, group.by = &quot;labels&quot;)</code></pre>
+<p><img src="figure/preProcess_scRNA.Rmd/merge-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># FeatureScatter is typically used to visualize feature-feature relationships, but can be used
+# for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
+plot1 &lt;- FeatureScatter(ANT1.2, feature1 = &quot;nCount_RNA&quot;, feature2 = &quot;percent.mt&quot;)
+plot2 &lt;- FeatureScatter(ANT1.2, feature1 = &quot;nCount_RNA&quot;, feature2 = &quot;nFeature_RNA&quot;)
+CombinePlots(plots = list(plot1, plot2))</code></pre>
+<pre><code>Warning: CombinePlots is being deprecated. Plots should now be combined
+using the patchwork system.</code></pre>
+<p><img src="figure/preProcess_scRNA.Rmd/merge-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Filter barcodes based on nFeatures and %MT 
+ANT1.2 &lt;- subset(ANT1.2, subset = nFeature_RNA &gt; 2000 &amp; percent.mt &lt; 10)
+table(ANT1.2$labels)</code></pre>
+<pre><code>
+  NA18855_Strain NA18855_Unstrain NA18856_Unstrain   NA19160_Strain 
+             348              586              395              264 
+NA19160_Unstrain 
+             222 </code></pre>
+<pre class="r"><code>#Look at QC metrics after filtering
+VlnPlot(ANT1.2, features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;, &quot;percent.mt&quot;), ncol = 3, group.by = &quot;labels&quot;)</code></pre>
+<p><img src="figure/preProcess_scRNA.Rmd/merge-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dim(ANT1.2)</code></pre>
+<pre><code>[1] 33538  1815</code></pre>
+<pre class="r"><code># Look at how the samples cluster after merging without any integration methods applied
+#normalize
+ANT1.2 &lt;- NormalizeData(ANT1.2, normalization.method = &quot;LogNormalize&quot;, scale.factor = 10000)
+#find variable features and run a PCA
+ANT1.2 &lt;- FindVariableFeatures(ANT1.2, selection.method = &quot;vst&quot;, nfeatures = 2000)
+ANT1.2 &lt;- ScaleData(ANT1.2, verbose = FALSE)
+nPC &lt;- 100
+ANT1.2 &lt;- RunPCA(ANT1.2, features = VariableFeatures(object = ANT1.2), npcs = nPC)</code></pre>
+<pre><code>PC_ 1 
+Positive:  VIM, TIMP3, INHBA, TPM1, MAP3K7CL, SPINT2, PDLIM3, SOX4, C12orf75, TUBA1A 
+       CCND2, CPE, RDH10, LZTS1, PMEPA1, LMO7, CDKN2B, TCAF1, MARCKSL1, UCHL1 
+       GSTO1, XRCC4, IGFL2, FN1, FSCN1, RAI14, STMN1, CTGF, JPT1, MYH9 
+Negative:  IFITM3, SAA1, SPON2, PDPN, TMEM141, PTGDS, DPP7, OTULINL, CDKN1C, TSPO 
+       PRLR, DCN, LUM, FKBP5, PNMT, GGT5, MMP23B, NUPR1, TMEM88, PLIN2 
+       SERPINF1, IQGAP2, ADAMTS2, SMOC2, APOD, GMPR, FAM213A, FMO5, TXNDC16, MME 
+PC_ 2 
+Positive:  RPS4Y1, SLC3A2, EIF1AY, FTH1, SERPINE1, PTGR1, DDIT3, EIF1B, FAM129A, SQSTM1 
+       DDX3Y, SPON2, MT1E, MGST1, CEBPB, BTG1, CLIC1, TRIB3, KCNG1, EZR 
+       DUSP1, CYSTM1, PRDX6, TSPO, IFRD1, IMPA2, MAGEH1, NFIL3, YWHAQ, BLVRB 
+Negative:  CHCHD2, MDK, MFAP4, PLAC9, OGN, COL15A1, B2M, SLC40A1, COL6A3, MEST 
+       SPON1, FIBIN, HLA-A, MXRA5, ACTA2, RIMS2, IGFBP3, KCTD12, PITX1, PRSS35 
+       CEMIP, GLIPR1, COL6A1, ADAM12, CCND2, SBF2-AS1, LURAP1L, FST, GNG11, CHN1 
+PC_ 3 
+Positive:  OGFRL1, SMOC2, AQP1, TMEM88, GPC3, SELENOP, PROCR, ODAPH, CLTB, PRDX6 
+       PLAC9, MEST, IGFBP7, PLA2G16, FLT1, SLIT3, ATRNL1, IGFBP2, TSPAN15, NEDD9 
+       PDZRN4, TMEM176B, HAPLN4, RGS4, SRPX, NSG1, COL4A4, AC078850.1, TMEM176A, TPD52L1 
+Negative:  MGST1, TGFBI, DDIT4, TRIB3, ZFAS1, FN1, SLC7A11, LGALS1, FTH1, SLFN5 
+       AP002884.1, TXNRD1, LIMS1, GCLM, COL6A3, C1R, CRABP2, TSC22D3, PHGDH, HLA-B 
+       ASNS, SLC12A8, DDIT3, NFIL3, NQO1, PMAIP1, TCEA1, GPR1, PCK2, AC040170.1 
+PC_ 4 
+Positive:  IL6ST, TIMP1, COL6A2, COL6A1, HOPX, FBLN2, NR2F1, LTBP1, COL15A1, F3 
+       SLC22A3, MME, MFAP4, MYL10, PDGFRA, SPON1, FLT1, TGM2, GAS7, TIMP3 
+       CLMP, EGFL6, GDF6, EGFLAM, HGF, VTN, TSPAN9, FGF7, LTBP2, COL11A1 
+Negative:  NRG1, MFAP5, ANOS1, ODAPH, PROCR, HTRA1, NKAIN4, AL356056.1, ANXA3, SPINT1 
+       ODC1, PRSS23, SMOC2, ANGPTL7, PDZRN4, TXNRD2, TUBA1A, ENAH, CDH6, NTRK2 
+       CLU, CDKN2A, DYNC1I1, SFRP1, PLAC9, PPME1, GADD45A, NCAM1, PLXDC1, GATM 
+PC_ 5 
+Positive:  CDK1, PCLAF, CENPM, UBE2C, RRM2, TOP2A, NUSAP1, PTTG1, TYMS, PBK 
+       BIRC5, CENPF, HMMR, SPC25, DEPDC1, CEP55, TUBA1B, FOXM1, SHCBP1, HMGB2 
+       ORC6, NCAPG, GINS2, TROAP, TK1, GTSE1, MAD2L1, TPX2, ANLN, KRT18 
+Negative:  FN1, FST, THBS2, WNT2, CXCL14, LOX, FILIP1L, NEAT1, RPRML, RAMP1 
+       LUM, CKB, HTRA1, PLXDC1, TSPAN13, CCND2, FAP, COL6A2, IFI16, PLXDC2 
+       PSPN, EGFL6, COMP, TDO2, RCN3, HSPB6, RPS4Y1, CD55, GPC4, IGFL3 </code></pre>
+<pre class="r"><code>#Run clustering and UMAP
+num_PCs &lt;- 50
+ANT1.2 &lt;- FindNeighbors(ANT1.2, dims = 1:num_PCs)</code></pre>
+<pre><code>Computing nearest neighbor graph</code></pre>
+<pre><code>Computing SNN</code></pre>
+<pre class="r"><code>ANT1.2 &lt;- FindClusters(ANT1.2, resolution = 0.5)</code></pre>
+<pre><code>Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+
+Number of nodes: 1815
+Number of edges: 85550
+
+Running Louvain algorithm...
+Maximum modularity in 10 random starts: 0.8146
+Number of communities: 7
+Elapsed time: 0 seconds</code></pre>
+<pre class="r"><code>#Run UMAP
+ANT1.2 &lt;- RunUMAP(ANT1.2, dims = 1:num_PCs)</code></pre>
+<pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
+This message will be shown once per session</code></pre>
+<pre><code>17:36:07 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>17:36:07 Read 1815 rows and found 50 numeric columns</code></pre>
+<pre><code>17:36:07 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>17:36:07 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
+<pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
+<pre><code>**************************************************|
+17:36:07 Writing NN index file to temp file /tmp/RtmpfG4MUF/file38f6470ab8da0
+17:36:07 Searching Annoy index using 1 thread, search_k = 3000
+17:36:08 Annoy recall = 100%
+17:36:08 Commencing smooth kNN distance calibration using 1 thread
+17:36:09 Initializing from normalized Laplacian + noise
+17:36:09 Commencing optimization for 500 epochs, with 73932 positive edges
+17:36:14 Optimization finished</code></pre>
+<pre class="r"><code>p1 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;)
+p2 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;orig.ident&quot;)
+p3 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;labels&quot;)
+grid.arrange(p1, p2, p3, nrow = 2)</code></pre>
+<p><img src="figure/preProcess_scRNA.Rmd/merge-5.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
 <div id="save-seurat-objects" class="section level1">
 <h1>Save Seurat objects</h1>
-<pre class="r"><code>saveRDS(ANT1_seurat, &quot;data/ANT1.rds&quot;)
-saveRDS(ANT2_seurat, &quot;data/ANT2.rds&quot;)</code></pre>
+<pre class="r"><code>saveRDS(ANT1.2, &quot;data/ANT1_2.rds&quot;)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -850,46 +1066,47 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] dplyr_1.0.2       plyr_1.8.6        stringr_1.4.0     readr_1.3.1      
-[5] Seurat_3.2.3      Matrix_1.2-18     data.table_1.13.0
+[1] gridExtra_2.3     dplyr_1.0.2       plyr_1.8.6        stringr_1.4.0    
+[5] readr_1.3.1       Seurat_3.2.3      Matrix_1.2-18     data.table_1.13.0
 
 loaded via a namespace (and not attached):
   [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-23        
   [4] ellipsis_0.3.1        ggridges_0.5.1        rprojroot_2.0.2      
-  [7] fs_1.3.1              spatstat.data_1.7-0   leiden_0.3.1         
- [10] listenv_0.8.0         npsurv_0.4-0          ggrepel_0.9.0        
- [13] codetools_0.2-16      splines_3.6.1         lsei_1.2-0           
- [16] knitr_1.23            polyclip_1.10-0       jsonlite_1.7.2       
- [19] workflowr_1.6.2       ica_1.0-2             cluster_2.1.0        
- [22] png_0.1-7             uwot_0.1.10           shiny_1.3.2          
- [25] sctransform_0.3.2     compiler_3.6.1        httr_1.4.2           
- [28] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
- [31] tools_3.6.1           rsvd_1.0.1            igraph_1.2.4.1       
- [34] gtable_0.3.0          glue_1.4.2            RANN_2.6.1           
- [37] reshape2_1.4.3        rappdirs_0.3.1        Rcpp_1.0.5           
- [40] spatstat_1.64-1       scattermore_0.7       vctrs_0.3.6          
- [43] gdata_2.18.0          nlme_3.1-140          lmtest_0.9-37        
- [46] xfun_0.8              globals_0.12.5        mime_0.9             
- [49] miniUI_0.1.1.1        lifecycle_0.2.0       irlba_2.3.3          
- [52] gtools_3.8.1          goftest_1.2-2         future_1.18.0        
- [55] MASS_7.3-52           zoo_1.8-8             scales_1.1.1         
- [58] hms_0.5.3             promises_1.1.1        spatstat.utils_1.17-0
- [61] parallel_3.6.1        RColorBrewer_1.1-2    yaml_2.2.1           
- [64] reticulate_1.16       pbapply_1.4-0         gridExtra_2.3        
- [67] ggplot2_3.3.3         rpart_4.1-15          stringi_1.4.6        
- [70] caTools_1.17.1.2      rlang_0.4.10          pkgconfig_2.0.3      
- [73] matrixStats_0.57.0    bitops_1.0-6          evaluate_0.14        
- [76] lattice_0.20-41       ROCR_1.0-7            purrr_0.3.4          
- [79] tensor_1.5            patchwork_1.1.0       htmlwidgets_1.5.2    
- [82] cowplot_1.1.0         tidyselect_1.1.0      RcppAnnoy_0.0.18     
- [85] magrittr_2.0.1        R6_2.5.0              gplots_3.0.1.1       
- [88] generics_0.0.2        pillar_1.4.7          whisker_0.3-2        
- [91] mgcv_1.8-28           fitdistrplus_1.0-14   survival_2.44-1.1    
- [94] abind_1.4-5           tibble_3.0.4          future.apply_1.3.0   
- [97] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
-[100] rmarkdown_1.13        grid_3.6.1            git2r_0.26.1         
-[103] digest_0.6.27         xtable_1.8-4          tidyr_1.1.2          
-[106] httpuv_1.5.1          munsell_0.5.0         viridisLite_0.3.0    </code></pre>
+  [7] fs_1.3.1              spatstat.data_1.7-0   farver_2.0.3         
+ [10] leiden_0.3.1          listenv_0.8.0         npsurv_0.4-0         
+ [13] ggrepel_0.9.0         RSpectra_0.15-0       codetools_0.2-16     
+ [16] splines_3.6.1         lsei_1.2-0            knitr_1.23           
+ [19] polyclip_1.10-0       jsonlite_1.7.2        workflowr_1.6.2      
+ [22] ica_1.0-2             cluster_2.1.0         png_0.1-7            
+ [25] uwot_0.1.10           shiny_1.3.2           sctransform_0.3.2    
+ [28] compiler_3.6.1        httr_1.4.2            lazyeval_0.2.2       
+ [31] later_1.1.0.1         htmltools_0.5.0       tools_3.6.1          
+ [34] rsvd_1.0.1            igraph_1.2.4.1        gtable_0.3.0         
+ [37] glue_1.4.2            RANN_2.6.1            reshape2_1.4.3       
+ [40] rappdirs_0.3.1        Rcpp_1.0.5            spatstat_1.64-1      
+ [43] scattermore_0.7       vctrs_0.3.6           gdata_2.18.0         
+ [46] nlme_3.1-140          lmtest_0.9-37         xfun_0.8             
+ [49] globals_0.12.5        mime_0.9              miniUI_0.1.1.1       
+ [52] lifecycle_0.2.0       irlba_2.3.3           gtools_3.8.1         
+ [55] goftest_1.2-2         future_1.18.0         MASS_7.3-52          
+ [58] zoo_1.8-8             scales_1.1.1          hms_0.5.3            
+ [61] promises_1.1.1        spatstat.utils_1.17-0 parallel_3.6.1       
+ [64] RColorBrewer_1.1-2    yaml_2.2.1            reticulate_1.16      
+ [67] pbapply_1.4-0         ggplot2_3.3.3         rpart_4.1-15         
+ [70] stringi_1.4.6         caTools_1.17.1.2      rlang_0.4.10         
+ [73] pkgconfig_2.0.3       matrixStats_0.57.0    bitops_1.0-6         
+ [76] evaluate_0.14         lattice_0.20-41       ROCR_1.0-7           
+ [79] purrr_0.3.4           tensor_1.5            labeling_0.4.2       
+ [82] patchwork_1.1.0       htmlwidgets_1.5.2     cowplot_1.1.0        
+ [85] tidyselect_1.1.0      RcppAnnoy_0.0.18      magrittr_2.0.1       
+ [88] R6_2.5.0              gplots_3.0.1.1        generics_0.0.2       
+ [91] withr_2.3.0           pillar_1.4.7          whisker_0.3-2        
+ [94] mgcv_1.8-28           fitdistrplus_1.0-14   survival_2.44-1.1    
+ [97] abind_1.4-5           tibble_3.0.4          future.apply_1.3.0   
+[100] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
+[103] rmarkdown_1.13        grid_3.6.1            git2r_0.26.1         
+[106] digest_0.6.27         xtable_1.8-4          tidyr_1.1.2          
+[109] httpuv_1.5.1          munsell_0.5.0         viridisLite_0.3.0    </code></pre>
 </div>
 </div>
 
