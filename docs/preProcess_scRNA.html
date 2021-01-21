@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree32e5716c8d339917866ab21325353d2cd2d3cc77targetblank32e5716a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/32e5716c8d339917866ab21325353d2cd2d3cc77" target="_blank">32e5716</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree89d8ddd8f60efeed6a2ee39010b89c66d4cadb48targetblank89d8ddda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48" target="_blank">89d8ddd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree32e5716c8d339917866ab21325353d2cd2d3cc77targetblank32e5716a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree89d8ddd8f60efeed6a2ee39010b89c66d4cadb48targetblank89d8ddda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/32e5716c8d339917866ab21325353d2cd2d3cc77" target="_blank">32e5716</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48" target="_blank">89d8ddd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -613,6 +613,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/analysis/preProcess_scRNA.Rmd" target="_blank">89d8ddd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add three rows
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/docs/preProcess_scRNA.html" target="_blank">89d8ddd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add three rows
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -930,8 +964,82 @@ ANT1.2[[&quot;percent.mt&quot;]] &lt;- PercentageFeatureSet(ANT1.2, pattern = &q
 #visualize QC metrics as violin plot
 VlnPlot(ANT1.2, features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;, &quot;percent.mt&quot;), ncol = 3)</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-1">
+Past versions of merge-1.png
+</button>
+</p>
+<div id="fig-merge-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/docs/figure/preProcess_scRNA.Rmd/merge-1.png" target="_blank">89d8ddd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>VlnPlot(ANT1.2, features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;, &quot;percent.mt&quot;), ncol = 3, group.by = &quot;labels&quot;)</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-2">
+Past versions of merge-2.png
+</button>
+</p>
+<div id="fig-merge-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/docs/figure/preProcess_scRNA.Rmd/merge-2.png" target="_blank">89d8ddd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># FeatureScatter is typically used to visualize feature-feature relationships, but can be used
 # for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
 plot1 &lt;- FeatureScatter(ANT1.2, feature1 = &quot;nCount_RNA&quot;, feature2 = &quot;percent.mt&quot;)
@@ -940,6 +1048,43 @@ CombinePlots(plots = list(plot1, plot2))</code></pre>
 <pre><code>Warning: CombinePlots is being deprecated. Plots should now be combined
 using the patchwork system.</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-3">
+Past versions of merge-3.png
+</button>
+</p>
+<div id="fig-merge-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/docs/figure/preProcess_scRNA.Rmd/merge-3.png" target="_blank">89d8ddd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#Filter barcodes based on nFeatures and %MT 
 ANT1.2 &lt;- subset(ANT1.2, subset = nFeature_RNA &gt; 2000 &amp; percent.mt &lt; 10)
 table(ANT1.2$labels)</code></pre>
@@ -951,6 +1096,43 @@ NA19160_Unstrain
 <pre class="r"><code>#Look at QC metrics after filtering
 VlnPlot(ANT1.2, features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;, &quot;percent.mt&quot;), ncol = 3, group.by = &quot;labels&quot;)</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-4">
+Past versions of merge-4.png
+</button>
+</p>
+<div id="fig-merge-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/docs/figure/preProcess_scRNA.Rmd/merge-4.png" target="_blank">89d8ddd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>dim(ANT1.2)</code></pre>
 <pre><code>[1] 33538  1815</code></pre>
 <pre class="r"><code># Look at how the samples cluster after merging without any integration methods applied
@@ -1016,25 +1198,62 @@ ANT1.2 &lt;- RunUMAP(ANT1.2, dims = 1:num_PCs)</code></pre>
 <pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
 This message will be shown once per session</code></pre>
-<pre><code>17:36:07 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>17:36:07 Read 1815 rows and found 50 numeric columns</code></pre>
-<pre><code>17:36:07 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>17:36:07 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>17:38:16 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>17:38:16 Read 1815 rows and found 50 numeric columns</code></pre>
+<pre><code>17:38:16 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>17:38:16 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>**************************************************|
-17:36:07 Writing NN index file to temp file /tmp/RtmpfG4MUF/file38f6470ab8da0
-17:36:07 Searching Annoy index using 1 thread, search_k = 3000
-17:36:08 Annoy recall = 100%
-17:36:08 Commencing smooth kNN distance calibration using 1 thread
-17:36:09 Initializing from normalized Laplacian + noise
-17:36:09 Commencing optimization for 500 epochs, with 73932 positive edges
-17:36:14 Optimization finished</code></pre>
+17:38:16 Writing NN index file to temp file /tmp/RtmpkBLdd2/file3905a14e532a3
+17:38:16 Searching Annoy index using 1 thread, search_k = 3000
+17:38:17 Annoy recall = 100%
+17:38:17 Commencing smooth kNN distance calibration using 1 thread
+17:38:18 Initializing from normalized Laplacian + noise
+17:38:18 Commencing optimization for 500 epochs, with 73932 positive edges
+17:38:24 Optimization finished</code></pre>
 <pre class="r"><code>p1 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;)
 p2 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;orig.ident&quot;)
 p3 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;labels&quot;)
-grid.arrange(p1, p2, p3, nrow = 2)</code></pre>
+grid.arrange(p1, p2, p3, nrow = 3)</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-5">
+Past versions of merge-5.png
+</button>
+</p>
+<div id="fig-merge-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/docs/figure/preProcess_scRNA.Rmd/merge-5.png" target="_blank">89d8ddd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="save-seurat-objects" class="section level1">
 <h1>Save Seurat objects</h1>

@@ -46,7 +46,6 @@ library(readr)
 library(stringr)
 library(plyr)
 library(dplyr)
-library(gridExtra)
 ```
 
 ```{r specify directory structure}
@@ -181,7 +180,9 @@ ANT1.2 <- RunUMAP(ANT1.2, dims = 1:num_PCs)
 p1 <- DimPlot(ANT1.2, reduction = "umap")
 p2 <- DimPlot(ANT1.2, reduction = "umap", group.by = "orig.ident")
 p3 <- DimPlot(ANT1.2, reduction = "umap", group.by = "labels")
-grid.arrange(p1, p2, p3, nrow = 3)
+p1
+p2
+p3
 ```
 
 # Save Seurat objects
