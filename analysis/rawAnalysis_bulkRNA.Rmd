@@ -1,5 +1,5 @@
 ---
-title: "rawAnalysis_bulkRNA"
+title: "Analysis of Raw bulkRNAseq data"
 author: "Anthony Hung"
 date: "2021-01-19"
 output: workflowr::wflow_html

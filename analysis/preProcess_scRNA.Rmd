@@ -12,7 +12,7 @@ editor_options:
 This page will walk through the steps to go from the raw 10x sequencing fastq files to a count matrix and demuxlet assignment of droplets to individuals. This involves running a Snakemake pipeline located in the code directory and some code in R. The end product are seurat objects containing the raw count matrices and assignment to one of the three individuals and two treatment groups (strain or unstrain) for each of the two 10x lanes used in the sequencing experiment.
 
 
-# Run the Snakemake Pipeline after downloading necessary files
+# Run the Snakemake Pipeline after downloading necessary files and creating the conda environment (see README.txt)
 
 1. Move the fastq files from all samples (these are output files from 10x runs, containing both forward and reverse sequences) into the folder
 code/single_cell_preprocessing/fastq/. Undetermined data files are not required.
@@ -26,7 +26,9 @@ code/single_cell_preprocessing/fastq/. Undetermined data files are not required.
 5. Install the conda working by running
 "conda env create --file environment.yaml"
 
-6. Run the file "submit.sh".
+6. Run "source activate dropseq2" to activate the conda environment.
+
+7. Run the file "submit.sh".
 
 # Load files into R
 
