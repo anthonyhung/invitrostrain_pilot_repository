@@ -7,16 +7,9 @@ editor_options:
   chunk_output_type: console
 ---
 
----
-title: "DE_analysis"
-author: "Anthony Hung"
-date: "2019-12-16"
-output: workflowr::wflow_html
-editor_options:
-  chunk_output_type: console
----
+# Introduction
 
-## Introduction
+This code takes as input the filtered count data and two factors of unwanted variation fit by RUVs. It then uses limma and voom to perform differential expression analysis between treatment conditions using the data. After we have a set of differentially expressed genes, we look for enrichments amongst DE genes in GO pathways and previously published osteoarthritis datasets.
 
 ```{r loading libraries and data, message=F, warning=F}
 library("limma")

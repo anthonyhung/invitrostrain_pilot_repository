@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Anthony Hung" />
+
+<meta name="date" content="2021-01-19" />
+
+<title>Modeling and removing unwanted technical variation</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.15/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">invitroOA_pilot_repository</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Modeling and removing unwanted technical variation</h1>
+<h4 class="author">Anthony Hung</h4>
+<h4 class="date">2021-01-19</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-01-21
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210119code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210119)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210119code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0711682d4c989bade81cb5de5cdf2520fd5f9d33targetblank0711682a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0711682d4c989bade81cb5de5cdf2520fd5f9d33" target="_blank">0711682</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0711682d4c989bade81cb5de5cdf2520fd5f9d33targetblank0711682a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0711682d4c989bade81cb5de5cdf2520fd5f9d33" target="_blank">0711682</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/shadow/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
+    Ignored:    code/bulkRNA_preprocessing/fastq/
+    Ignored:    code/bulkRNA_preprocessing/out/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda/
+    Ignored:    code/single_cell_preprocessing/.snakemake/locks/
+    Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
+    Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
+    Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
+    Ignored:    code/single_cell_preprocessing/fastq/
+    Ignored:    data/ANT1_2.rds
+    Ignored:    data/RUVsOut.rds
+    Ignored:    data/external_scRNA/Chou_et_al2020/
+    Ignored:    data/external_scRNA/Jietal2018/
+    Ignored:    data/external_scRNA/Wuetal2021/
+    Ignored:    data/external_scRNA/merged_external_scRNA.rds
+    Ignored:    data/filtered_counts.rds
+    Ignored:    data/norm_filtered_counts.rds
+    Ignored:    output/topicModel_k=7.rds
+
+Untracked files:
+    Untracked:  analysis/heterogeneity_bulkRNA.Rmd
+    Untracked:  code/PCA_fn.R
+
+Unstaged changes:
+    Modified:   .gitignore
+    Modified:   analysis/DEanalysis_bulkRNA.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/normFilter_bulkRNA.Rmd
+    Modified:   analysis/removeUnwantedVariation_bulkRNA.Rmd
+    Modified:   analysis/variation_bulkRNA.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/removeUnwantedVariation_bulkRNA.Rmd</code>) and HTML (<code>docs/removeUnwantedVariation_bulkRNA.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/0711682d4c989bade81cb5de5cdf2520fd5f9d33/analysis/removeUnwantedVariation_bulkRNA.Rmd" target="_blank">0711682</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+start normalization file
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/28f57faed7255644b4858290aed125d5466312ea/analysis/removeUnwantedVariation_bulkRNA.Rmd" target="_blank">28f57fa</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-19
+</td>
+<td>
+Add files for analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This code takes in the normalized and filtered count data. It first performs a PCA on the data. It then looks for correlations between the first 5 PCs and several experimental variables before and after fitting two factors of unwanted variation in the data using RUVs (taking advantage of the technical replicates in our study design). We then save the RUVs output for use in later files.</p>
+</div>
+<div id="examine-normalizedfiltered-data-before-adjusting-with-ruvs" class="section level1">
+<h1>Examine normalized/filtered data before adjusting with RUVs</h1>
+<p>Load data and libraries</p>
+<pre class="r"><code>library(&quot;gplots&quot;)</code></pre>
+<pre><code>
+Attaching package: &#39;gplots&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:stats&#39;:
+
+    lowess</code></pre>
+<pre class="r"><code>library(&quot;ggplot2&quot;)
+library(&quot;reshape&quot;)
+library(&quot;edgeR&quot;)</code></pre>
+<pre><code>Loading required package: limma</code></pre>
+<pre class="r"><code>library(&quot;RColorBrewer&quot;)  
+library(&quot;scales&quot;)
+library(&quot;cowplot&quot;)</code></pre>
+<pre><code>
+Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:reshape&#39;:
+
+    stamp</code></pre>
+<pre class="r"><code>library(&quot;DT&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<pre><code>
+Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:reshape&#39;:
+
+    expand, smiths</code></pre>
+<pre class="r"><code>library(&quot;RUVSeq&quot;)</code></pre>
+<pre><code>Loading required package: Biobase</code></pre>
+<pre><code>Loading required package: BiocGenerics</code></pre>
+<pre><code>Loading required package: parallel</code></pre>
+<pre><code>
+Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:parallel&#39;:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>The following object is masked from &#39;package:limma&#39;:
+
+    plotMA</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    anyDuplicated, append, as.data.frame, basename, cbind,
+    colnames, dirname, do.call, duplicated, eval, evalq, Filter,
+    Find, get, grep, grepl, intersect, is.unsorted, lapply, Map,
+    mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+    pmin.int, Position, rank, rbind, Reduce, rownames, sapply,
+    setdiff, sort, table, tapply, union, unique, unsplit, which,
+    which.max, which.min</code></pre>
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    &#39;browseVignettes()&#39;. To cite Bioconductor, see
+    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>Loading required package: EDASeq</code></pre>
+<pre><code>Loading required package: ShortRead</code></pre>
+<pre><code>Loading required package: BiocParallel</code></pre>
+<pre><code>Loading required package: Biostrings</code></pre>
+<pre><code>Loading required package: S4Vectors</code></pre>
+<pre><code>Loading required package: stats4</code></pre>
+<pre><code>
+Attaching package: &#39;S4Vectors&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:tidyr&#39;:
+
+    expand</code></pre>
+<pre><code>The following objects are masked from &#39;package:reshape&#39;:
+
+    expand, rename</code></pre>
+<pre><code>The following object is masked from &#39;package:gplots&#39;:
+
+    space</code></pre>
+<pre><code>The following object is masked from &#39;package:base&#39;:
+
+    expand.grid</code></pre>
+<pre><code>Loading required package: IRanges</code></pre>
+<pre><code>Loading required package: XVector</code></pre>
+<pre><code>
+Attaching package: &#39;Biostrings&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:base&#39;:
+
+    strsplit</code></pre>
+<pre><code>Loading required package: Rsamtools</code></pre>
+<pre><code>Loading required package: GenomeInfoDb</code></pre>
+<pre><code>Loading required package: GenomicRanges</code></pre>
+<pre><code>Loading required package: GenomicAlignments</code></pre>
+<pre><code>Loading required package: SummarizedExperiment</code></pre>
+<pre><code>Loading required package: DelayedArray</code></pre>
+<pre><code>Loading required package: matrixStats</code></pre>
+<pre><code>
+Attaching package: &#39;matrixStats&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:Biobase&#39;:
+
+    anyMissing, rowMedians</code></pre>
+<pre><code>
+Attaching package: &#39;DelayedArray&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:matrixStats&#39;:
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges</code></pre>
+<pre><code>The following object is masked from &#39;package:Biostrings&#39;:
+
+    type</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    aperm, apply, rowsum</code></pre>
+<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:ShortRead&#39;:
+
+    id</code></pre>
+<pre><code>The following objects are masked from &#39;package:GenomicAlignments&#39;:
+
+    first, last</code></pre>
+<pre><code>The following object is masked from &#39;package:matrixStats&#39;:
+
+    count</code></pre>
+<pre><code>The following objects are masked from &#39;package:GenomicRanges&#39;:
+
+    intersect, setdiff, union</code></pre>
+<pre><code>The following object is masked from &#39;package:GenomeInfoDb&#39;:
+
+    intersect</code></pre>
+<pre><code>The following objects are masked from &#39;package:Biostrings&#39;:
+
+    collapse, intersect, setdiff, setequal, union</code></pre>
+<pre><code>The following object is masked from &#39;package:XVector&#39;:
+
+    slice</code></pre>
+<pre><code>The following objects are masked from &#39;package:IRanges&#39;:
+
+    collapse, desc, intersect, setdiff, slice, union</code></pre>
+<pre><code>The following objects are masked from &#39;package:S4Vectors&#39;:
+
+    first, intersect, rename, setdiff, setequal, union</code></pre>
+<pre><code>The following object is masked from &#39;package:Biobase&#39;:
+
+    combine</code></pre>
+<pre><code>The following objects are masked from &#39;package:BiocGenerics&#39;:
+
+    combine, intersect, setdiff, union</code></pre>
+<pre><code>The following object is masked from &#39;package:reshape&#39;:
+
+    rename</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code># Load colors 
+colors &lt;- colorRampPalette(c(brewer.pal(9, &quot;Blues&quot;)[1],brewer.pal(9, &quot;Blues&quot;)[9]))(100)
+pal &lt;- c(brewer.pal(9, &quot;Set1&quot;), brewer.pal(8, &quot;Set2&quot;), brewer.pal(12, &quot;Set3&quot;))
+
+#load in normalized/filtered data
+filt_norm_counts &lt;- readRDS(&quot;data/norm_filtered_counts.rds&quot;)
+#load in filtered counts
+filt_counts &lt;- readRDS(&quot;data/filtered_counts.rds&quot;)
+
+# load in reordered sample information
+sampleinfo &lt;- readRDS(&quot;data/Sample.info.RNAseq.reordered.rds&quot;)
+
+#Load PCA plotting Function
+source(&quot;code/PCA_fn.R&quot;)</code></pre>
+</div>
+<div id="pca-of-normalized-and-filtered-data" class="section level1">
+<h1>PCA of normalized and filtered data</h1>
+<p>Here, we plot the samples represented by their sample IDs (more informative) and by symbols (for more asthetic presentation in figures).</p>
+<pre class="r"><code># Perform PCA
+pca_genes &lt;- prcomp(t(filt_norm_counts), scale = T)
+scores &lt;- pca_genes$x
+
+variances &lt;- pca_genes$sdev^2
+explained &lt;- variances / sum(variances)
+plot(pca_genes, main = &quot;Variance per PC&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Make PCA plots with the factors colored by Individual
+
+### PCA norm+filt Data
+for (n in 1:5){
+  col.v &lt;- pal[as.integer(sampleinfo$Individual)]
+  plot_scores(pca_genes, scores, n, n+1, col.v)
+}</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#make PCA plots with symbols as treatment status and colors as individuals for figure
+library(ggfortify)
+autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3) + 
+     theme_cowplot() +
+     theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;) + 
+     theme_cowplot()</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 3, y = 4) + 
+     theme_cowplot() +
+     theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-9.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 5, y = 6) + 
+     theme_cowplot() +
+     theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/clustering%20norm_filt_data-10.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="examine-correlations-between-top-pcs-and-experimental-variables" class="section level1">
+<h1>Examine correlations between top PCs and experimental variables</h1>
+<p>After performing our PCA, we calculate the correlation between the top 5 PCs and several recorded experimental variables, looking for significant correlations. We present them in a table as well as in a heatmap. We also find significant correlations after correction for multiple testing using a BH procedure.</p>
+<pre class="r"><code># Calculate the relationship between each recorded covariate and the top 5 PCs. 
+p_comps &lt;- 1:5
+info &lt;- sampleinfo %&gt;% 
+     dplyr::select(c(Individual, Sex, Replicate, treatment, RIN, LibraryPrepBatch, LibSize)) #subset sample info for technical/biological variables
+
+#Calculate correlations
+pc_cov_cor &lt;- matrix(nrow = ncol(info), ncol = length(p_comps), 
+                      dimnames = list(colnames(info), colnames(pca_genes$x)[p_comps])) 
+
+PC_pvalues &lt;- matrix(data = NA, nrow = 5, ncol = 7, dimnames = list(c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;, &quot;PC4&quot;, &quot;PC5&quot;), c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, &quot;Treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)))
+
+for (pc in p_comps) { 
+  for (covariate in 1:ncol(info)) { 
+        lm_result &lt;- lm(pca_genes$x[, pc] ~ info[, covariate]) 
+    r2 &lt;- summary(lm_result)$r.squared 
+    fstat &lt;- as.data.frame(summary(lm_result)$fstatistic)
+    p_fstat &lt;- 1-pf(fstat[1,], fstat[2,], fstat[3,])
+    PC_pvalues[pc, covariate] &lt;- p_fstat
+    pc_cov_cor[covariate, pc] &lt;- r2 
+  } 
+} 
+datatable(pc_cov_cor) </code></pre>
+<div id="htmlwidget-db719b65ba353fdc915f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-db719b65ba353fdc915f">{"x":{"filter":"none","data":[["Individual","Sex","Replicate","treatment","RIN","LibraryPrepBatch","LibSize"],[0.937736289463665,0.0122847628521897,0.00592132916245151,0.0129678173600811,0.37821748460673,0.00166231441958058,0.342266497395399],[0.765195249715189,0.724478399122569,0.00280387965877652,0.142440552758671,0.142832774492937,0.000461849062452609,0.0207293901974216],[0.121930163262149,0.113896889224547,0.296562023975296,0.134872656193087,0.00274494981378088,0.0836926868661663,0.054998923578383],[0.0949689052134288,0.0849504554120859,0.0860047598592193,0.310539663977472,0.0253658820477083,0.00128962111817109,0.00292140820122793],[0.0509249920091495,0.0503737189179746,0.168199566460674,3.19822748101372e-07,0.00129890611106488,0.165255163908627,0.300282845797185]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PC1<\/th>\n      <th>PC2<\/th>\n      <th>PC3<\/th>\n      <th>PC4<\/th>\n      <th>PC5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>#BH adjust for multiple testing for the p-values for correlation
+#Distribution of p-values adjusted by FDR
+fdr_val &lt;- p.adjust(PC_pvalues, method = &quot;fdr&quot;, n = length(PC_pvalues))
+fdr_val_order &lt;- fdr_val[order(fdr_val)]
+hist(fdr_val_order, ylab = &quot;BH-adjusted p-values&quot;, main = &quot;Distribution of Benjamini and Hochberg adjusted p-values&quot;, breaks = 10)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7)
+matrix_fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7, dimnames = list(c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;, &quot;PC4&quot;, &quot;PC5&quot;), c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, &quot;Treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)))
+
+#Get the coordinates of which variables/PC combinations are significant at FDR 5%
+
+TorF_matrix_fdr &lt;- matrix_fdr_val &lt;=0.05
+coor_to_check &lt;- which(matrix_fdr_val &lt;= 0.05, arr.ind=T)
+coor_to_check &lt;- as.data.frame(coor_to_check)
+matrix_fdr_val</code></pre>
+<pre><code>      Individual          Sex Replicate Treatment        RIN
+PC1 1.269735e-07 0.9336808625 0.9451743 0.9336809 0.07528095
+PC2 4.590869e-04 0.0002579742 0.9451743 0.3946693 0.39466927
+PC3 7.042737e-01 0.4631185780 0.1041397 0.3958344 0.94517429
+PC4 8.288830e-01 0.5354246637 0.5354247 0.1041397 0.86144953
+PC5 9.336809e-01 0.7042736812 0.3688630 0.9982813 0.94517429
+    LibraryPrepBatch    LibSize
+PC1        0.9451743 0.09539454
+PC2        0.9622445 0.88477997
+PC3        0.5354247 0.70427368
+PC4        0.9451743 0.94517429
+PC5        0.3688630 0.10413971</code></pre>
+<pre class="r"><code>coor_to_check # Individual has most significant correlation with pc1 and 2, and sex correlates with pc2 (probably due to the individual effect)</code></pre>
+<pre><code>      row col
+PC1     1   1
+PC2     2   1
+PC2.1   2   2</code></pre>
+<pre class="r"><code>#Convert to long format to plot in ggplot2
+pc_cov_cor_2 &lt;- as.data.frame(pc_cov_cor) 
+pc_cov_cor_2$variable &lt;- rownames(pc_cov_cor) 
+pc_cov_cor_2 &lt;- gather(pc_cov_cor_2, key = &quot;pc&quot;, value = &quot;cor&quot;, -variable) 
+head(pc_cov_cor_2) </code></pre>
+<pre><code>          variable  pc         cor
+1       Individual PC1 0.937736289
+2              Sex PC1 0.012284763
+3        Replicate PC1 0.005921329
+4        treatment PC1 0.012967817
+5              RIN PC1 0.378217485
+6 LibraryPrepBatch PC1 0.001662314</code></pre>
+<pre class="r"><code>#Plot heatmap
+d_heatmap &lt;- pc_cov_cor_2 
+d_heatmap$variable &lt;- factor(d_heatmap$variable, 
+                              levels = c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, 
+                                         &quot;treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;), 
+                              labels = c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, 
+                                         &quot;treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)) 
+pca_heat &lt;- ggplot(d_heatmap, aes(x = pc, y = variable)) + 
+  geom_tile(aes(fill = cor), colour = &quot;white&quot;) + 
+  scale_fill_gradient(low = &quot;white&quot;, high = &quot;red&quot;, limits = c(0, 1)) + 
+  labs(x = &quot;Principal Component&quot;, y = &quot;&quot;, 
+       title = &quot;Correlation between principal components and experimental variables&quot;) 
+pca_heat</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="remove-unwanted-variation-using-ruvseq" class="section level1">
+<h1>Remove unwanted variation using RUVSeq</h1>
+<p>After examining the correlation structure between major axes of variation and experimental variables in the unadjusted data, we are interested in modeling two factors of unwanted variation in the data. Here, we take advantage of the technical replicate structure of our study design and employ RUVs to fit these two unwanted sources of variation.</p>
+<pre class="r"><code>#Use RUVs (replicates)
+replicates &lt;- makeGroups(paste0(sampleinfo$Individual, sampleinfo$treatment))
+x &lt;- paste0(sampleinfo$Individual, sampleinfo$treatment)
+
+#load data into expressionset
+set &lt;- newSeqExpressionSet(as.matrix(filt_counts$counts),
+                           phenoData = data.frame(sampleinfo, row.names=colnames(filt_norm_counts)))
+set</code></pre>
+<pre><code>SeqExpressionSet (storageMode: lockedEnvironment)
+assayData: 10486 features, 17 samples 
+  element names: counts, normalizedCounts, offset 
+protocolData: none
+phenoData
+  sampleNames: 18855_3_S 19160_3_S ... 18855_3_U (17 total)
+  varLabels: Sample_ID Individual ... LibSize (8 total)
+  varMetadata: labelDescription
+featureData: none
+experimentData: use &#39;experimentData(object)&#39;
+Annotation:  </code></pre>
+<pre class="r"><code>#normalization
+set &lt;- betweenLaneNormalization(x = set, which = &quot;upper&quot;, round = T)
+
+# 
+set1 &lt;- RUVs(x=set, cIdx = rownames(filt_counts), k=2, scIdx = replicates, round = F)
+pData(set1)</code></pre>
+<pre><code>          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3    Strain 10.0
+19160_3_S 19160_3_S   NA19160    M         3    Strain 10.0
+18856_3_U 18856_3_U   NA18856    M         3  Unstrain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
+19160_3_U 19160_3_U   NA19160    M         3  Unstrain 10.0
+18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
+18855_1_S 18855_1_S   NA18855    F         1    Strain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2  Unstrain 10.0
+18855_1_U 18855_1_U   NA18855    F         1  Unstrain 10.0
+18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6
+18856_2_U 18856_2_U   NA18856    M         2  Unstrain  9.5
+18855_3_U 18855_3_U   NA18855    F         3  Unstrain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497</code></pre>
+</div>
+<div id="examine-correlations-between-top-pcs-and-experimental-variables-after-ruvs" class="section level1">
+<h1>Examine correlations between top PCs and experimental variables after RUVs</h1>
+<p>As above, we examine the correlations between top 5 PCs and experimental variables, but with the data adjusted for the two RUVs factors of unwanted variation.</p>
+<pre class="r"><code># Perform PCA
+pca_genes &lt;- prcomp(t(set1@assayData$normalizedCounts), scale = T)
+scores &lt;- pca_genes$x
+
+variances &lt;- pca_genes$sdev^2
+explained &lt;- variances / sum(variances)
+plot(pca_genes, main = &quot;Variance per PC&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Make PCA plots with the factors colored by Individual
+
+### PCA norm+filt Data
+for (n in 1:5){
+  col.v &lt;- pal[as.integer(sampleinfo$Individual)]
+  plot_scores(pca_genes, scores, n, n+1, col.v)
+}</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#make PCA plots with symbols as treatment status and colors as individuals for figure
+library(ggfortify)
+autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3) + 
+     theme_cowplot() +
+     theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;) + 
+     theme_cowplot()</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 3, y = 4) + 
+     theme_cowplot() +
+     theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-9.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>autoplot(pca_genes, data = sampleinfo, colour = &quot;Individual&quot;, shape = &quot;treatment&quot;, size = 3, x = 5, y = 6) + 
+     theme_cowplot() +
+     theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-10.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Calculate the relationship between each recorded covariate and the top 5 PCs. 
+p_comps &lt;- 1:5
+info &lt;- sampleinfo %&gt;% 
+     dplyr::select(c(Individual, Sex, Replicate, treatment, RIN, LibraryPrepBatch, LibSize)) #subset sample info for technical/biological variables
+
+#Calculate correlations
+pc_cov_cor &lt;- matrix(nrow = ncol(info), ncol = length(p_comps), 
+                      dimnames = list(colnames(info), colnames(pca_genes$x)[p_comps])) 
+
+PC_pvalues &lt;- matrix(data = NA, nrow = 5, ncol = 7, dimnames = list(c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;, &quot;PC4&quot;, &quot;PC5&quot;), c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, &quot;Treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)))
+
+for (pc in p_comps) { 
+  for (covariate in 1:ncol(info)) { 
+        lm_result &lt;- lm(pca_genes$x[, pc] ~ info[, covariate]) 
+    r2 &lt;- summary(lm_result)$r.squared 
+    fstat &lt;- as.data.frame(summary(lm_result)$fstatistic)
+    p_fstat &lt;- 1-pf(fstat[1,], fstat[2,], fstat[3,])
+    PC_pvalues[pc, covariate] &lt;- p_fstat
+    pc_cov_cor[covariate, pc] &lt;- r2 
+  } 
+} 
+datatable(pc_cov_cor) </code></pre>
+<div id="htmlwidget-f1c585e267fc4b2b6184" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f1c585e267fc4b2b6184">{"x":{"filter":"none","data":[["Individual","Sex","Replicate","treatment","RIN","LibraryPrepBatch","LibSize"],[0.941664115382318,0.00726641801581726,0.013020636762138,0.0102255465330808,0.362169301057953,0.00647049867610364,0.288548706852562],[0.77090809449198,0.736977521431836,0.00348897308137742,0.151872495499797,0.158552180394518,0.00171904316241042,0.0342707396883643],[0.249093505193015,0.232237894656003,0.00119991451685144,0.426018113018055,0.0114463519574885,0.0155255654355518,2.77864125506272e-05],[0.0228412947986357,0.0182176282320954,0.00215513570614129,0.0179729290635129,0.00118221215157113,0.0137945766215277,0.116706625101456],[0.0011321166764086,2.20293509258326e-05,0.0358787635228618,0.328105413268445,0.047672883100788,0.0501587518449471,0.0509128808677554]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PC1<\/th>\n      <th>PC2<\/th>\n      <th>PC3<\/th>\n      <th>PC4<\/th>\n      <th>PC5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>#BH adjust for multiple testing for the p-values for correlation
+#Distribution of p-values adjusted by FDR
+fdr_val &lt;- p.adjust(PC_pvalues, method = &quot;fdr&quot;, n = length(PC_pvalues))
+fdr_val_order &lt;- fdr_val[order(fdr_val)]
+hist(fdr_val_order, ylab = &quot;BH-adjusted p-values&quot;, main = &quot;Distribution of Benjamini and Hochberg adjusted p-values&quot;, breaks = 10)</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-12.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7)
+matrix_fdr_val &lt;- matrix(fdr_val, nrow = 5, ncol = 7, dimnames = list(c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;, &quot;PC4&quot;, &quot;PC5&quot;), c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, &quot;Treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)))
+
+#Get the coordinates of which variables/PC combinations are significant at FDR 5%
+
+TorF_matrix_fdr &lt;- matrix_fdr_val &lt;=0.05
+coor_to_check &lt;- which(matrix_fdr_val &lt;= 0.05, arr.ind=T)
+coor_to_check &lt;- as.data.frame(coor_to_check)
+matrix_fdr_val</code></pre>
+<pre><code>      Individual          Sex Replicate  Treatment        RIN
+PC1 8.046714e-08 0.9797494684 0.9797495 0.97974947 0.07413884
+PC2 3.863803e-04 0.0001807959 0.9797495 0.42711188 0.42711188
+PC3 4.283279e-01 0.2193110404 0.9797495 0.03943709 0.97974947
+PC4 9.797495e-01 0.9797494684 0.9797495 0.97974947 0.97974947
+PC5 9.921020e-01 0.9921020480 0.9797495 0.09477350 0.93296870
+    LibraryPrepBatch   LibSize
+PC1        0.9797495 0.1308890
+PC2        0.9797495 0.9797495
+PC3        0.9797495 0.9921020
+PC4        0.9797495 0.5237645
+PC5        0.9329687 0.9329687</code></pre>
+<pre class="r"><code>coor_to_check # Individual has most significant correlation with pc1 and 2, and sex correlates with pc2 (probably due to the individual effect)</code></pre>
+<pre><code>      row col
+PC1     1   1
+PC2     2   1
+PC2.1   2   2
+PC3     3   4</code></pre>
+<pre class="r"><code>#Convert to long format to plot in ggplot2
+pc_cov_cor_2 &lt;- as.data.frame(pc_cov_cor) 
+pc_cov_cor_2$variable &lt;- rownames(pc_cov_cor) 
+pc_cov_cor_2 &lt;- gather(pc_cov_cor_2, key = &quot;pc&quot;, value = &quot;cor&quot;, -variable) 
+head(pc_cov_cor_2) </code></pre>
+<pre><code>          variable  pc         cor
+1       Individual PC1 0.941664115
+2              Sex PC1 0.007266418
+3        Replicate PC1 0.013020637
+4        treatment PC1 0.010225547
+5              RIN PC1 0.362169301
+6 LibraryPrepBatch PC1 0.006470499</code></pre>
+<pre class="r"><code>#Plot heatmap
+d_heatmap &lt;- pc_cov_cor_2 
+d_heatmap$variable &lt;- factor(d_heatmap$variable, 
+                              levels = c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, 
+                                         &quot;treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;), 
+                              labels = c(&quot;Individual&quot;, &quot;Sex&quot;, &quot;Replicate&quot;, 
+                                         &quot;treatment&quot;, &quot;RIN&quot;, &quot;LibraryPrepBatch&quot;, &quot;LibSize&quot;)) 
+pca_heat &lt;- ggplot(d_heatmap, aes(x = pc, y = variable)) + 
+  geom_tile(aes(fill = cor), colour = &quot;white&quot;) + 
+  scale_fill_gradient(low = &quot;white&quot;, high = &quot;red&quot;, limits = c(0, 1)) + 
+  labs(x = &quot;Principal Component&quot;, y = &quot;&quot;, 
+       title = &quot;Correlation between principal components and experimental variables&quot;) 
+pca_heat</code></pre>
+<p><img src="figure/removeUnwantedVariation_bulkRNA.Rmd/corr%20PC%20after%20RUVs-13.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="save-data-and-ruvs-output-for-unwanted-variation-contains-the-normalizedfiltered-count-data-as-well-as-sample-information-data-and-w1w2-values-from-ruvs" class="section level1">
+<h1>Save data and RUVs output for unwanted variation (contains the normalized/filtered count data as well as sample information data and W1+W2 values from RUVs)</h1>
+<pre class="r"><code>saveRDS(set1, &quot;data/RUVsOut.rds&quot;)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] ggfortify_0.4.10            dplyr_1.0.2                
+ [3] RUVSeq_1.18.0               EDASeq_2.18.0              
+ [5] ShortRead_1.42.0            GenomicAlignments_1.20.1   
+ [7] SummarizedExperiment_1.14.1 DelayedArray_0.10.0        
+ [9] matrixStats_0.57.0          Rsamtools_2.0.0            
+[11] GenomicRanges_1.36.1        GenomeInfoDb_1.20.0        
+[13] Biostrings_2.52.0           XVector_0.24.0             
+[15] IRanges_2.18.3              S4Vectors_0.22.1           
+[17] BiocParallel_1.18.1         Biobase_2.44.0             
+[19] BiocGenerics_0.30.0         tidyr_1.1.2                
+[21] DT_0.15                     cowplot_1.1.0              
+[23] scales_1.1.1                RColorBrewer_1.1-2         
+[25] edgeR_3.26.5                limma_3.40.6               
+[27] reshape_0.8.8               ggplot2_3.3.3              
+[29] gplots_3.0.1.1             
+
+loaded via a namespace (and not attached):
+ [1] colorspace_2.0-0       hwriter_1.3.2          ellipsis_0.3.1        
+ [4] rprojroot_2.0.2        fs_1.3.1               farver_2.0.3          
+ [7] bit64_0.9-7            AnnotationDbi_1.46.0   splines_3.6.1         
+[10] R.methodsS3_1.8.1      DESeq_1.36.0           geneplotter_1.62.0    
+[13] knitr_1.23             jsonlite_1.7.2         workflowr_1.6.2       
+[16] annotate_1.62.0        R.oo_1.24.0            compiler_3.6.1        
+[19] httr_1.4.2             Matrix_1.2-18          later_1.1.0.1         
+[22] htmltools_0.5.0        prettyunits_1.1.1      tools_3.6.1           
+[25] gtable_0.3.0           glue_1.4.2             GenomeInfoDbData_1.2.1
+[28] Rcpp_1.0.5             vctrs_0.3.6            gdata_2.18.0          
+[31] rtracklayer_1.44.0     crosstalk_1.1.0.1      xfun_0.8              
+[34] stringr_1.4.0          lifecycle_0.2.0        gtools_3.8.1          
+[37] XML_3.98-1.20          zlibbioc_1.30.0        MASS_7.3-52           
+[40] aroma.light_3.14.0     hms_0.5.3              promises_1.1.1        
+[43] yaml_2.2.1             memoise_1.1.0          gridExtra_2.3         
+[46] biomaRt_2.40.1         latticeExtra_0.6-28    stringi_1.4.6         
+[49] RSQLite_2.1.1          genefilter_1.66.0      GenomicFeatures_1.36.3
+[52] caTools_1.17.1.2       rlang_0.4.10           pkgconfig_2.0.3       
+[55] bitops_1.0-6           evaluate_0.14          lattice_0.20-41       
+[58] purrr_0.3.4            htmlwidgets_1.5.2      labeling_0.4.2        
+[61] bit_4.0.4              tidyselect_1.1.0       plyr_1.8.6            
+[64] magrittr_2.0.1         R6_2.5.0               generics_0.0.2        
+[67] DBI_1.1.0              pillar_1.4.7           whisker_0.3-2         
+[70] withr_2.3.0            survival_2.44-1.1      RCurl_1.98-1.1        
+[73] tibble_3.0.4           crayon_1.3.4           KernSmooth_2.23-15    
+[76] rmarkdown_1.13         progress_1.2.2         locfit_1.5-9.1        
+[79] grid_3.6.1             blob_1.2.0             git2r_0.26.1          
+[82] digest_0.6.27          xtable_1.8-4           httpuv_1.5.1          
+[85] R.utils_2.9.0          munsell_0.5.0         </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

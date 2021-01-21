@@ -1,5 +1,5 @@
 ---
-title: "powerAnalysis"
+title: "Conducting power analysis for eQTL mapping"
 author: "Anthony Hung"
 date: "2021-01-19"
 output: workflowr::wflow_html
@@ -7,24 +7,33 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Power Curve based on Abhishek Sarkar's derivations
+# Introduction
+
+Here, we plot power curves under the assumptions of different sample sizes for an eQTL study. We also look at eQTL effect sizes from previously published response-eQTL studies to contextualize the power curves.
+
+Power Curve derivations based on Abhishek Sarkar's calculations: https://users.rcc.uchicago.edu/~aksarkar/hypoxia/reqtl.html
+
+# Plot a power curve
+
+First, we need to specify the heritability for our model.
 
 ```{r power curve}
 heritability <- 0.16 # median cis-heritability based on Gusev et al. 2016, Wheeler et al. 2016
 lambda <- sqrt(heritability / (1-heritability))
 ```
 
-## Plot the power curve
+Next, we make the plot for sample sizes ranging from 3 to 100.
 
 ```{r curve}
 colors <- cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-samp_size <- c(3, 10, 20, 40, 58, 100)
-alpha <- 5e-6 #for FWER of 0.05
+samp_size <- c(3, 10, 20, 40, 58, 100) # sample sizes for power curve
+alpha <- 5e-6 #for FWER of 0.05 and a list of 10000 genes, we have an adjusted alpha (based on bonferroni correction) of 5e-6 
 
 power_function <- function(x, n){ 
      pnorm(qnorm(alpha/2) + x * sqrt(n))
 }
 
+#The False positive rate for calling an eQTL discovered in one condition (out of two total condition) as a condition specific eQTL (a.k.a. a "response eQTL") is computed by this function.
 FPR_function <- function(x, n){ 
      1 - pnorm(qnorm(alpha/2) + x * sqrt(n))
 }
@@ -69,10 +78,13 @@ p <- ggplot(data.frame(x = c(0, 2)), aes(x = x)) +
      theme_bw() +
      geom_hline(yintercept = .8, linetype = "dashed", color = "red")
 p
+```
 
+# Compute the SES thresholds for 80% power at each sample size
 
+```{r finding SES}
 alpha <- 5e-6 #for FWER of 0.05 (assuming 10,000 genes)
-#for Power = 0.8, what is the SES?
+#for Power = 0.8, what is the Standardized effect size?
 #n = 100
 n100_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
 #n = 58
@@ -84,6 +96,8 @@ n10_ses_threshold <- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
 ```
 
 # Import outside data on eQTLs to see distributions of standardized effect sizes
+
+After plotting our power curve, we would like to get a sense of the range of standardized effect sizes in several previously published response-eQTL papers. 
 
 ```{r ecdf and cdf functions}
 plot_cdf <- function(ash_obj){
@@ -101,8 +115,6 @@ get_ecdf <- function(vector_of_SES){
      print(plot(SES_ecdf, ylim = c(-2,2)))
 }
 ```
-
-
 
 ## Michelle Ward's Hypoxia study 
 
@@ -382,7 +394,9 @@ for(condition in list(rhinovirus_data_f, rhinovirus_data_r)){
 n_egenes_caliskan
 ```
 
-#Figure
+# Number of genes meeting the SES threshold
+
+For the supplementary table, we are interested in the number of eQTLs that meet the SES threshold in each study for each sample size.
 
 ```{r}
 n_egenes_ward

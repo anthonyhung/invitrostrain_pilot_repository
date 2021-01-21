@@ -1,5 +1,5 @@
 ---
-title: "removeUnwantedVariation_bulkRNA"
+title: "Modeling and removing unwanted technical variation"
 author: "Anthony Hung"
 date: "2021-01-19"
 output: workflowr::wflow_html
@@ -7,16 +7,13 @@ editor_options:
   chunk_output_type: console
 ---
 
----
-title: "Analysis of Technical factors"
-author: "Anthony Hung"
-date: "2019-12-16"
-output: workflowr::wflow_html
-editor_options:
-  chunk_output_type: console
----
+# Introduction
 
-# Examine normalized/filtered data and see if any PCs correlate with technical factors
+This code takes in the normalized and filtered count data. It first performs a PCA on the data. It then looks for correlations between the first 5 PCs and several experimental variables before and after fitting two factors of unwanted variation in the data using RUVs (taking advantage of the technical replicates in our study design). We then save the RUVs output for use in later files.
+
+# Examine normalized/filtered data before adjusting with RUVs
+
+Load data and libraries
 
 ```{r load data libraries}
 library("gplots")
@@ -42,39 +39,16 @@ filt_counts <- readRDS("data/filtered_counts.rds")
 
 # load in reordered sample information
 sampleinfo <- readRDS("data/Sample.info.RNAseq.reordered.rds")
-```
 
-# PCA and hierarchical clustering of normalized and filtered data
-
-```{r clustering norm_filt_data}
 #Load PCA plotting Function
 source("code/PCA_fn.R")
-
-
-#spearman
-cors <- cor(filt_norm_counts, method="spearman", use="pairwise.complete.obs")
-
-labels <- paste(sampleinfo$Individual, sampleinfo$treatment, sep=" ")
-heatmap.2( cors, scale="none", col = colors, margins = c(12, 12), trace='none', denscol="white", labCol=labels, ColSideColors=pal[as.integer(as.factor(sampleinfo$Individual))], RowSideColors=pal[as.integer(as.factor(sampleinfo$treatment))+3], cexCol = 0.2 + 1/log10(15), cexRow = 0.2 + 1/log10(15))
-
-#extract correlations between technical replicates
-coords <- cbind(rbind(c(1,5),c(1,10), c(2,9), c(2,12), c(3,4), c(3,16), c(4,16), c(5,10), c(6,11), c(6,15), c(7,13), c(8,14), c(8,17), c(9,12), c(11,15), c(14,17)))
-colnames(coords) <- c("index1","index2")
-coords
-cors_technical <- cors[coords]
-median(cors_technical)
-min(cors_technical)
-
-#pearson
-cors <- cor(filt_norm_counts, method="pearson", use="pairwise.complete.obs")
-
-labels <- paste(sampleinfo$Individual, sampleinfo$treatment, sep=" ")
-heatmap.2( cors, scale="none", col = colors, margins = c(12, 12), trace='none', denscol="white", labCol=labels, ColSideColors=pal[as.integer(as.factor(sampleinfo$Individual))], RowSideColors=pal[as.integer(as.factor(sampleinfo$treatment))+3], cexCol = 0.2 + 1/log10(15), cexRow = 0.2 + 1/log10(15))
 ```
 
-#Perform PCA and color by factors to look for any potential correlations
+# PCA of normalized and filtered data
 
-```{r PCA}
+Here, we plot the samples represented by their sample IDs (more informative) and by symbols (for more asthetic presentation in figures).
+
+```{r clustering norm_filt_data}
 # Perform PCA
 pca_genes <- prcomp(t(filt_norm_counts), scale = T)
 scores <- pca_genes$x
@@ -92,11 +66,25 @@ for (n in 1:5){
   plot_scores(pca_genes, scores, n, n+1, col.v)
 }
 
+#make PCA plots with symbols as treatment status and colors as individuals for figure
+library(ggfortify)
+autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment", size = 3) + 
+     theme_cowplot() +
+     theme(legend.position = "none")
+autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment") + 
+     theme_cowplot()
+autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment", size = 3, x = 3, y = 4) + 
+     theme_cowplot() +
+     theme(legend.position = "none")
+autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment", size = 3, x = 5, y = 6) + 
+     theme_cowplot() +
+     theme(legend.position = "none")
 
 ```
 
+# Examine correlations between top PCs and experimental variables
 
-# Check that technical factors do not correlate with PCs
+After performing our PCA, we calculate the correlation between the top 5 PCs and several recorded experimental variables, looking for significant correlations. We present them in a table as well as in a heatmap. We also find significant correlations after correction for multiple testing using a BH procedure.
 
 ```{r corr PC}
 # Calculate the relationship between each recorded covariate and the top 5 PCs. 
@@ -122,19 +110,6 @@ for (pc in p_comps) {
 } 
 datatable(pc_cov_cor) 
 
-#make PCA plots with symbols as treatment status and colors as individuals for figure
-library(ggfortify)
-autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment", size = 3) + 
-     theme_cowplot() +
-     theme(legend.position = "none")
-autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment") + 
-     theme_cowplot()
-autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment", size = 3, x = 3, y = 4) + 
-     theme_cowplot() +
-     theme(legend.position = "none")
-autoplot(pca_genes, data = sampleinfo, colour = "Individual", shape = "treatment", size = 3, x = 5, y = 6) + 
-     theme_cowplot() +
-     theme(legend.position = "none")
 
 #BH adjust for multiple testing for the p-values for correlation
 #Distribution of p-values adjusted by FDR
@@ -175,10 +150,10 @@ pca_heat
 
 # Remove unwanted variation using RUVSeq
 
-```{r RUV}
-#The RUVSeq vignette loads raw counts and uses the RUVSeq package to filter and normalize data (upper quantile normalization) before performing RUVs. 
+After examining the correlation structure between major axes of variation and experimental variables in the unadjusted data, we are interested in modeling two factors of unwanted variation in the data. Here, we take advantage of the technical replicate structure of our study design and employ RUVs to fit these two unwanted sources of variation.
 
-#Use RUVs (replicates) and adjust k until corr heatmap looks right
+```{r RUV}
+#Use RUVs (replicates)
 replicates <- makeGroups(paste0(sampleinfo$Individual, sampleinfo$treatment))
 x <- paste0(sampleinfo$Individual, sampleinfo$treatment)
 
@@ -189,63 +164,16 @@ set
 #normalization
 set <- betweenLaneNormalization(x = set, which = "upper", round = T)
 
-#Spearman
-cors <- cor(set@assayData$normalizedCounts, method="spearman", use="pairwise.complete.obs")
-
-labels <- paste(sampleinfo$Individual, sampleinfo$treatment, sep=" ")
-heatmap.2( cors, scale="none", col = colors, margins = c(12, 12), trace='none', denscol="white", labCol=labels, ColSideColors=pal[as.integer(as.factor(sampleinfo$Individual))], RowSideColors=pal[as.integer(as.factor(sampleinfo$treatment))+3], cexCol = 0.2 + 1/log10(15), cexRow = 0.2 + 1/log10(15))
-
-#Pearson
-cors <- cor(set@assayData$normalizedCounts, method="pearson", use="pairwise.complete.obs")
-
-labels <- paste(sampleinfo$Individual, sampleinfo$treatment, sep=" ")
-heatmap.2( cors, scale="none", col = colors, margins = c(12, 12), trace='none', denscol="white", labCol=labels, ColSideColors=pal[as.integer(as.factor(sampleinfo$Individual))], RowSideColors=pal[as.integer(as.factor(sampleinfo$treatment))+3], cexCol = 0.2 + 1/log10(15), cexRow = 0.2 + 1/log10(15))
-
 # 
 set1 <- RUVs(x=set, cIdx = rownames(filt_counts), k=2, scIdx = replicates, round = F)
 pData(set1)
-
-#Plots after correcting RUV
-plotRLE(set1, outline=FALSE, ylim=c(-4, 4), col=colors[x])
-plotPCA(set1, col=colors[x], cex=1.2)
-
-#Spearman
-cors <- cor(set1@assayData$normalizedCounts, method="spearman", use="pairwise.complete.obs")
-
-labels <- paste(sampleinfo$Individual, sampleinfo$treatment, sep=" ")
-heatmap.2( cors, scale="none", col = colors, margins = c(12, 12), trace='none', denscol="white", labCol=labels, ColSideColors=pal[as.integer(as.factor(sampleinfo$Individual))], RowSideColors=pal[as.integer(as.factor(sampleinfo$treatment))+3], cexCol = 0.2 + 1/log10(15), cexRow = 0.2 + 1/log10(15))
-
-#extract correlations between technical replicates
-coords <- cbind(rbind(c(1,5),c(1,10), c(2,9), c(2,12), c(3,4), c(3,16), c(4,16), c(5,10), c(6,11), c(6,15), c(7,13), c(8,14), c(8,17), c(9,12), c(11,15), c(14,17)))
-colnames(coords) <- c("index1","index2")
-coords
-cors_technical <- cors[coords]
-median(cors_technical)
-min(cors_technical)
-
-#Pearson
-cors <- cor(set1@assayData$normalizedCounts, method="pearson", use="pairwise.complete.obs")
-
-labels <- paste(sampleinfo$Individual, sampleinfo$treatment, sep=" ")
-heatmap.2( cors, scale="none", col = colors, margins = c(12, 12), trace='none', denscol="white", labCol=labels, ColSideColors=pal[as.integer(as.factor(sampleinfo$Individual))], RowSideColors=pal[as.integer(as.factor(sampleinfo$treatment))+3], cexCol = 0.2 + 1/log10(15), cexRow = 0.2 + 1/log10(15))
 ```
 
-"The RUVg [RUVs] function returns two pieces of information: the estimated factors of unwanted
-variation (added as columns to the phenoData slot of set) and the normalized counts
-obtained by regressing the original counts on the unwanted factors. The normalized
-values are stored in the normalizedCounts slot of set and can be accessed with the
-normCounts method. These counts should be used only for exploration. It is important
-that subsequent DE analysis be done on the original counts (accessible through the
-counts method), as removing the unwanted factors from the counts can also remove
-part of a factor of interest [6]."
+# Examine correlations between top PCs and experimental variables after RUVs
 
-
-
-
-# Check that technical factors do not correlate with PCs after RUVs
+As above, we examine the correlations between top 5 PCs and experimental variables, but with the data adjusted for the two RUVs factors of unwanted variation.
 
 ```{r corr PC after RUVs}
-
 # Perform PCA
 pca_genes <- prcomp(t(set1@assayData$normalizedCounts), scale = T)
 scores <- pca_genes$x
@@ -337,12 +265,8 @@ pca_heat <- ggplot(d_heatmap, aes(x = pc, y = variable)) +
 pca_heat
 ```
 
-
-
-# Save data and RUVs output for unwanted variation (contains the same cpm data as before as well as pheno data, W values from RUVs)
+# Save data and RUVs output for unwanted variation (contains the normalized/filtered count data as well as sample information data and W1+W2 values from RUVs)
 
 ```{r}
 saveRDS(set1, "data/RUVsOut.rds")
 ```
-
-
