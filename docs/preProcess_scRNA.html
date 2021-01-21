@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree89d8ddd8f60efeed6a2ee39010b89c66d4cadb48targetblank89d8ddda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48" target="_blank">89d8ddd</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree58e93fde90f2d936b7dff46f3905f1d0b713b9e8targetblank58e93fda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/58e93fde90f2d936b7dff46f3905f1d0b713b9e8" target="_blank">58e93fd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree89d8ddd8f60efeed6a2ee39010b89c66d4cadb48targetblank89d8ddda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree58e93fde90f2d936b7dff46f3905f1d0b713b9e8targetblank58e93fda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48" target="_blank">89d8ddd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/58e93fde90f2d936b7dff46f3905f1d0b713b9e8" target="_blank">58e93fd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -613,6 +613,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/58e93fde90f2d936b7dff46f3905f1d0b713b9e8/analysis/preProcess_scRNA.Rmd" target="_blank">58e93fd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+forgo the grid
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/58e93fde90f2d936b7dff46f3905f1d0b713b9e8/docs/preProcess_scRNA.html" target="_blank">58e93fd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+forgo the grid
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -832,12 +866,6 @@ Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>The following objects are masked from &#39;package:base&#39;:
 
     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(gridExtra)</code></pre>
-<pre><code>
-Attaching package: &#39;gridExtra&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:dplyr&#39;:
-
-    combine</code></pre>
 <pre class="r"><code>## link to directories containing data files (count matrices)
 proj_dir &lt;- &quot;code/single_cell_preprocessing/&quot;
 ANT1_dir &lt;- paste0(proj_dir, &quot;YG-AH-2S-ANT-1_S1_L008/&quot;)
@@ -1198,24 +1226,24 @@ ANT1.2 &lt;- RunUMAP(ANT1.2, dims = 1:num_PCs)</code></pre>
 <pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
 This message will be shown once per session</code></pre>
-<pre><code>17:38:16 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>17:38:16 Read 1815 rows and found 50 numeric columns</code></pre>
-<pre><code>17:38:16 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>17:38:16 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>17:40:41 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>17:40:41 Read 1815 rows and found 50 numeric columns</code></pre>
+<pre><code>17:40:41 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>17:40:41 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>**************************************************|
-17:38:16 Writing NN index file to temp file /tmp/RtmpkBLdd2/file3905a14e532a3
-17:38:16 Searching Annoy index using 1 thread, search_k = 3000
-17:38:17 Annoy recall = 100%
-17:38:17 Commencing smooth kNN distance calibration using 1 thread
-17:38:18 Initializing from normalized Laplacian + noise
-17:38:18 Commencing optimization for 500 epochs, with 73932 positive edges
-17:38:24 Optimization finished</code></pre>
+17:40:42 Writing NN index file to temp file /tmp/RtmpC9TKaD/file3919e8491c1d
+17:40:42 Searching Annoy index using 1 thread, search_k = 3000
+17:40:42 Annoy recall = 100%
+17:40:42 Commencing smooth kNN distance calibration using 1 thread
+17:40:43 Initializing from normalized Laplacian + noise
+17:40:43 Commencing optimization for 500 epochs, with 73932 positive edges
+17:40:49 Optimization finished</code></pre>
 <pre class="r"><code>p1 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;)
 p2 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;orig.ident&quot;)
 p3 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;labels&quot;)
-grid.arrange(p1, p2, p3, nrow = 3)</code></pre>
+p1</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-5.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-5">
@@ -1241,6 +1269,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/58e93fde90f2d936b7dff46f3905f1d0b713b9e8/docs/figure/preProcess_scRNA.Rmd/merge-5.png" target="_blank">58e93fd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/89d8ddd8f60efeed6a2ee39010b89c66d4cadb48/docs/figure/preProcess_scRNA.Rmd/merge-5.png" target="_blank">89d8ddd</a>
 </td>
 <td>
@@ -1254,6 +1293,10 @@ Anthony Hung
 </table>
 </div>
 </div>
+<pre class="r"><code>p2</code></pre>
+<p><img src="figure/preProcess_scRNA.Rmd/merge-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p3</code></pre>
+<p><img src="figure/preProcess_scRNA.Rmd/merge-7.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="save-seurat-objects" class="section level1">
 <h1>Save Seurat objects</h1>
@@ -1285,8 +1328,8 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] gridExtra_2.3     dplyr_1.0.2       plyr_1.8.6        stringr_1.4.0    
-[5] readr_1.3.1       Seurat_3.2.3      Matrix_1.2-18     data.table_1.13.0
+[1] dplyr_1.0.2       plyr_1.8.6        stringr_1.4.0     readr_1.3.1      
+[5] Seurat_3.2.3      Matrix_1.2-18     data.table_1.13.0
 
 loaded via a namespace (and not attached):
   [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-23        
@@ -1311,21 +1354,22 @@ loaded via a namespace (and not attached):
  [58] zoo_1.8-8             scales_1.1.1          hms_0.5.3            
  [61] promises_1.1.1        spatstat.utils_1.17-0 parallel_3.6.1       
  [64] RColorBrewer_1.1-2    yaml_2.2.1            reticulate_1.16      
- [67] pbapply_1.4-0         ggplot2_3.3.3         rpart_4.1-15         
- [70] stringi_1.4.6         caTools_1.17.1.2      rlang_0.4.10         
- [73] pkgconfig_2.0.3       matrixStats_0.57.0    bitops_1.0-6         
- [76] evaluate_0.14         lattice_0.20-41       ROCR_1.0-7           
- [79] purrr_0.3.4           tensor_1.5            labeling_0.4.2       
- [82] patchwork_1.1.0       htmlwidgets_1.5.2     cowplot_1.1.0        
- [85] tidyselect_1.1.0      RcppAnnoy_0.0.18      magrittr_2.0.1       
- [88] R6_2.5.0              gplots_3.0.1.1        generics_0.0.2       
- [91] withr_2.3.0           pillar_1.4.7          whisker_0.3-2        
- [94] mgcv_1.8-28           fitdistrplus_1.0-14   survival_2.44-1.1    
- [97] abind_1.4-5           tibble_3.0.4          future.apply_1.3.0   
-[100] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
-[103] rmarkdown_1.13        grid_3.6.1            git2r_0.26.1         
-[106] digest_0.6.27         xtable_1.8-4          tidyr_1.1.2          
-[109] httpuv_1.5.1          munsell_0.5.0         viridisLite_0.3.0    </code></pre>
+ [67] pbapply_1.4-0         gridExtra_2.3         ggplot2_3.3.3        
+ [70] rpart_4.1-15          stringi_1.4.6         caTools_1.17.1.2     
+ [73] rlang_0.4.10          pkgconfig_2.0.3       matrixStats_0.57.0   
+ [76] bitops_1.0-6          evaluate_0.14         lattice_0.20-41      
+ [79] ROCR_1.0-7            purrr_0.3.4           tensor_1.5           
+ [82] labeling_0.4.2        patchwork_1.1.0       htmlwidgets_1.5.2    
+ [85] cowplot_1.1.0         tidyselect_1.1.0      RcppAnnoy_0.0.18     
+ [88] magrittr_2.0.1        R6_2.5.0              gplots_3.0.1.1       
+ [91] generics_0.0.2        withr_2.3.0           pillar_1.4.7         
+ [94] whisker_0.3-2         mgcv_1.8-28           fitdistrplus_1.0-14  
+ [97] survival_2.44-1.1     abind_1.4-5           tibble_3.0.4         
+[100] future.apply_1.3.0    crayon_1.3.4          KernSmooth_2.23-15   
+[103] plotly_4.9.2.1        rmarkdown_1.13        grid_3.6.1           
+[106] git2r_0.26.1          digest_0.6.27         xtable_1.8-4         
+[109] tidyr_1.1.2           httpuv_1.5.1          munsell_0.5.0        
+[112] viridisLite_0.3.0    </code></pre>
 </div>
 </div>
 

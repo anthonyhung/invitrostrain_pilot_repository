@@ -24,15 +24,13 @@ ANT1.2 <- readRDS("data/ANT1_2.rds")
 
 # Split data into individuals
 
-First, we split the merged seurat object into separate objects corresponding to the individual from which cells originated.
+First, we split the merged seurat object into separate objects corresponding to the individual from which cells originated. Then integrate across the individuals using SCT transform
 
 ```{r split single cell data}
 #split data into each individual/sample
 NA18855_Unstrain <- subset(ANT1.2, labels == "NA18855_Unstrain")
-NA18855_Strain <- subset(ANT1.2, labels == "NA18855_Strain")
 NA18856_Unstrain <- subset(ANT1.2, labels == "NA18856_Unstrain")
 NA19160_Unstrain <- subset(ANT1.2, labels == "NA19160_Unstrain")
-NA19160_Strain <- subset(ANT1.2, labels == "NA19160_Strain")
 
 # Create a seurat object merged for all the unstrain samples (because we are missing one individual for the strained samples)
 seurat.list <- list(NA18855_Unstrain, NA18856_Unstrain, NA19160_Unstrain)
@@ -96,14 +94,14 @@ ggplot(long_cluster_memberships_proportions, aes(x = Var2, y = Freq, fill = Var1
      scale_fill_manual(values=c("plum3", "#E69F00", "#654321")) + 
      theme_cowplot() +
      labs(title = "Proportion of cells from each individual \n assigned to each unsupervised cluster", x = "", y = "Proportion", fill = "Cluster")
-     
 ```
 
-Explore some cluster marker genes
-It looks like cluster 2 has higher expression of chond markers, while more or less all three clusters have similar expression of MSC markers (though it does seem like there's a bimodal distribution in cluster 2 with some cells having higher expression of these markers)
+# Explore some cluster marker genes
+
+Here, we fit a poisson ash model to raw counts from each of the three clusters for a few MSC and chondrocyte marker genes and plot their distributions broken down by cluster and by individual. It looks like cluster 2 has higher expression of chondrocyte markers, while more or less all three clusters have similar expression of MSC markers.
 
 ```{r poisson ash}
-# per suggestion from Abhishek, run poisson ash to data per cluster and per indivdiual, then show the estimated prior
+#run poisson ash to data per cluster and per indivdiual, then show the estimated prior distribution
 library(ashr)
 library(Matrix)
 #plot curves for genes separated by indivdual (information for indivdual contained in labels)
@@ -136,7 +134,7 @@ plot_by_labels <- function(gene, counts, labels){
 features.plot.chond <- c("TIMP3", "TIMP2", "COL11A1", 
                    "SOX5", "SOX6",
                    "TGFBI")
-features.plot.msc <- c("THY1",  "NT5E", "CD44") #cd44 is a negative marker (looks like )
+features.plot.msc <- c("THY1",  "NT5E")
 
 #by cluster
 for (marker in c(features.plot.msc, features.plot.chond)){
@@ -166,15 +164,4 @@ for (marker in a){
 for (marker in a){
      print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + labs(color = "Individual"))
 }
-```
-
-
-```{r markers seurat}
-all.markers
-
-RidgePlot(object = SCT.integrated, features = features.plot.chond, ncol = 3)
-FeaturePlot(object = SCT.integrated, features = features.plot.chond)
-
-RidgePlot(object = SCT.integrated, features = features.plot.msc, ncol = 3)
-FeaturePlot(object = SCT.integrated, features = features.plot.msc)
 ```
