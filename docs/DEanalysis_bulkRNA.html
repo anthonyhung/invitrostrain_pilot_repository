@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Anthony Hung" />
+
+<meta name="date" content="2021-01-19" />
+
+<title>DEanalysis_bulkRNA</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">invitroOA_pilot_repository</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">DEanalysis_bulkRNA</h1>
+<h4 class="author">Anthony Hung</h4>
+<h4 class="date">2021-01-19</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-01-21
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210119code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210119)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210119code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbctargetblank0ef10b1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbc" target="_blank">0ef10b1</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbctargetblank0ef10b1a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbc" target="_blank">0ef10b1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/shadow/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
+    Ignored:    code/bulkRNA_preprocessing/fastq/
+    Ignored:    code/bulkRNA_preprocessing/out/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda/
+    Ignored:    code/single_cell_preprocessing/.snakemake/locks/
+    Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
+    Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
+    Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
+    Ignored:    code/single_cell_preprocessing/fastq/
+    Ignored:    data/external_scRNA/Chou_et_al2020/
+    Ignored:    data/external_scRNA/Jietal2018/
+    Ignored:    data/external_scRNA/Wuetal2021/
+    Ignored:    data/external_scRNA/merged_external_scRNA.rds
+    Ignored:    data/poweranalysis/alasoo_et_al/
+    Ignored:    output/GO_terms_enriched.csv
+    Ignored:    output/topicModel_k=7.rds
+    Ignored:    output/voom_results.rds
+
+Untracked files:
+    Untracked:  analysis/figure/
+
+Unstaged changes:
+    Modified:   .gitignore
+    Modified:   analysis/DEanalysis_bulkRNA.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/DEanalysis_bulkRNA.Rmd</code>) and HTML (<code>docs/DEanalysis_bulkRNA.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/78cfbcd3204249a8673228d684ae77444c63266b/analysis/DEanalysis_bulkRNA.Rmd" target="_blank">78cfbcd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+finish paring down files
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/analysis/DEanalysis_bulkRNA.Rmd" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add ward et al data files to data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/0711682d4c989bade81cb5de5cdf2520fd5f9d33/analysis/DEanalysis_bulkRNA.Rmd" target="_blank">0711682</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+start normalization file
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/28f57faed7255644b4858290aed125d5466312ea/analysis/DEanalysis_bulkRNA.Rmd" target="_blank">28f57fa</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-19
+</td>
+<td>
+Add files for analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This code takes as input the filtered count data and two factors of unwanted variation fit by RUVs. It then uses limma and voom to perform differential expression analysis between treatment conditions using the data. After we have a set of differentially expressed genes, we look for enrichments amongst DE genes in GO pathways and previously published osteoarthritis datasets.</p>
+</div>
+<div id="load-libraries-and-data" class="section level1">
+<h1>Load libraries and data</h1>
+<pre class="r"><code>library(&quot;limma&quot;)
+library(&quot;plyr&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;edgeR&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;ashr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;RUVSeq&quot;)
+library(&quot;topGO&quot;)
+
+#load in filtered count data, RUVs output
+filt_counts &lt;- readRDS(&quot;data/filtered_counts.rds&quot;)
+filt_counts &lt;- filt_counts$counts
+RUVsOut &lt;- readRDS(&quot;data/RUVsOut.rds&quot;)
+
+# load gene annotations
+gene_anno &lt;- read.delim(&quot;data/gene-annotation.txt&quot;,
+                        sep = &quot;\t&quot;)
+
+# load in reordered sample information
+sampleinfo &lt;- readRDS(&quot;data/Sample.info.RNAseq.reordered.rds&quot;)</code></pre>
+</div>
+<div id="specify-design-matrix-for-linear-mixed-model" class="section level1">
+<h1>Specify design matrix for Linear mixed model</h1>
+<pre class="r"><code>anno &lt;- pData(RUVsOut)
+x &lt;- paste0(anno$Individual, anno$treatment)
+
+anno$LibraryPrepBatch &lt;- factor(anno$LibraryPrepBatch, levels = c(&quot;1&quot;, &quot;2&quot;))
+anno$Replicate &lt;- factor(anno$Replicate, levels = c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;))
+
+design &lt;- model.matrix(~treatment + Individual + W_1 + W_2 + RIN,
+                       data = anno)
+colnames(design) &lt;- gsub(&quot;treatment&quot;, &quot;&quot;, colnames(design))
+colnames(design)</code></pre>
+<pre><code>[1] &quot;(Intercept)&quot;        &quot;Unstrain&quot;           &quot;IndividualNA18856 &quot;
+[4] &quot;IndividualNA19160 &quot; &quot;W_1&quot;                &quot;W_2&quot;               
+[7] &quot;RIN&quot;               </code></pre>
+<pre class="r"><code># Model replicate as a random effect
+# Recommended to run both voom and duplicateCorrelation twice.
+# https://support.bioconductor.org/p/59700/#67620
+
+#TMM Normalization
+y &lt;- DGEList(filt_counts)
+y &lt;- calcNormFactors(y, method = &quot;TMM&quot;)
+#Voom for differential expression
+v1 &lt;- voom(y, design)
+corfit1 &lt;- duplicateCorrelation(v1, design, block = x)</code></pre>
+<pre><code>Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable</code></pre>
+<pre class="r"><code>corfit1$consensus.correlation</code></pre>
+<pre><code>[1] 0.3550961</code></pre>
+<pre class="r"><code>v2 &lt;- voom(y, design, block = x, correlation = corfit1$consensus.correlation)
+corfit2 &lt;- duplicateCorrelation(v2, design, block = x)</code></pre>
+<pre><code>Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable</code></pre>
+<pre class="r"><code>corfit2$consensus.correlation</code></pre>
+<pre><code>[1] 0.3552816</code></pre>
+<pre class="r"><code>fit &lt;- lmFit(v2, design, block = x,
+             correlation = corfit2$consensus.correlation)
+fit &lt;- eBayes(fit)
+
+saveRDS(v2, &quot;output/voom_results.rds&quot;)</code></pre>
+<div id="assess-model-results" class="section level2">
+<h2>Assess model results</h2>
+<pre class="r"><code>get_results &lt;- function(x, number = nrow(x$coefficients), sort.by = &quot;none&quot;,
+                        ...) {
+  # x - object MArrayLM from eBayes output
+  # ... - additional arguments passed to topTable
+  stopifnot(class(x) == &quot;MArrayLM&quot;)
+  results &lt;- topTable(x, number = number, sort.by = sort.by, ...)
+  return(results)
+}
+
+top_treatment &lt;- get_results(fit, coef = &quot;Unstrain&quot;, sort.by = &quot;B&quot;)
+head(top_treatment)</code></pre>
+<pre><code>                     logFC  AveExpr         t      P.Value    adj.P.Val
+ENSG00000102317  0.9649351 6.618275  9.783461 1.949206e-08 0.0002043938
+ENSG00000104368 -3.0870735 3.752845 -7.948281 3.730563e-07 0.0019559341
+ENSG00000100292 -1.1063623 5.399063 -7.094331 1.703017e-06 0.0054809583
+ENSG00000080824 -0.5377509 8.888183 -6.532144 4.882916e-06 0.0054809583
+ENSG00000133142  0.5626177 7.056136  6.518984 5.007395e-06 0.0054809583
+ENSG00000181019 -0.7825629 5.824147 -6.484784 5.346514e-06 0.0054809583
+                       B
+ENSG00000102317 9.596620
+ENSG00000104368 6.308490
+ENSG00000100292 5.350899
+ENSG00000080824 4.351922
+ENSG00000133142 4.324081
+ENSG00000181019 4.268181</code></pre>
+<pre class="r"><code>results_treatment &lt;- get_results(fit, coef = &quot;Unstrain&quot;,
+                              number = nrow(filt_counts), sort = &quot;none&quot;)
+ma_treatment &lt;- ggplot(data.frame(Amean = fit$Amean, logFC = fit$coef[, &quot;Unstrain&quot;]),
+                       aes(x = Amean, y = logFC)) +
+  geom_point() +
+  labs(x = &quot;Average expression level&quot;, y = &quot;Log fold change&quot;,
+       title = &quot;Treatment effect&quot;)
+ma_treatment</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/model-results-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_treatment &lt;- ggplot(results_treatment, aes(x = P.Value)) +
+  geom_histogram(binwidth = 0.01) +
+  labs(x = &quot;p-value&quot;, y = &quot;Number of genes&quot;, title = &quot;Treatment effect&quot;)
+hist_treatment</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/model-results-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="use-ash-for-mutliple-testing-correction" class="section level2">
+<h2>Use ash for mutliple testing correction</h2>
+<p>Treatment effect.</p>
+<pre class="r"><code>run_ash &lt;- function(x, coef) {
+  # Perform multiple testing correction with adaptive shrinkage (ASH)
+  #
+  # x - object MArrayLM from eBayes output
+  # coef - coefficient tested by eBayes
+  stopifnot(class(x) == &quot;MArrayLM&quot;, coef %in% colnames(x$coefficients))
+  result &lt;- ash(betahat = x$coefficients[, coef],
+                sebetahat = x$stdev.unscaled[, coef] * sqrt(x$s2.post),
+                df = x$df.total[1])
+  return(result)
+}
+
+ash_treatment &lt;- run_ash(fit, &quot;Unstrain&quot;)
+class(ash_treatment)</code></pre>
+<pre><code>[1] &quot;ash&quot;</code></pre>
+<pre class="r"><code>names(ash_treatment)</code></pre>
+<pre><code>[1] &quot;fitted_g&quot; &quot;loglik&quot;   &quot;logLR&quot;    &quot;data&quot;     &quot;result&quot;   &quot;call&quot;    </code></pre>
+<pre class="r"><code>sum(ash_treatment$result$svalue &lt; .05)</code></pre>
+<pre><code>[1] 773</code></pre>
+<pre class="r"><code>hist(ash_treatment$result$svalue)</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/ash-treatment-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="plots" class="section level1">
+<h1>Plots</h1>
+<pre class="r"><code>plot_ma &lt;- function(x, qval) {
+  # Create MA plot.
+  #
+  # x - data frame with topTable and ASH output
+  #     (columns logFC, AveExpr, and qvalue)
+  # qval - qvalue cutoff for calling a gene DE
+  #
+  stopifnot(is.data.frame(x), c(&quot;logFC&quot;, &quot;AveExpr&quot;, &quot;qvalue&quot;) %in% colnames(x),
+            is.numeric(qval), qval &lt;= 1, qval &gt;= 0)
+  x$highlight &lt;- ifelse(x$qvalue &lt; qval, &quot;darkred&quot;, &quot;gray75&quot;)
+  x$highlight &lt;- factor(x$highlight, levels = c(&quot;darkred&quot;, &quot;gray75&quot;))
+  ggplot(x, aes(x = AveExpr, y = logFC, color = highlight, shape = highlight)) +
+    geom_point() +
+    labs(x = &quot;Average expression level&quot;, y = &quot;Log fold change&quot;) +
+    scale_color_identity(drop = FALSE) +
+    scale_shape_manual(values = c(16, 1), drop = FALSE) +
+    theme(legend.position = &quot;none&quot;)
+#   scale_color_gradient(low = &quot;red&quot;, high = &quot;white&quot;, limits = c(0, 0.25))
+}
+
+plot_volcano &lt;- function(x, qval) {
+  # Create volcano plot.
+  #
+  # x - data frame with topTable and ASH output
+  #     (columns logFC, P.Value, and qvalue)
+  # qval - qvalue cutoff for calling a gene DE
+  #
+  stopifnot(is.data.frame(x), c(&quot;logFC&quot;, &quot;P.Value&quot;, &quot;qvalue&quot;) %in% colnames(x),
+            is.numeric(qval), qval &lt;= 1, qval &gt;= 0)
+  x$highlight &lt;- ifelse(x$qvalue &lt; qval, &quot;darkred&quot;, &quot;gray75&quot;)
+  x$highlight &lt;- factor(x$highlight, levels = c(&quot;darkred&quot;, &quot;gray75&quot;))
+  ggplot(x, aes(x = logFC, y = -log10(P.Value), color = highlight)) +
+    geom_point(shape = 1) +
+    labs(x = &quot;Log fold change&quot;,
+         y = expression(-log[10] * &quot; p-value&quot;)) +
+    scale_color_identity(drop = FALSE) +
+    theme(legend.position = &quot;none&quot;)
+}
+
+plot_pval_hist &lt;- function(x, qval) {
+  # Create histogram of p-values.
+  #
+  # x - data frame with topTable and ash output (columns P.Value and qvalue)
+  # qval - qvalue cutoff for calling a gene DE
+  #
+  stopifnot(is.data.frame(x), c(&quot;P.Value&quot;, &quot;qvalue&quot;) %in% colnames(x))
+  x$highlight &lt;- ifelse(x$qvalue &lt; qval, &quot;darkred&quot;, &quot;gray75&quot;)
+  x$highlight &lt;- factor(x$highlight, levels = c(&quot;darkred&quot;, &quot;gray75&quot;))
+  ggplot(x, aes(x = P.Value, fill = highlight)) +
+    geom_histogram(position = &quot;stack&quot;, binwidth = 0.01) +
+    scale_fill_identity(drop = FALSE) +
+    labs(x = &quot;p-value&quot;, y = &quot;Number of genes&quot;)
+}</code></pre>
+<pre class="r"><code>tests &lt;- colnames(fit$coefficients)
+results &lt;- vector(length = length(tests), mode = &quot;list&quot;)
+names(results) &lt;- tests
+
+for (test in tests[c(1:7)]) {
+  # Extract limma results
+     print(test)
+  results[[test]] &lt;- get_results(fit, coef = test)
+  # Add mutliple testing correction with ASH
+  output_ash &lt;- run_ash(fit, coef = test)$result
+  results[[test]] &lt;- cbind(results[[test]], lfsr = output_ash$lfsr,
+                           lfdr = output_ash$lfdr, qvalue = output_ash$qvalue,
+                           svalue = output_ash$svalue)
+}</code></pre>
+<pre><code>[1] &quot;(Intercept)&quot;
+[1] &quot;Unstrain&quot;
+[1] &quot;IndividualNA18856 &quot;
+[1] &quot;IndividualNA19160 &quot;
+[1] &quot;W_1&quot;
+[1] &quot;W_2&quot;
+[1] &quot;RIN&quot;</code></pre>
+<pre class="r"><code>#FDR 0.05
+plot_ma(results[[&quot;Unstrain&quot;]], 0.05)</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/use%20Functions-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_volcano(results[[&quot;Unstrain&quot;]], 0.05)</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/use%20Functions-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_pval_hist(results[[&quot;Unstrain&quot;]], 0.05)</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/use%20Functions-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>table(results[[&quot;Unstrain&quot;]]$qvalue &lt; 0.05)</code></pre>
+<pre><code>
+FALSE  TRUE 
+ 9499   987 </code></pre>
+<pre class="r"><code>significant_genes_05 &lt;- row.names(results[[&quot;Unstrain&quot;]])[results[[&quot;Unstrain&quot;]]$qvalue &lt; 0.05]
+significant_symbols_05 &lt;- gene_anno$external_gene_name[match(significant_genes_05, gene_anno$ensembl_gene_id)]
+head(significant_symbols_05)</code></pre>
+<pre><code>[1] DVL1   MRPL20 MMP23B PEX10  CEP104 ACOT7 
+56858 Levels: A1BG A1BG-AS1 A1CF A2M A2M-AS1 A2ML1 A2ML1-AS1 ... ZZEF1</code></pre>
+<pre class="r"><code>significant_anno_05 &lt;- gene_anno[match(significant_genes_05, gene_anno$ensembl_gene_id),]</code></pre>
+<div id="gene-ontology-analysis-with-topgo" class="section level2">
+<h2>Gene ontology analysis with topGO</h2>
+<p>Use topGO for GO analysis. It accounts for the nested graph structure of GO terms to prune the number of GO categories tested (<a href="http://www.ncbi.nlm.nih.gov/pubmed/16606683">Alexa et al. 2006</a>). Essentially, it decreases the redundancy of the results.</p>
+<pre class="r"><code># k-s test making use of ranked based on p-values
+genes &lt;- results[[&quot;Unstrain&quot;]]$qvalue
+names(genes) &lt;- rownames(results[[&quot;Unstrain&quot;]])
+
+selection &lt;- function(allScore){ return(allScore &lt; 0.05)} # function that returns TRUE/FALSE for p-values&lt;0.05
+allGO2genes &lt;- annFUN.org(whichOnto=&quot;BP&quot;, feasibleGenes=NULL, mapping=&quot;org.Hs.eg.db&quot;, ID=&quot;ensembl&quot;)</code></pre>
+<pre><code>Loading required package: org.Hs.eg.db</code></pre>
+<pre><code></code></pre>
+<pre class="r"><code>GOdata &lt;- new(&quot;topGOdata&quot;,
+  ontology=&quot;BP&quot;,
+  allGenes=genes,
+  annot=annFUN.GO2genes,
+  GO2genes=allGO2genes,
+  geneSel=selection,
+  nodeSize=10)</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre class="r"><code>results.ks &lt;- runTest(GOdata, algorithm=&quot;classic&quot;, statistic=&quot;ks&quot;)</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre class="r"><code>goEnrichment &lt;- GenTable(GOdata, KS=results.ks, orderBy=&quot;KS&quot;, topNodes=20)
+goEnrichment &lt;- goEnrichment %&gt;% 
+     mutate(KS = ifelse(grepl(&quot;&lt;&quot;, KS), 1e-30, KS))
+goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
+goEnrichment &lt;- goEnrichment[goEnrichment$KS&lt;0.05,]
+goEnrichment &lt;- goEnrichment[,c(&quot;GO.ID&quot;,&quot;Term&quot;,&quot;KS&quot;)]
+goEnrichment$Term &lt;- gsub(&quot; [a-z]*\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
+goEnrichment$Term &lt;- gsub(&quot;\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
+goEnrichment$Term &lt;- paste(goEnrichment$GO.ID, goEnrichment$Term, sep=&quot;, &quot;)
+goEnrichment$Term &lt;- factor(goEnrichment$Term, levels=rev(goEnrichment$Term))
+goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
+
+ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
+    stat_summary(geom = &quot;bar&quot;, fun = mean, position = &quot;dodge&quot;) +
+    xlab(&quot;Biological process&quot;) +
+    ylab(&quot;Enrichment&quot;) +
+    ggtitle(&quot;Title&quot;) +
+    scale_y_continuous(breaks = round(seq(0, max(-log10(goEnrichment$KS)), by = 2), 1)) +
+    theme_bw(base_size=24) +
+    theme(
+        legend.position=&#39;none&#39;,
+        legend.background=element_rect(),
+        plot.title=element_text(angle=0, size=24, face=&quot;bold&quot;, vjust=1),
+        axis.text.x=element_text(angle=0, size=18, face=&quot;bold&quot;, hjust=1.10),
+        axis.text.y=element_text(angle=0, size=18, face=&quot;bold&quot;, vjust=0.5),
+        axis.title=element_text(size=24, face=&quot;bold&quot;),
+        legend.key=element_blank(),     #removes the border
+        legend.key.size=unit(1, &quot;cm&quot;),      #Sets overall area/size of the legend
+        legend.text=element_text(size=18),  #Text size
+        title=element_text(size=18)) +
+    guides(colour=guide_legend(override.aes=list(size=2.5))) +
+    coord_flip()</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="additional-analysis-permuting-samples" class="section level1">
+<h1>Additional analysis permuting samples:</h1>
+<p>From Ben Fair: “i have a suggestion for an analysis as a check that all your DE results (like the GO analysis, the enrichment for DE genes from published datasets) are robust… i’m not sure this is statistically perfect but its something that I think makes sense to try, for my own sanity: if you randomly reassign control and treatment labels and re-attampt DE testing, do all of those interesting results go away? the worry i am trying to address, is that you have some enrichment of DE genes in interesting GO categories for example, but is that just because you have more DE power for detecting highly expressed genes in this cell type (even if they are only modestly or not truly DE), and that is what drives the GO enrichment.”</p>
+<pre class="r"><code>#scramble treatment labels (x3) and store the DE genes (each time, randomly assign 9 samples to be strain)
+permuted_results &lt;- vector(&quot;list&quot;, 12)
+for(time in 1:6){
+     #set up DE and scramble labels
+     anno &lt;- pData(RUVsOut)
+     x &lt;- paste0(anno$Individual, anno$treatment)
+
+     anno$LibraryPrepBatch &lt;- factor(anno$LibraryPrepBatch, levels = c(&quot;1&quot;, &quot;2&quot;))
+     anno$Replicate &lt;- factor(anno$Replicate, levels = c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;))
+
+     strain_indices &lt;- sample(nrow(anno), 9)
+     anno$treatment &lt;- &quot;Unstrain&quot;
+     anno$treatment[strain_indices] &lt;- &quot;Strain&quot;
+     design &lt;- model.matrix(~treatment + Individual + W_1 + W_2 + RIN,
+                       data = anno)
+     colnames(design) &lt;- gsub(&quot;treatment&quot;, &quot;&quot;, colnames(design))
+
+     permuted_results[[time]] &lt;- anno
+
+     #perform DE
+     #TMM Normalization
+     y &lt;- DGEList(filt_counts)
+     y &lt;- calcNormFactors(y, method = &quot;TMM&quot;)
+     #Voom for differential expression
+     v1 &lt;- voom(y, design)
+     corfit1 &lt;- duplicateCorrelation(v1, design, block = x)
+     corfit1$consensus.correlation
+     v2 &lt;- voom(y, design, block = x, correlation = corfit1$consensus.correlation)
+     corfit2 &lt;- duplicateCorrelation(v2, design, block = x)
+     corfit2$consensus.correlation
+     fit &lt;- lmFit(v2, design, block = x,
+             correlation = corfit2$consensus.correlation)
+     fit &lt;- eBayes(fit)
+
+     tests &lt;- colnames(fit$coefficients)
+     results &lt;- vector(length = length(tests), mode = &quot;list&quot;)
+     names(results) &lt;- tests
+
+     for (test in tests[c(1:7)]) {
+     # Extract limma results
+      results[[test]] &lt;- get_results(fit, coef = test)
+     # Add mutliple testing correction with ASH
+     output_ash &lt;- run_ash(fit, coef = test)$result
+     results[[test]] &lt;- cbind(results[[test]], lfsr = output_ash$lfsr,
+                              lfdr = output_ash$lfdr, qvalue = output_ash$qvalue,
+                              svalue = output_ash$svalue)
+     }
+
+     #store results
+     permuted_results[[6+time]] &lt;- results[[&quot;Unstrain&quot;]]
+}</code></pre>
+<pre><code>Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable</code></pre>
+<pre class="r"><code>#visualize what the permutations look like (what the scrambled labels look like)
+for(time in 1:6){
+     print(permuted_results[[time]])
+}</code></pre>
+<pre><code>          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3    Strain 10.0
+18856_3_U 18856_3_U   NA18856    M         3    Strain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2  Unstrain 10.0
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
+19160_3_U 19160_3_U   NA19160    M         3    Strain 10.0
+18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0
+19160_2_S 19160_2_S   NA19160    M         2  Unstrain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1  Unstrain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2    Strain 10.0
+18855_1_U 18855_1_U   NA18855    F         1    Strain 10.0
+18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6
+18856_2_U 18856_2_U   NA18856    M         2    Strain  9.5
+18855_3_U 18855_3_U   NA18855    F         3  Unstrain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3    Strain 10.0
+19160_3_S 19160_3_S   NA19160    M         3  Unstrain 10.0
+18856_3_U 18856_3_U   NA18856    M         3    Strain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
+19160_3_U 19160_3_U   NA19160    M         3  Unstrain 10.0
+18855_2_U 18855_2_U   NA18855    F         2    Strain 10.0
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1  Unstrain  9.9
+19160_2_U 19160_2_U   NA19160    M         2  Unstrain 10.0
+18855_1_U 18855_1_U   NA18855    F         1  Unstrain 10.0
+18856_3_S 18856_3_S   NA18856    M         3  Unstrain  9.6
+18856_2_U 18856_2_U   NA18856    M         2    Strain  9.5
+18855_3_U 18855_3_U   NA18855    F         3    Strain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3  Unstrain 10.0
+18856_3_U 18856_3_U   NA18856    M         3    Strain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
+18856_2_S 18856_2_S   NA18856    M         2  Unstrain  9.6
+19160_3_U 19160_3_U   NA19160    M         3    Strain 10.0
+18855_2_U 18855_2_U   NA18855    F         2    Strain 10.0
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1  Unstrain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2    Strain 10.0
+18855_1_U 18855_1_U   NA18855    F         1  Unstrain 10.0
+18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6
+18856_2_U 18856_2_U   NA18856    M         2  Unstrain  9.5
+18855_3_U 18855_3_U   NA18855    F         3    Strain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3    Strain 10.0
+18856_3_U 18856_3_U   NA18856    M         3  Unstrain 10.0
+18856_1_U 18856_1_U   NA18856    M         1    Strain  9.9
+18855_2_S 18855_2_S   NA18855    F         2  Unstrain 10.0
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
+19160_3_U 19160_3_U   NA19160    M         3    Strain 10.0
+18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2    Strain 10.0
+18855_1_U 18855_1_U   NA18855    F         1  Unstrain 10.0
+18856_3_S 18856_3_S   NA18856    M         3  Unstrain  9.6
+18856_2_U 18856_2_U   NA18856    M         2    Strain  9.5
+18855_3_U 18855_3_U   NA18855    F         3  Unstrain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3  Unstrain 10.0
+18856_3_U 18856_3_U   NA18856    M         3    Strain 10.0
+18856_1_U 18856_1_U   NA18856    M         1    Strain  9.9
+18855_2_S 18855_2_S   NA18855    F         2  Unstrain 10.0
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
+19160_3_U 19160_3_U   NA19160    M         3  Unstrain 10.0
+18855_2_U 18855_2_U   NA18855    F         2    Strain 10.0
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
+18855_1_S 18855_1_S   NA18855    F         1    Strain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2  Unstrain 10.0
+18855_1_U 18855_1_U   NA18855    F         1  Unstrain 10.0
+18856_3_S 18856_3_S   NA18856    M         3  Unstrain  9.6
+18856_2_U 18856_2_U   NA18856    M         2  Unstrain  9.5
+18855_3_U 18855_3_U   NA18855    F         3    Strain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3    Strain 10.0
+18856_3_U 18856_3_U   NA18856    M         3    Strain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2  Unstrain 10.0
+18856_2_S 18856_2_S   NA18856    M         2  Unstrain  9.6
+19160_3_U 19160_3_U   NA19160    M         3  Unstrain 10.0
+18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2    Strain 10.0
+18855_1_U 18855_1_U   NA18855    F         1    Strain 10.0
+18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6
+18856_2_U 18856_2_U   NA18856    M         2  Unstrain  9.5
+18855_3_U 18855_3_U   NA18855    F         3    Strain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497</code></pre>
+<pre class="r"><code>for (permutation in 7:12){
+     results &lt;- permuted_results[[permutation]]
+     
+     # k-s test making use of ranked based on p-values
+     genes &lt;- results$qvalue
+     names(genes) &lt;- rownames(results)
+
+     selection &lt;- function(allScore){ return(allScore &lt; 0.05)} # function that returns TRUE/FALSE for p-values&lt;0.05
+     allGO2genes &lt;- annFUN.org(whichOnto=&quot;BP&quot;, feasibleGenes=NULL, mapping=&quot;org.Hs.eg.db&quot;, ID=&quot;ensembl&quot;)
+     GOdata &lt;- new(&quot;topGOdata&quot;,
+       ontology=&quot;BP&quot;,
+       allGenes=genes,
+       annot=annFUN.GO2genes,
+       GO2genes=allGO2genes,
+       geneSel=selection,
+       nodeSize=10)
+
+     results.ks &lt;- runTest(GOdata, algorithm=&quot;classic&quot;, statistic=&quot;ks&quot;)
+     goEnrichment &lt;- GenTable(GOdata, KS=results.ks, orderBy=&quot;KS&quot;, topNodes=20)
+     goEnrichment &lt;- goEnrichment %&gt;% 
+          mutate(KS = ifelse(grepl(&quot;&lt;&quot;, KS), 1e-30, KS))
+     goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
+     goEnrichment &lt;- goEnrichment[goEnrichment$KS&lt;0.05,]
+     goEnrichment &lt;- goEnrichment[,c(&quot;GO.ID&quot;,&quot;Term&quot;,&quot;KS&quot;)]
+     goEnrichment$Term &lt;- gsub(&quot; [a-z]*\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
+     goEnrichment$Term &lt;- gsub(&quot;\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
+     goEnrichment$Term &lt;- paste(goEnrichment$GO.ID, goEnrichment$Term, sep=&quot;, &quot;)
+     goEnrichment$Term &lt;- factor(goEnrichment$Term, levels=rev(goEnrichment$Term))
+     goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
+
+     plot &lt;- ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
+         stat_summary(geom = &quot;bar&quot;, fun = mean, position = &quot;dodge&quot;) +
+         xlab(&quot;Biological process&quot;) +
+         ylab(&quot;Enrichment&quot;) +
+         ggtitle(&quot;Title&quot;) +
+         scale_y_continuous(breaks = round(seq(0, max(-log10(goEnrichment$KS)), by = 2), 1)) +
+         theme_bw(base_size=24) +
+         theme(
+             legend.position=&#39;none&#39;,
+             legend.background=element_rect(),
+             plot.title=element_text(angle=0, size=24, face=&quot;bold&quot;, vjust=1),
+             axis.text.x=element_text(angle=0, size=18, face=&quot;bold&quot;, hjust=1.10),
+             axis.text.y=element_text(angle=0, size=18, face=&quot;bold&quot;, vjust=0.5),
+             axis.title=element_text(size=24, face=&quot;bold&quot;),
+          legend.key=element_blank(),     #removes the border
+          legend.key.size=unit(1, &quot;cm&quot;),      #Sets overall area/size of the legend
+          legend.text=element_text(size=18),  #Text size
+          title=element_text(size=18)) +
+          guides(colour=guide_legend(override.aes=list(size=2.5))) +
+          coord_flip()
+
+     print(plot)
+}</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>for (permutation in 7:12){
+     results &lt;- permuted_results[[permutation]]
+     
+     # k-s test making use of ranked based on p-values
+     genes &lt;- results$qvalue
+     names(genes) &lt;- rownames(results)
+
+     selection &lt;- function(allScore){ return(allScore &lt; 0.05)} # function that returns TRUE/FALSE for p-values&lt;0.05
+     allGO2genes &lt;- annFUN.org(whichOnto=&quot;BP&quot;, feasibleGenes=NULL, mapping=&quot;org.Hs.eg.db&quot;, ID=&quot;ensembl&quot;)
+     GOdata &lt;- new(&quot;topGOdata&quot;,
+       ontology=&quot;BP&quot;,
+       allGenes=genes,
+       annot=annFUN.GO2genes,
+       GO2genes=allGO2genes,
+       geneSel=selection,
+       nodeSize=10)
+
+     results.ks &lt;- runTest(GOdata, algorithm=&quot;classic&quot;, statistic=&quot;ks&quot;)
+     goEnrichment &lt;- GenTable(GOdata, KS=results.ks, orderBy=&quot;KS&quot;, topNodes=20)
+     goEnrichment &lt;- goEnrichment %&gt;% 
+          mutate(KS = ifelse(grepl(&quot;&lt;&quot;, KS), 1e-30, KS))
+     goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
+     goEnrichment &lt;- goEnrichment[goEnrichment$KS&lt;0.05,]
+     goEnrichment &lt;- goEnrichment[,c(&quot;GO.ID&quot;,&quot;Term&quot;,&quot;KS&quot;)]
+     goEnrichment$Term &lt;- gsub(&quot; [a-z]*\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
+     goEnrichment$Term &lt;- gsub(&quot;\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
+     goEnrichment$Term &lt;- paste(goEnrichment$GO.ID, goEnrichment$Term, sep=&quot;, &quot;)
+     goEnrichment$Term &lt;- factor(goEnrichment$Term, levels=rev(goEnrichment$Term))
+     goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
+
+     print(goEnrichment$Term)
+}</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0010591, regulation of lamellipodium assembly  
+ [2] GO:0043038, amino acid activation                 
+ [3] GO:0043039, tRNA aminoacylation                   
+ [4] GO:0003230, cardiac atrium development            
+ [5] GO:0006418, tRNA aminoacylation for protein       
+ [6] GO:0010592, positive regulation of lamellipodium  
+ [7] GO:0032635, interleukin-6 production              
+ [8] GO:0043489, RNA stabilization                     
+ [9] GO:0060021, roof of mouth development             
+[10] GO:0021536, diencephalon development              
+[11] GO:0003209, cardiac atrium morphogenesis          
+[12] GO:0003283, atrial septum development             
+[13] GO:0002820, negative regulation of adaptive immune
+[14] GO:0050919, negative chemotaxis                   
+[15] GO:0006928, movement of cell or subcellular       
+[16] GO:0048255, mRNA stabilization                    
+[17] GO:0045669, positive regulation of osteoblast     
+[18] GO:0061029, eyelid development in camera-type eye 
+[19] GO:0043486, histone exchange                      
+[20] GO:0010950, positive regulation of endopeptidase  
+20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0007186, G protein-coupled receptor signaling   
+ [2] GO:0032501, multicellular organismal process       
+ [3] GO:0003008, system process                         
+ [4] GO:0048856, anatomical structure development       
+ [5] GO:0061138, morphogenesis of a branching epithelium
+ [6] GO:0009888, tissue development                     
+ [7] GO:0001763, morphogenesis of a branching structure 
+ [8] GO:0048513, animal organ development               
+ [9] GO:0032502, developmental process                  
+[10] GO:0009653, anatomical structure morphogenesis     
+[11] GO:0001934, positive regulation of protein         
+[12] GO:0007275, multicellular organism development     
+[13] GO:0051239, regulation of multicellular organismal 
+[14] GO:0048731, system development                     
+[15] GO:0022612, gland morphogenesis                    
+[16] GO:0042327, positive regulation of phosphorylation 
+[17] GO:0048645, animal organ formation                 
+[18] GO:0051241, negative regulation of multicellular   
+[19] GO:0030154, cell differentiation                   
+[20] GO:0048646, anatomical structure formation involved
+20 Levels: GO:0048646, anatomical structure formation involved ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0010591, regulation of lamellipodium assembly  
+ [2] GO:0043038, amino acid activation                 
+ [3] GO:0043039, tRNA aminoacylation                   
+ [4] GO:0003230, cardiac atrium development            
+ [5] GO:0006418, tRNA aminoacylation for protein       
+ [6] GO:0010592, positive regulation of lamellipodium  
+ [7] GO:0032635, interleukin-6 production              
+ [8] GO:0043489, RNA stabilization                     
+ [9] GO:0060021, roof of mouth development             
+[10] GO:0021536, diencephalon development              
+[11] GO:0003209, cardiac atrium morphogenesis          
+[12] GO:0003283, atrial septum development             
+[13] GO:0002820, negative regulation of adaptive immune
+[14] GO:0050919, negative chemotaxis                   
+[15] GO:0006928, movement of cell or subcellular       
+[16] GO:0048255, mRNA stabilization                    
+[17] GO:0045669, positive regulation of osteoblast     
+[18] GO:0061029, eyelid development in camera-type eye 
+[19] GO:0043486, histone exchange                      
+[20] GO:0010950, positive regulation of endopeptidase  
+20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0006928, movement of cell or subcellular        
+ [2] GO:0007166, cell surface receptor signaling pathway
+ [3] GO:0040011, locomotion                             
+ [4] GO:0042127, regulation of cell proliferation       
+ [5] GO:0007165, signal transduction                    
+ [6] GO:0048731, system development                     
+ [7] GO:0023052, signaling                              
+ [8] GO:0009653, anatomical structure morphogenesis     
+ [9] GO:0030154, cell differentiation                   
+[10] GO:0007154, cell communication                     
+[11] GO:0048869, cellular developmental process         
+[12] GO:0050896, response to stimulus                   
+[13] GO:0009605, response to external stimulus          
+[14] GO:0051270, regulation of cellular component       
+[15] GO:0030334, regulation of cell migration           
+[16] GO:0016477, cell migration                         
+[17] GO:0051239, regulation of multicellular organismal 
+[18] GO:0048870, cell motility                          
+[19] GO:0051674, localization of cell                   
+[20] GO:0051716, cellular response to stimulus          
+20 Levels: GO:0051716, cellular response to stimulus ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0010591, regulation of lamellipodium assembly  
+ [2] GO:0043038, amino acid activation                 
+ [3] GO:0043039, tRNA aminoacylation                   
+ [4] GO:0003230, cardiac atrium development            
+ [5] GO:0006418, tRNA aminoacylation for protein       
+ [6] GO:0010592, positive regulation of lamellipodium  
+ [7] GO:0032635, interleukin-6 production              
+ [8] GO:0043489, RNA stabilization                     
+ [9] GO:0060021, roof of mouth development             
+[10] GO:0021536, diencephalon development              
+[11] GO:0003209, cardiac atrium morphogenesis          
+[12] GO:0003283, atrial septum development             
+[13] GO:0002820, negative regulation of adaptive immune
+[14] GO:0050919, negative chemotaxis                   
+[15] GO:0006928, movement of cell or subcellular       
+[16] GO:0048255, mRNA stabilization                    
+[17] GO:0045669, positive regulation of osteoblast     
+[18] GO:0061029, eyelid development in camera-type eye 
+[19] GO:0043486, histone exchange                      
+[20] GO:0010950, positive regulation of endopeptidase  
+20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0010591, regulation of lamellipodium assembly  
+ [2] GO:0043038, amino acid activation                 
+ [3] GO:0043039, tRNA aminoacylation                   
+ [4] GO:0003230, cardiac atrium development            
+ [5] GO:0006418, tRNA aminoacylation for protein       
+ [6] GO:0010592, positive regulation of lamellipodium  
+ [7] GO:0032635, interleukin-6 production              
+ [8] GO:0043489, RNA stabilization                     
+ [9] GO:0060021, roof of mouth development             
+[10] GO:0021536, diencephalon development              
+[11] GO:0003209, cardiac atrium morphogenesis          
+[12] GO:0003283, atrial septum development             
+[13] GO:0002820, negative regulation of adaptive immune
+[14] GO:0050919, negative chemotaxis                   
+[15] GO:0006928, movement of cell or subcellular       
+[16] GO:0048255, mRNA stabilization                    
+[17] GO:0045669, positive regulation of osteoblast     
+[18] GO:0061029, eyelid development in camera-type eye 
+[19] GO:0043486, histone exchange                      
+[20] GO:0010950, positive regulation of endopeptidase  
+20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
+</div>
+<div id="look-at-enrichment-of-de-genes-amongst-previously-published-datasets-of-oa-related-genes" class="section level1">
+<h1>Look at enrichment of DE genes amongst previously published datasets of OA related genes</h1>
+<pre class="r"><code>library(dplyr)
+# load gene annotations
+gene_anno &lt;- read.delim(&quot;data/gene-annotation.txt&quot;,
+                        sep = &quot;\t&quot;)
+
+DE_results &lt;- results
+threshold &lt;- 0.05
+DE_genes_ensg &lt;- rownames(DE_results[[&quot;Unstrain&quot;]])[DE_results[[&quot;Unstrain&quot;]]$qvalue &lt; threshold]
+DE_genes &lt;- gene_anno$external_gene_name[match(DE_genes_ensg, gene_anno$ensembl_gene_id)]
+other_genes_ensg &lt;- rownames(DE_results[[&quot;Unstrain&quot;]])[DE_results[[&quot;Unstrain&quot;]]$qvalue &gt;= threshold]
+other_genes &lt;- gene_anno$external_gene_name[match(other_genes_ensg, gene_anno$ensembl_gene_id)]
+
+#Genes from https://www.nature.com/articles/s41588-018-0327-1
+#Table S4: Functional genomics annotations for all genes within 500kb of the osteoarthritis-associated variants. (subset to those with any evidence)
+fungenomic &lt;- c(&quot;ENSG00000060718&quot;, &quot;ENSG00000270962&quot;, &quot;ENSG00000150337&quot;, &quot;ENSG00000264522&quot;, &quot;ENSG00000136631&quot;, &quot;ENSG00000023902&quot;, &quot;ENSG00000117362&quot;, &quot;ENSG00000159208&quot;, &quot;ENSG00000163125&quot;, &quot;ENSG00000143374&quot;, &quot;ENSG00000143369&quot;, &quot;ENSG00000143420&quot;, &quot;ENSG00000163131&quot;, &quot;ENSG00000143387&quot;, &quot;ENSG00000143412&quot;, &quot;ENSG00000143409&quot;, &quot;ENSG00000213190&quot;, &quot;ENSG00000120334&quot;, &quot;ENSG00000117593&quot;, &quot;ENSG00000135870&quot;, &quot;ENSG00000227373&quot;, &quot;ENSG00000152061&quot;, &quot;ENSG00000135862&quot;, &quot;ENSG00000058085&quot;, &quot;ENSG00000116701&quot;, &quot;ENSG00000198756&quot;, &quot;ENSG00000198860&quot;, &quot;ENSG00000143353&quot;, &quot;ENSG00000228536&quot;, &quot;ENSG00000116141&quot;, &quot;ENSG00000203667&quot;, &quot;ENSG00000185420&quot;, &quot;ENSG00000018699&quot;, &quot;ENSG00000049323&quot;, &quot;ENSG00000119812&quot;, &quot;ENSG00000059728&quot;, &quot;ENSG00000244617&quot;, &quot;ENSG00000116001&quot;, &quot;ENSG00000116005&quot;, &quot;ENSG00000143977&quot;, &quot;ENSG00000035141&quot;, &quot;ENSG00000163235&quot;, &quot;ENSG00000116039&quot;, &quot;ENSG00000124357&quot;, &quot;ENSG00000135636&quot;, &quot;ENSG00000115419&quot;, &quot;ENSG00000115415&quot;, &quot;ENSG00000138378&quot;, &quot;ENSG00000204217&quot;, &quot;ENSG00000138439&quot;, &quot;ENSG00000163596&quot;, &quot;ENSG00000138380&quot;, &quot;ENSG00000138442&quot;, &quot;ENSG00000173166&quot;, &quot;ENSG00000163599&quot;, &quot;ENSG00000178467&quot;, &quot;ENSG00000178252&quot;, &quot;ENSG00000178035&quot;, &quot;ENSG00000172037&quot;, &quot;ENSG00000145020&quot;, &quot;ENSG00000145029&quot;, &quot;ENSG00000173402&quot;, &quot;ENSG00000164068&quot;, &quot;ENSG00000173540&quot;, &quot;ENSG00000176095&quot;, &quot;ENSG00000185614&quot;, &quot;ENSG00000182179&quot;, &quot;ENSG00000164076&quot;, &quot;ENSG00000234667&quot;, &quot;ENSG00000164078&quot;, &quot;ENSG00000228008&quot;, &quot;ENSG00000004534&quot;, &quot;ENSG00000003756&quot;, &quot;ENSG00000001617&quot;, &quot;ENSG00000114353&quot;, &quot;ENSG00000214706&quot;, &quot;ENSG00000114378&quot;, &quot;ENSG00000068001&quot;, &quot;ENSG00000126062&quot;, &quot;ENSG00000007402&quot;, &quot;ENSG00000114737&quot;, &quot;ENSG00000114767&quot;, &quot;ENSG00000090097&quot;, &quot;ENSG00000248487&quot;, &quot;ENSG00000114779&quot;, &quot;ENSG00000114786&quot;, &quot;ENSG00000162244&quot;, &quot;ENSG00000164087&quot;, &quot;ENSG00000247596&quot;, &quot;ENSG00000164088&quot;, &quot;ENSG00000164091&quot;, &quot;ENSG00000168237&quot;, &quot;ENSG00000239557&quot;, &quot;ENSG00000010318&quot;, &quot;ENSG00000010322&quot;, &quot;ENSG00000168268&quot;, &quot;ENSG00000163939&quot;, &quot;ENSG00000163938&quot;, &quot;ENSG00000016864&quot;, &quot;ENSG00000114902&quot;, &quot;ENSG00000270941&quot;, &quot;ENSG00000114904&quot;, &quot;ENSG00000055957&quot;, &quot;ENSG00000162267&quot;, &quot;ENSG00000055955&quot;, &quot;ENSG00000272573&quot;, &quot;ENSG00000163935&quot;, &quot;ENSG00000163932&quot;, &quot;ENSG00000163931&quot;, &quot;ENSG00000127415&quot;, &quot;ENSG00000127418&quot;, &quot;ENSG00000178222&quot;, &quot;ENSG00000159692&quot;, &quot;ENSG00000163945&quot;, &quot;ENSG00000244459&quot;, &quot;ENSG00000174137&quot;, &quot;ENSG00000163950&quot;, &quot;ENSG00000270195&quot;, &quot;ENSG00000168936&quot;, &quot;ENSG00000013810&quot;, &quot;ENSG00000068078&quot;, &quot;ENSG00000168924&quot;, &quot;ENSG00000109685&quot;, &quot;ENSG00000130997&quot;, &quot;ENSG00000159733&quot;, &quot;ENSG00000157869&quot;, &quot;ENSG00000109705&quot;, &quot;ENSG00000109606&quot;, &quot;ENSG00000248444&quot;, &quot;ENSG00000109610&quot;, &quot;ENSG00000181982&quot;, &quot;ENSG00000168228&quot;, &quot;ENSG00000053900&quot;, &quot;ENSG00000091490&quot;, &quot;ENSG00000138814&quot;, &quot;ENSG00000138821&quot;, &quot;ENSG00000109320&quot;, &quot;ENSG00000109332&quot;, &quot;ENSG00000145354&quot;, &quot;ENSG00000164039&quot;, &quot;ENSG00000253558&quot;, &quot;ENSG00000132842&quot;, &quot;ENSG00000113273&quot;, &quot;ENSG00000132840&quot;, &quot;ENSG00000145692&quot;, &quot;ENSG00000132837&quot;, &quot;ENSG00000156427&quot;, &quot;ENSG00000174705&quot;, &quot;ENSG00000079691&quot;, &quot;ENSG00000272462&quot;, &quot;ENSG00000272810&quot;, &quot;ENSG00000187837&quot;, &quot;ENSG00000010704&quot;, &quot;ENSG00000218281&quot;, &quot;ENSG00000124508&quot;, &quot;ENSG00000111801&quot;, &quot;ENSG00000112763&quot;, &quot;ENSG00000124635&quot;, &quot;ENSG00000196787&quot;, &quot;ENSG00000197903&quot;, &quot;ENSG00000204305&quot;, &quot;ENSG00000204304&quot;, &quot;ENSG00000213654&quot;, &quot;ENSG00000198502&quot;, &quot;ENSG00000224796&quot;, &quot;ENSG00000223865&quot;, &quot;ENSG00000204248&quot;, &quot;ENSG00000204227&quot;, &quot;ENSG00000030110&quot;, &quot;ENSG00000096433&quot;, &quot;ENSG00000161896&quot;, &quot;ENSG00000161904&quot;, &quot;ENSG00000137207&quot;, &quot;ENSG00000171453&quot;, &quot;ENSG00000112715&quot;, &quot;ENSG00000181577&quot;, &quot;ENSG00000137216&quot;, &quot;ENSG00000112759&quot;, &quot;ENSG00000146232&quot;, &quot;ENSG00000196284&quot;, &quot;ENSG00000271857&quot;, &quot;ENSG00000124813&quot;, &quot;ENSG00000196284&quot;)
+fungenomic1 &lt;- c(&quot;ENSG00000124813&quot;, &quot;ENSG00000271857&quot;, &quot;ENSG00000112782&quot;, &quot;ENSG00000172348&quot;, &quot;ENSG00000112175&quot;, &quot;ENSG00000111799&quot;, &quot;ENSG00000112697&quot;, &quot;ENSG00000118407&quot;, &quot;ENSG00000196586&quot;, &quot;ENSG00000105852&quot;, &quot;ENSG00000004799&quot;, &quot;ENSG00000158560&quot;, &quot;ENSG00000004864&quot;, &quot;ENSG00000006377&quot;, &quot;ENSG00000105880&quot;, &quot;ENSG00000253981&quot;, &quot;ENSG00000173295&quot;, &quot;ENSG00000104626&quot;, &quot;ENSG00000173281&quot;, &quot;ENSG00000248538&quot;, &quot;ENSG00000175806&quot;, &quot;ENSG00000147697&quot;, &quot;ENSG00000153310&quot;, &quot;ENSG00000106688&quot;, &quot;ENSG00000096968&quot;, &quot;ENSG00000136867&quot;, &quot;ENSG00000119321&quot;, &quot;ENSG00000176386&quot;, &quot;ENSG00000148229&quot;, &quot;ENSG00000157653&quot;, &quot;ENSG00000157657&quot;, &quot;ENSG00000196739&quot;, &quot;ENSG00000229314&quot;, &quot;ENSG00000228278&quot;, &quot;ENSG00000181634&quot;, &quot;ENSG00000106952&quot;, &quot;ENSG00000041982&quot;, &quot;ENSG00000196739&quot;, &quot;ENSG00000229314&quot;, &quot;ENSG00000228278&quot;, &quot;ENSG00000181634&quot;, &quot;ENSG00000106952&quot;, &quot;ENSG00000041982&quot;, &quot;ENSG00000182752&quot;, &quot;ENSG00000136869&quot;, &quot;ENSG00000167081&quot;, &quot;ENSG00000136944&quot;, &quot;ENSG00000169155&quot;, &quot;ENSG00000136859&quot;, &quot;ENSG00000136830&quot;, &quot;ENSG00000066382&quot;, &quot;ENSG00000110047&quot;, &quot;ENSG00000068971&quot;, &quot;ENSG00000110025&quot;, &quot;ENSG00000168060&quot;, &quot;ENSG00000149809&quot;, &quot;ENSG00000162298&quot;, &quot;ENSG00000014216&quot;, &quot;ENSG00000162241&quot;, &quot;ENSG00000126391&quot;, &quot;ENSG00000245532&quot;, &quot;ENSG00000251562&quot;, &quot;ENSG00000142186&quot;, &quot;ENSG00000168056&quot;, &quot;ENSG00000260233&quot;, &quot;ENSG00000176973&quot;, &quot;ENSG00000173338&quot;, &quot;ENSG00000173327&quot;, &quot;ENSG00000173039&quot;, &quot;ENSG00000172922&quot;, &quot;ENSG00000172638&quot;, &quot;ENSG00000175592&quot;, &quot;ENSG00000175550&quot;, &quot;ENSG00000175334&quot;, &quot;ENSG00000179292&quot;, &quot;ENSG00000174684&quot;, &quot;ENSG00000174576&quot;, &quot;ENSG00000174547&quot;, &quot;ENSG00000174516&quot;, &quot;ENSG00000174165&quot;, &quot;ENSG00000172638&quot;, &quot;ENSG00000175592&quot;, &quot;ENSG00000175550&quot;, &quot;ENSG00000175334&quot;, &quot;ENSG00000179292&quot;, &quot;ENSG00000174684&quot;, &quot;ENSG00000174576&quot;, &quot;ENSG00000174547&quot;, &quot;ENSG00000174516&quot;, &quot;ENSG00000174165&quot;, &quot;ENSG00000173914&quot;, &quot;ENSG00000173898&quot;, &quot;ENSG00000173599&quot;, &quot;ENSG00000173237&quot;, &quot;ENSG00000173156&quot;, &quot;ENSG00000172932&quot;, &quot;ENSG00000172613&quot;, &quot;ENSG00000175514&quot;, &quot;ENSG00000167800&quot;, &quot;ENSG00000137492&quot;, &quot;ENSG00000204529&quot;, &quot;ENSG00000254632&quot;, &quot;ENSG00000255100&quot;, &quot;ENSG00000182704&quot;, &quot;ENSG00000261578&quot;, &quot;ENSG00000078124&quot;, &quot;ENSG00000149269&quot;, &quot;ENSG00000227376&quot;, &quot;ENSG00000048649&quot;, &quot;ENSG00000064102&quot;, &quot;ENSG00000111790&quot;, &quot;ENSG00000110841&quot;, &quot;ENSG00000174236&quot;, &quot;ENSG00000230519&quot;, &quot;ENSG00000061794&quot;, &quot;ENSG00000087494&quot;, &quot;ENSG00000139263&quot;, &quot;ENSG00000118596&quot;, &quot;ENSG00000237176&quot;, &quot;ENSG00000111581&quot;, &quot;ENSG00000175782&quot;, &quot;ENSG00000135679&quot;, &quot;ENSG00000111605&quot;, &quot;ENSG00000090382&quot;, &quot;ENSG00000166225&quot;, &quot;ENSG00000166226&quot;, &quot;ENSG00000127328&quot;, &quot;ENSG00000166268&quot;, &quot;ENSG00000139318&quot;, &quot;ENSG00000070961&quot;, &quot;ENSG00000177889&quot;, &quot;ENSG00000120833&quot;, &quot;ENSG00000258274&quot;, &quot;ENSG00000169372&quot;, &quot;ENSG00000173588&quot;, &quot;ENSG00000089041&quot;, &quot;ENSG00000135124&quot;, &quot;ENSG00000188735&quot;, &quot;ENSG00000256546&quot;, &quot;ENSG00000184047&quot;, &quot;ENSG00000284934&quot;, &quot;ENSG00000256304&quot;, &quot;ENSG00000139726&quot;, &quot;ENSG00000130787&quot;, &quot;ENSG00000139722&quot;, &quot;ENSG00000090975&quot;, &quot;ENSG00000139726&quot;, &quot;ENSG00000130787&quot;, &quot;ENSG00000139722&quot;, &quot;ENSG00000150967&quot;, &quot;ENSG00000090975&quot;, &quot;ENSG00000051825&quot;, &quot;ENSG00000130921&quot;, &quot;ENSG00000235423&quot;, &quot;ENSG00000111328&quot;, &quot;ENSG00000139697&quot;, &quot;ENSG00000150977&quot;)
+fungenomic2 &lt;- c(&quot;ENSG00000184209&quot;, &quot;ENSG00000111364&quot;, &quot;ENSG00000250091&quot;, &quot;ENSG00000178882&quot;, &quot;ENSG00000196498&quot;, &quot;ENSG00000140285&quot;, &quot;ENSG00000138592&quot;, &quot;ENSG00000242737&quot;, &quot;ENSG00000259618&quot;, &quot;ENSG00000081014&quot;, &quot;ENSG00000183578&quot;, &quot;ENSG00000137869&quot;, &quot;ENSG00000128849&quot;, &quot;ENSG00000128918&quot;, &quot;ENSG00000137845&quot;, &quot;ENSG00000169032&quot;, &quot;ENSG00000188501&quot;, &quot;ENSG00000166949&quot;, &quot;ENSG00000033800&quot;, &quot;ENSG00000129038&quot;, &quot;ENSG00000167178&quot;, &quot;ENSG00000129009&quot;, &quot;ENSG00000137868&quot;, &quot;ENSG00000140481&quot;, &quot;ENSG00000138623&quot;, &quot;ENSG00000179151&quot;, &quot;ENSG00000140465&quot;, &quot;ENSG00000103653&quot;, &quot;ENSG00000140506&quot;, &quot;ENSG00000140474&quot;, &quot;ENSG00000140497&quot;, &quot;ENSG00000178802&quot;, &quot;ENSG00000178741&quot;, &quot;ENSG00000178718&quot;, &quot;ENSG00000140398&quot;, &quot;ENSG00000140400&quot;, &quot;ENSG00000169410&quot;, &quot;ENSG00000177971&quot;, &quot;ENSG00000173548&quot;, &quot;ENSG00000173546&quot;, &quot;ENSG00000277639&quot;, &quot;ENSG00000103479&quot;, &quot;ENSG00000166971&quot;, &quot;ENSG00000103494&quot;, &quot;ENSG00000140718&quot;, &quot;ENSG00000177508&quot;, &quot;ENSG00000062038&quot;, &quot;ENSG00000103047&quot;, &quot;ENSG00000258429&quot;, &quot;ENSG00000102908&quot;, &quot;ENSG00000198373&quot;, &quot;ENSG00000157322&quot;, &quot;ENSG00000255185&quot;, &quot;ENSG00000157353&quot;, &quot;ENSG00000103051&quot;, &quot;ENSG00000189091&quot;, &quot;ENSG00000157368&quot;, &quot;ENSG00000051523&quot;, &quot;ENSG00000167513&quot;, &quot;ENSG00000141012&quot;, &quot;ENSG00000167522&quot;, &quot;ENSG00000197912&quot;, &quot;ENSG00000015413&quot;, &quot;ENSG00000131165&quot;, &quot;ENSG00000158792&quot;, &quot;ENSG00000158805&quot;, &quot;ENSG00000187741&quot;, &quot;ENSG00000258839&quot;, &quot;ENSG00000258947&quot;, &quot;ENSG00000223959&quot;, &quot;ENSG00000197879&quot;, &quot;ENSG00000132386&quot;, &quot;ENSG00000132383&quot;, &quot;ENSG00000108963&quot;, &quot;ENSG00000177374&quot;, &quot;ENSG00000070366&quot;, &quot;ENSG00000262333&quot;, &quot;ENSG00000167721&quot;, &quot;ENSG00000070444&quot;, &quot;ENSG00000127804&quot;, &quot;ENSG00000108578&quot;, &quot;ENSG00000263603&quot;, &quot;ENSG00000266490&quot;, &quot;ENSG00000181481&quot;, &quot;ENSG00000265798&quot;, &quot;ENSG00000196712&quot;, &quot;ENSG00000126861&quot;, &quot;ENSG00000185862&quot;, &quot;ENSG00000126860&quot;, &quot;ENSG00000131242&quot;, &quot;ENSG00000108651&quot;, &quot;ENSG00000178691&quot;, &quot;ENSG00000126858&quot;, &quot;ENSG00000172992&quot;, &quot;ENSG00000184922&quot;, &quot;ENSG00000159314&quot;, &quot;ENSG00000225190&quot;, &quot;ENSG00000266918&quot;, &quot;ENSG00000214425&quot;, &quot;ENSG00000264070&quot;, &quot;ENSG00000204652&quot;, &quot;ENSG00000120088&quot;, &quot;ENSG00000185294&quot;, &quot;ENSG00000186868&quot;, &quot;ENSG00000262539&quot;, &quot;ENSG00000261575&quot;, &quot;ENSG00000266497&quot;, &quot;ENSG00000238083&quot;, &quot;ENSG00000185829&quot;, &quot;ENSG00000073969&quot;, &quot;ENSG00000108379&quot;, &quot;ENSG00000108433&quot;, &quot;ENSG00000172992&quot;, &quot;ENSG00000136448&quot;, &quot;ENSG00000184922&quot;, &quot;ENSG00000225190&quot;, &quot;ENSG00000108433&quot;, &quot;ENSG00000141376&quot;, &quot;ENSG00000121068&quot;, &quot;ENSG00000121075&quot;, &quot;ENSG00000256124&quot;, &quot;ENSG00000125398&quot;, &quot;ENSG00000134490&quot;, &quot;ENSG00000101782&quot;, &quot;ENSG00000141458&quot;, &quot;ENSG00000053747&quot;, &quot;ENSG00000141447&quot;, &quot;ENSG00000105088&quot;, &quot;ENSG00000080573&quot;, &quot;ENSG00000130812&quot;, &quot;ENSG00000130810&quot;, &quot;ENSG00000244165&quot;, &quot;ENSG00000130816&quot;, &quot;ENSG00000267534&quot;, &quot;ENSG00000090339&quot;, &quot;ENSG00000105376&quot;, &quot;ENSG00000220201&quot;, &quot;ENSG00000267303&quot;, &quot;ENSG00000105397&quot;, &quot;ENSG00000065989&quot;, &quot;ENSG00000129353&quot;, &quot;ENSG00000267100&quot;, &quot;ENSG00000129351&quot;, &quot;ENSG00000079805&quot;, &quot;ENSG00000099203&quot;, &quot;ENSG00000127616&quot;, &quot;ENSG00000197256&quot;, &quot;ENSG00000105518&quot;, &quot;ENSG00000205517&quot;, &quot;ENSG00000198003&quot;, &quot;ENSG00000130176&quot;, &quot;ENSG00000102575&quot;, &quot;ENSG00000105223&quot;, &quot;ENSG00000268366&quot;, &quot;ENSG00000090013&quot;, &quot;ENSG00000090006&quot;, &quot;ENSG00000105245&quot;, &quot;ENSG00000086544&quot;, &quot;ENSG00000077312&quot;, &quot;ENSG00000261857&quot;, &quot;ENSG00000233622&quot;, &quot;ENSG00000167601&quot;, &quot;ENSG00000105329&quot;, &quot;ENSG00000105388&quot;, &quot;ENSG00000160570&quot;, &quot;ENSG00000105723&quot;, &quot;ENSG00000105722&quot;, &quot;ENSG00000079462&quot;, &quot;ENSG00000167619&quot;, &quot;ENSG00000105429&quot;, &quot;ENSG00000167646&quot;, &quot;ENSG00000080031&quot;, &quot;ENSG00000160471&quot;, &quot;ENSG00000095752&quot;, &quot;ENSG00000187902&quot;, &quot;ENSG00000090971&quot;, &quot;ENSG00000179954&quot;, &quot;ENSG00000171443&quot;, &quot;ENSG00000131848&quot;, &quot;ENSG00000078747&quot;, &quot;ENSG00000101460&quot;, &quot;ENSG00000101464&quot;, &quot;ENSG00000131069&quot;, &quot;ENSG00000078814&quot;, &quot;ENSG00000100991&quot;, &quot;ENSG00000088298&quot;, &quot;ENSG00000101000&quot;, &quot;ENSG00000242372&quot;, &quot;ENSG00000101019&quot;, &quot;ENSG00000125965&quot;, &quot;ENSG00000126001&quot;, &quot;ENSG00000125991&quot;, &quot;ENSG00000088340&quot;, &quot;ENSG00000244462&quot;, &quot;ENSG00000025293&quot;, &quot;ENSG00000171222&quot;, &quot;ENSG00000231123&quot;, &quot;ENSG00000157551&quot;, &quot;ENSG00000157554&quot;, &quot;ENSG00000183527&quot;, &quot;ENSG00000205581&quot;, &quot;ENSG00000189306&quot;, &quot;ENSG00000182841&quot;, &quot;ENSG00000100243&quot;, &quot;ENSG00000128274&quot;, &quot;ENSG00000274717&quot;, &quot;ENSG00000100266&quot;, &quot;ENSG00000100294&quot;, &quot;ENSG00000100300&quot;, &quot;ENSG00000100304&quot;, &quot;ENSG00000159307&quot;, &quot;ENSG00000100347&quot;, &quot;ENSG00000188677&quot;)
+fungenomic &lt;- c(fungenomic, fungenomic1, fungenomic2)
+
+
+
+#doi: https://doi.org/10.1101/835850
+#Supplementary Table 2. Genes with significant cross-omics differences between high-grade and low-grade cartilage. (transcriptomic, proteomic both were significant)
+s2 &lt;- c(&quot;ENSG00000164163&quot;, &quot;ENSG00000100997&quot;, &quot;ENSG00000154175&quot;, &quot;ENSG00000131473&quot;, &quot;ENSG00000068366&quot;, &quot;ENSG00000133627&quot;, &quot;ENSG00000148700&quot;, &quot;ENSG00000144843&quot;, &quot;ENSG00000035687&quot;, &quot;ENSG00000106624&quot;, &quot;ENSG00000173744&quot;, &quot;ENSG00000177674&quot;, &quot;ENSG00000101444&quot;, &quot;ENSG00000004455&quot;, &quot;ENSG00000085662&quot;, &quot;ENSG00000187134&quot;, &quot;ENSG00000151632&quot;, &quot;ENSG00000059573&quot;, &quot;ENSG00000128918&quot;, &quot;ENSG00000184254&quot;, &quot;ENSG00000116337&quot;, &quot;ENSG00000196510&quot;, &quot;ENSG00000151150&quot;, &quot;ENSG00000166825&quot;, &quot;ENSG00000189058&quot;, &quot;ENSG00000142192&quot;, &quot;ENSG00000140750&quot;, &quot;ENSG00000135931&quot;, &quot;ENSG00000100299&quot;, &quot;ENSG00000104763&quot;, &quot;ENSG00000160072&quot;, &quot;ENSG00000071553&quot;, &quot;ENSG00000006453&quot;, &quot;ENSG00000107949&quot;, &quot;ENSG00000099968&quot;, &quot;ENSG00000104164&quot;, &quot;ENSG00000183336&quot;, &quot;ENSG00000113460&quot;, &quot;ENSG00000186665&quot;, &quot;ENSG00000106392&quot;, &quot;ENSG00000223953&quot;, &quot;ENSG00000159403&quot;, &quot;ENSG00000123838&quot;, &quot;ENSG00000169239&quot;, &quot;ENSG00000042493&quot;, &quot;ENSG00000105519&quot;, &quot;ENSG00000153048&quot;, &quot;ENSG00000164305&quot;, &quot;ENSG00000196954&quot;, &quot;ENSG00000007080&quot;, &quot;ENSG00000152492&quot;, &quot;ENSG00000055813&quot;, &quot;ENSG00000110104&quot;, &quot;ENSG00000115009&quot;, &quot;ENSG00000260916&quot;, &quot;ENSG00000000971&quot;, &quot;ENSG00000016391&quot;, &quot;ENSG00000255112&quot;, &quot;ENSG00000130724&quot;, &quot;ENSG00000054938&quot;, &quot;ENSG00000163815&quot;, &quot;ENSG00000169583&quot;, &quot;ENSG00000159212&quot;, &quot;ENSG00000111726&quot;, &quot;ENSG00000164237&quot;, &quot;ENSG00000064666&quot;, &quot;ENSG00000117519&quot;, &quot;ENSG00000168434&quot;, &quot;ENSG00000204291&quot;, &quot;ENSG00000182871&quot;, &quot;ENSG00000164692&quot;, &quot;ENSG00000168542&quot;, &quot;ENSG00000187498&quot;, &quot;ENSG00000134871&quot;, &quot;ENSG00000130635&quot;, &quot;ENSG00000112280&quot;, &quot;ENSG00000184432&quot;, &quot;ENSG00000181789&quot;, &quot;ENSG00000160917&quot;, &quot;ENSG00000110090&quot;, &quot;ENSG00000157184&quot;, &quot;ENSG00000121005&quot;, &quot;ENSG00000006016&quot;, &quot;ENSG00000095713&quot;, &quot;ENSG00000160213&quot;, &quot;ENSG00000159692&quot;, &quot;ENSG00000117151&quot;, &quot;ENSG00000064601&quot;, &quot;ENSG00000117984&quot;, &quot;ENSG00000083799&quot;, &quot;ENSG00000138061&quot;, &quot;ENSG00000135929&quot;, &quot;ENSG00000110063&quot;, &quot;ENSG00000153904&quot;, &quot;ENSG00000162733&quot;, &quot;ENSG00000198171&quot;, &quot;ENSG00000168872&quot;, &quot;ENSG00000165732&quot;, &quot;ENSG00000145833&quot;, &quot;ENSG00000213782&quot;, &quot;ENSG00000023697&quot;, &quot;ENSG00000105928&quot;, &quot;ENSG00000065357&quot;, &quot;ENSG00000102967&quot;, &quot;ENSG00000105821&quot;, &quot;ENSG00000197635&quot;) 
+s2.1&lt;- c(&quot;ENSG00000176978&quot;, &quot;ENSG00000188641&quot;, &quot;ENSG00000134755&quot;, &quot;ENSG00000103356&quot;, &quot;ENSG00000115380&quot;, &quot;ENSG00000113790&quot;, &quot;ENSG00000115211&quot;, &quot;ENSG00000145191&quot;, &quot;ENSG00000155849&quot;, &quot;ENSG00000074800&quot;, &quot;ENSG00000159023&quot;, &quot;ENSG00000082397&quot;, &quot;ENSG00000177106&quot;, &quot;ENSG00000157554&quot;, &quot;ENSG00000023318&quot;, &quot;ENSG00000081177&quot;, &quot;ENSG00000178896&quot;, &quot;ENSG00000120699&quot;, &quot;ENSG00000164687&quot;, &quot;ENSG00000119812&quot;, &quot;ENSG00000078098&quot;, &quot;ENSG00000116120&quot;, &quot;ENSG00000077942&quot;, &quot;ENSG00000079459&quot;, &quot;ENSG00000160752&quot;, &quot;ENSG00000154783&quot;, &quot;ENSG00000113578&quot;, &quot;ENSG00000132589&quot;, &quot;ENSG00000115414&quot;, &quot;ENSG00000162998&quot;, &quot;ENSG00000134363&quot;, &quot;ENSG00000163430&quot;, &quot;ENSG00000087086&quot;, &quot;ENSG00000179271&quot;, &quot;ENSG00000117308&quot;, &quot;ENSG00000164574&quot;, &quot;ENSG00000131386&quot;, &quot;ENSG00000100626&quot;, &quot;ENSG00000023909&quot;, &quot;ENSG00000131459&quot;, &quot;ENSG00000006625&quot;, &quot;ENSG00000137563&quot;, &quot;ENSG00000170266&quot;, &quot;ENSG00000124767&quot;, &quot;ENSG00000173221&quot;, &quot;ENSG00000108010&quot;, &quot;ENSG00000182512&quot;, &quot;ENSG00000163938&quot;, &quot;ENSG00000113552&quot;, &quot;ENSG00000100522&quot;, &quot;ENSG00000135677&quot;, &quot;ENSG00000171723&quot;, &quot;ENSG00000166123&quot;, &quot;ENSG00000164294&quot;, &quot;ENSG00000030582&quot;, &quot;ENSG00000105447&quot;, &quot;ENSG00000082701&quot;, &quot;ENSG00000100577&quot;, &quot;ENSG00000188342&quot;, &quot;ENSG00000144366&quot;, &quot;ENSG00000206172&quot;, &quot;ENSG00000244734&quot;, &quot;ENSG00000111911&quot;, &quot;ENSG00000170144&quot;, &quot;ENSG00000138668&quot;, &quot;ENSG00000164070&quot;, &quot;ENSG00000152137&quot;, &quot;ENSG00000166033&quot;, &quot;ENSG00000170801&quot;, &quot;ENSG00000196305&quot;, &quot;ENSG00000163453&quot;, &quot;ENSG00000172349&quot;, &quot;ENSG00000172458&quot;, &quot;ENSG00000106348&quot;, &quot;ENSG00000104613&quot;, &quot;ENSG00000198001&quot;, &quot;ENSG00000169047&quot;, &quot;ENSG00000172183&quot;, &quot;ENSG00000136156&quot;, &quot;ENSG00000205726&quot;, &quot;ENSG00000197256&quot;, &quot;ENSG00000102781&quot;, &quot;ENSG00000156113&quot;, &quot;ENSG00000116685&quot;, &quot;ENSG00000102753&quot;, &quot;ENSG00000135862&quot;, &quot;ENSG00000185896&quot;, &quot;ENSG00000111716&quot;, &quot;ENSG00000166816&quot;, &quot;ENSG00000116977&quot;, &quot;ENSG00000005156&quot;, &quot;ENSG00000050405&quot;, &quot;ENSG00000176619&quot;, &quot;ENSG00000161654&quot;, &quot;ENSG00000130332&quot;, &quot;ENSG00000119681&quot;, &quot;ENSG00000168056&quot;, &quot;ENSG00000139329&quot;, &quot;ENSG00000011009&quot;, &quot;ENSG00000166963&quot;, &quot;ENSG00000131711&quot;, &quot;ENSG00000108984&quot;, &quot;ENSG00000277443&quot;, &quot;ENSG00000124159&quot;, &quot;ENSG00000185432&quot;, &quot;ENSG00000166482&quot;, &quot;ENSG00000131446&quot;, &quot;ENSG00000008394&quot;, &quot;ENSG00000123342&quot;, &quot;ENSG00000107186&quot;, &quot;ENSG00000105926&quot;, &quot;ENSG00000133030&quot;, &quot;ENSG00000011028&quot;, &quot;ENSG00000125901&quot;, &quot;ENSG00000113048&quot;, &quot;ENSG00000053372&quot;, &quot;ENSG00000099810&quot;, &quot;ENSG00000150712&quot;, &quot;ENSG00000132382&quot;, &quot;ENSG00000105357&quot;, &quot;ENSG00000196586&quot;, &quot;ENSG00000138119&quot;, &quot;ENSG00000105835&quot;, &quot;ENSG00000095380&quot;, &quot;ENSG00000124479&quot;, &quot;ENSG00000104419&quot;, &quot;ENSG00000166136&quot;, &quot;ENSG00000049759&quot;, &quot;ENSG00000162599&quot;, &quot;ENSG00000239672&quot;)
+s2.2 &lt;- c(&quot;ENSG00000243678&quot;, &quot;ENSG00000123609&quot;, &quot;ENSG00000152465&quot;, &quot;ENSG00000055044&quot;, &quot;ENSG00000139910&quot;, &quot;ENSG00000119655&quot;, &quot;ENSG00000215440&quot;, &quot;ENSG00000182446&quot;, &quot;ENSG00000159899&quot;, &quot;ENSG00000181019&quot;, &quot;ENSG00000184162&quot;, &quot;ENSG00000148572&quot;, &quot;ENSG00000065320&quot;, &quot;ENSG00000090273&quot;, &quot;ENSG00000136159&quot;, &quot;ENSG00000132661&quot;, &quot;ENSG00000136811&quot;, &quot;ENSG00000127083&quot;, &quot;ENSG00000178814&quot;, &quot;ENSG00000141447&quot;, &quot;ENSG00000070882&quot;, &quot;ENSG00000117859&quot;, &quot;ENSG00000149380&quot;, &quot;ENSG00000170515&quot;, &quot;ENSG00000111845&quot;, &quot;ENSG00000163346&quot;, &quot;ENSG00000183570&quot;, &quot;ENSG00000148843&quot;, &quot;ENSG00000067992&quot;, &quot;ENSG00000107438&quot;, &quot;ENSG00000131435&quot;, &quot;ENSG00000139197&quot;, &quot;ENSG00000178921&quot;, &quot;ENSG00000141959&quot;, &quot;ENSG00000247077&quot;, &quot;ENSG00000101856&quot;, &quot;ENSG00000067177&quot;, &quot;ENSG00000139289&quot;, &quot;ENSG00000173868&quot;, &quot;ENSG00000153823&quot;, &quot;ENSG00000087842&quot;, &quot;ENSG00000123143&quot;, &quot;ENSG00000188257&quot;, &quot;ENSG00000124181&quot;, &quot;ENSG00000198805&quot;, &quot;ENSG00000102978&quot;, &quot;ENSG00000105854&quot;, &quot;ENSG00000133110&quot;, &quot;ENSG00000131626&quot;, &quot;ENSG00000196262&quot;, &quot;ENSG00000066027&quot;, &quot;ENSG00000188783&quot;, &quot;ENSG00000126457&quot;, &quot;ENSG00000100462&quot;, &quot;ENSG00000136875&quot;, &quot;ENSG00000147224&quot;, &quot;ENSG00000157778&quot;, &quot;ENSG00000117569&quot;, &quot;ENSG00000148344&quot;, &quot;ENSG00000134247&quot;, &quot;ENSG00000124212&quot;, &quot;ENSG00000196396&quot;, &quot;ENSG00000132670&quot;, &quot;ENSG00000173482&quot;, &quot;ENSG00000105426&quot;, &quot;ENSG00000183255&quot;, &quot;ENSG00000177192&quot;, &quot;ENSG00000089159&quot;, &quot;ENSG00000183010&quot;, &quot;ENSG00000100504&quot;, &quot;ENSG00000116260&quot;, &quot;ENSG00000112210&quot;, &quot;ENSG00000132341&quot;, &quot;ENSG00000099901&quot;, &quot;ENSG00000106538&quot;, &quot;ENSG00000113643&quot;, &quot;ENSG00000159200&quot;, &quot;ENSG00000133119&quot;, &quot;ENSG00000155366&quot;, &quot;ENSG00000177189&quot;, &quot;ENSG00000116954&quot;, &quot;ENSG00000133818&quot;, &quot;ENSG00000114767&quot;, &quot;ENSG00000147655&quot;, &quot;ENSG00000133318&quot;, &quot;ENSG00000196154&quot;, &quot;ENSG00000177409&quot;, &quot;ENSG00000184178&quot;, &quot;ENSG00000006747&quot;, &quot;ENSG00000132581&quot;, &quot;ENSG00000117118&quot;, &quot;ENSG00000100445&quot;, &quot;ENSG00000157020&quot;, &quot;ENSG00000138674&quot;, &quot;ENSG00000075223&quot;, &quot;ENSG00000138758&quot;, &quot;ENSG00000166401&quot;, &quot;ENSG00000135919&quot;, &quot;ENSG00000109686&quot;, &quot;ENSG00000147010&quot;, &quot;ENSG00000174705&quot;, &quot;ENSG00000104635&quot;, &quot;ENSG00000102172&quot;, &quot;ENSG00000135632&quot;, &quot;ENSG00000145335&quot;, &quot;ENSG00000077312&quot;, &quot;ENSG00000172164&quot;, &quot;ENSG00000169371&quot;, &quot;ENSG00000124104&quot;, &quot;ENSG00000089006&quot;, &quot;ENSG00000095637&quot;, &quot;ENSG00000128487&quot;, &quot;ENSG00000115306&quot;, &quot;ENSG00000075142&quot;, &quot;ENSG00000100883&quot;, &quot;ENSG00000102359&quot;, &quot;ENSG00000111786&quot;, &quot;ENSG00000114850&quot;, &quot;ENSG00000118804&quot;, &quot;ENSG00000101109&quot;, &quot;ENSG00000165283&quot;, &quot;ENSG00000023734&quot;, &quot;ENSG00000125755&quot;, &quot;ENSG00000159082&quot;, &quot;ENSG00000136111&quot;, &quot;ENSG00000106638&quot;, &quot;ENSG00000184905&quot;, &quot;ENSG00000204065&quot;, &quot;ENSG00000204071&quot;, &quot;ENSG00000120708&quot;, &quot;ENSG00000169231&quot;, &quot;ENSG00000051596&quot;, &quot;ENSG00000100296&quot;, &quot;ENSG00000134809&quot;, &quot;ENSG00000105197&quot;, &quot;ENSG00000035862&quot;, &quot;ENSG00000142910&quot;, &quot;ENSG00000137462&quot;, &quot;ENSG00000125304&quot;, &quot;ENSG00000135048&quot;, &quot;ENSG00000136842&quot;, &quot;ENSG00000138594&quot;, &quot;ENSG00000123610&quot;, &quot;ENSG00000078902&quot;, &quot;ENSG00000025772&quot;, &quot;ENSG00000067369&quot;, &quot;ENSG00000136527&quot;, &quot;ENSG00000135148&quot;, &quot;ENSG00000126602&quot;, &quot;ENSG00000132481&quot;, &quot;ENSG00000162222&quot;, &quot;ENSG00000123416&quot;, &quot;ENSG00000183785&quot;, &quot;ENSG00000025708&quot;, &quot;ENSG00000154277&quot;, &quot;ENSG00000118939&quot;, &quot;ENSG00000132478&quot;, &quot;ENSG00000183696&quot;, &quot;ENSG00000090686&quot;, &quot;ENSG00000160293&quot;, &quot;ENSG00000162692&quot;, &quot;ENSG00000213585&quot;, &quot;ENSG00000136100&quot;, &quot;ENSG00000139722&quot;, &quot;ENSG00000138442&quot;, &quot;ENSG00000065183&quot;, &quot;ENSG00000196363&quot;, &quot;ENSG00000196419&quot;, &quot;ENSG00000139131&quot;, &quot;ENSG00000065978&quot;, &quot;ENSG00000140836&quot;, &quot;ENSG00000100711&quot;, &quot;ENSG00000109917&quot;)
+cross_omic &lt;- c(s2, s2.1, s2.2)</code></pre>
+</div>
+<div id="enrichment-function" class="section level1">
+<h1>Enrichment Function</h1>
+<p>Use fisher’s exact test to compute significant enrichment.</p>
+<pre class="r"><code>enrich &lt;- function(genes_of_interest, DEgenes, backgroundgenes){
+     #fill contingency table
+     DE_interest &lt;- length(intersect(genes_of_interest, DEgenes))
+     background_interest &lt;- length(intersect(genes_of_interest, backgroundgenes))
+     DE_non_interest &lt;- length(DEgenes) - DE_interest
+     background_non_interest &lt;- length(backgroundgenes) - background_interest
+     contingency_table &lt;- matrix(c(DE_interest, background_interest, DE_non_interest, background_non_interest), nrow = 2, ncol = 2, byrow = TRUE)
+     
+     #perform test
+     print(contingency_table)
+     return(fisher.test(contingency_table, alternative=&quot;greater&quot;))
+}
+
+
+enrich(fungenomic, DE_genes_ensg, other_genes_ensg)</code></pre>
+<pre><code>     [,1] [,2]
+[1,]    0    0
+[2,]    0    0</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 </code></pre>
+<pre class="r"><code>enrich(cross_omic, DE_genes_ensg, other_genes_ensg)</code></pre>
+<pre><code>     [,1] [,2]
+[1,]    0    0
+[2,]    0    0</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 </code></pre>
+</div>
+<div id="look-at-enrichments-from-permuted-de-analysis-scrambled-strain-labels-to-make-sure-the-fet-results-arent-just-because-some-genes-are-more-likely-to-be-detected-as-de-in-these-cells" class="section level1">
+<h1>Look at enrichments from permuted DE analysis (scrambled strain labels to make sure the FET results aren’t just because some genes are more likely to be detected as DE in these cells)</h1>
+<pre class="r"><code>threshold &lt;- 0.05
+for(permutation in 7:12){
+     print(permutation)
+     DE_results &lt;- permuted_results[[permutation]]
+     DE_genes_ensg &lt;- rownames(DE_results)[DE_results$qvalue &lt; threshold]
+     DE_genes &lt;- gene_anno$external_gene_name[match(DE_genes_ensg, gene_anno$ensembl_gene_id)]
+     other_genes_ensg &lt;- rownames(DE_results)[DE_results$qvalue &gt;= threshold]
+     other_genes &lt;- gene_anno$external_gene_name[match(other_genes_ensg, gene_anno$ensembl_gene_id)]
+
+     print(enrich(fungenomic, DE_genes_ensg, other_genes_ensg))
+     print(enrich(cross_omic, DE_genes_ensg, other_genes_ensg))
+}</code></pre>
+<pre><code>[1] 7
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 8
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 9
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 10
+     [,1]  [,2]
+[1,]    0   342
+[2,]    7 10137
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    7 10141
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 11
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 12
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] org.Hs.eg.db_3.8.2          topGO_2.36.0               
+ [3] SparseM_1.78                GO.db_3.8.2                
+ [5] AnnotationDbi_1.46.0        graph_1.62.0               
+ [7] RUVSeq_1.18.0               EDASeq_2.18.0              
+ [9] ShortRead_1.42.0            GenomicAlignments_1.20.1   
+[11] SummarizedExperiment_1.14.1 DelayedArray_0.10.0        
+[13] matrixStats_0.57.0          Rsamtools_2.0.0            
+[15] GenomicRanges_1.36.1        GenomeInfoDb_1.20.0        
+[17] Biostrings_2.52.0           XVector_0.24.0             
+[19] IRanges_2.18.3              S4Vectors_0.22.1           
+[21] BiocParallel_1.18.1         Biobase_2.44.0             
+[23] BiocGenerics_0.30.0         ggplot2_3.3.3              
+[25] ashr_2.2-47                 tidyr_1.1.2                
+[27] edgeR_3.26.5                dplyr_1.0.2                
+[29] plyr_1.8.6                  limma_3.40.6               
+
+loaded via a namespace (and not attached):
+ [1] bitops_1.0-6           fs_1.3.1               bit64_0.9-7           
+ [4] httr_1.4.2             progress_1.2.2         RColorBrewer_1.1-2    
+ [7] rprojroot_2.0.2        tools_3.6.1            R6_2.5.0              
+[10] irlba_2.3.3            DBI_1.1.0              colorspace_2.0-0      
+[13] withr_2.3.0            prettyunits_1.1.1      tidyselect_1.1.0      
+[16] bit_4.0.4              compiler_3.6.1         git2r_0.26.1          
+[19] labeling_0.4.2         rtracklayer_1.44.0     scales_1.1.1          
+[22] SQUAREM_2020.4         genefilter_1.66.0      DESeq_1.36.0          
+[25] mixsqp_0.3-43          stringr_1.4.0          digest_0.6.27         
+[28] rmarkdown_1.13         R.utils_2.9.0          pkgconfig_2.0.3       
+[31] htmltools_0.5.0        invgamma_1.1           rlang_0.4.10          
+[34] RSQLite_2.1.1          farver_2.0.3           generics_0.0.2        
+[37] hwriter_1.3.2          R.oo_1.24.0            RCurl_1.98-1.1        
+[40] magrittr_2.0.1         GenomeInfoDbData_1.2.1 Matrix_1.2-18         
+[43] Rcpp_1.0.5             munsell_0.5.0          etrunct_0.1           
+[46] lifecycle_0.2.0        R.methodsS3_1.8.1      stringi_1.4.6         
+[49] whisker_0.3-2          yaml_2.2.1             MASS_7.3-52           
+[52] zlibbioc_1.30.0        grid_3.6.1             blob_1.2.0            
+[55] promises_1.1.1         crayon_1.3.4           lattice_0.20-41       
+[58] splines_3.6.1          GenomicFeatures_1.36.3 annotate_1.62.0       
+[61] hms_0.5.3              locfit_1.5-9.1         knitr_1.23            
+[64] pillar_1.4.7           biomaRt_2.40.1         geneplotter_1.62.0    
+[67] XML_3.98-1.20          glue_1.4.2             evaluate_0.14         
+[70] latticeExtra_0.6-28    vctrs_0.3.6            httpuv_1.5.1          
+[73] gtable_0.3.0           purrr_0.3.4            xfun_0.8              
+[76] aroma.light_3.14.0     xtable_1.8-4           later_1.1.0.1         
+[79] survival_2.44-1.1      truncnorm_1.0-8        tibble_3.0.4          
+[82] memoise_1.1.0          workflowr_1.6.2        statmod_1.4.32        
+[85] ellipsis_0.3.1        </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
