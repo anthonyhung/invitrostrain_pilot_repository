@@ -31,7 +31,7 @@ ANT1.2 <- readRDS("data/ANT1_2.rds")
 
 First, we split the merged seurat object into separate objects corresponding to the individual from which cells originated. Then integrate across the individuals using SCT transform
 
-```{r split single cell data, warnings = FALSE}
+```{r split single cell data, warning = FALSE}
 #split data into each individual/sample
 NA18855_Unstrain <- subset(ANT1.2, labels == "NA18855_Unstrain")
 NA18856_Unstrain <- subset(ANT1.2, labels == "NA18856_Unstrain")
