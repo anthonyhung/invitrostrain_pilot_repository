@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbctargetblank0ef10b1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbc" target="_blank">0ef10b1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree8542407ba567fe01e9b930f1fc69822a37a6f926targetblank8542407a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/8542407ba567fe01e9b930f1fc69822a37a6f926" target="_blank">8542407</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbctargetblank0ef10b1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree8542407ba567fe01e9b930f1fc69822a37a6f926targetblank8542407a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbc" target="_blank">0ef10b1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/8542407ba567fe01e9b930f1fc69822a37a6f926" target="_blank">8542407</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -572,9 +572,6 @@ Ignored files:
     Ignored:    output/GO_terms_enriched.csv
     Ignored:    output/topicModel_k=7.rds
     Ignored:    output/voom_results.rds
-
-Untracked files:
-    Untracked:  analysis/figure/
 
 Unstaged changes:
     Modified:   .gitignore
@@ -617,6 +614,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/analysis/DEanalysis_bulkRNA.Rmd" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+knit anlaysis files
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/DEanalysis_bulkRNA.html" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+knit anlaysis files
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -735,6 +766,9 @@ colnames(design)</code></pre>
 <pre><code>[1] &quot;(Intercept)&quot;        &quot;Unstrain&quot;           &quot;IndividualNA18856 &quot;
 [4] &quot;IndividualNA19160 &quot; &quot;W_1&quot;                &quot;W_2&quot;               
 [7] &quot;RIN&quot;               </code></pre>
+</div>
+<div id="fit-the-model-using-limma-and-voom" class="section level1">
+<h1>Fit the model using limma and voom</h1>
 <pre class="r"><code># Model replicate as a random effect
 # Recommended to run both voom and duplicateCorrelation twice.
 # https://support.bioconductor.org/p/59700/#67620
@@ -760,9 +794,10 @@ maxit, : Too much damping - convergence tolerance not achievable</code></pre>
 fit &lt;- eBayes(fit)
 
 saveRDS(v2, &quot;output/voom_results.rds&quot;)</code></pre>
-<div id="assess-model-results" class="section level2">
-<h2>Assess model results</h2>
-<pre class="r"><code>get_results &lt;- function(x, number = nrow(x$coefficients), sort.by = &quot;none&quot;,
+<div id="assess-model-results-from-voom" class="section level2">
+<h2>Assess model results from voom</h2>
+<pre class="r"><code>#this function extracts the results from the voom output for each of the variables (each &quot;test&quot;)
+get_results &lt;- function(x, number = nrow(x$coefficients), sort.by = &quot;none&quot;,
                         ...) {
   # x - object MArrayLM from eBayes output
   # ... - additional arguments passed to topTable
@@ -771,23 +806,7 @@ saveRDS(v2, &quot;output/voom_results.rds&quot;)</code></pre>
   return(results)
 }
 
-top_treatment &lt;- get_results(fit, coef = &quot;Unstrain&quot;, sort.by = &quot;B&quot;)
-head(top_treatment)</code></pre>
-<pre><code>                     logFC  AveExpr         t      P.Value    adj.P.Val
-ENSG00000102317  0.9649351 6.618275  9.783461 1.949206e-08 0.0002043938
-ENSG00000104368 -3.0870735 3.752845 -7.948281 3.730563e-07 0.0019559341
-ENSG00000100292 -1.1063623 5.399063 -7.094331 1.703017e-06 0.0054809583
-ENSG00000080824 -0.5377509 8.888183 -6.532144 4.882916e-06 0.0054809583
-ENSG00000133142  0.5626177 7.056136  6.518984 5.007395e-06 0.0054809583
-ENSG00000181019 -0.7825629 5.824147 -6.484784 5.346514e-06 0.0054809583
-                       B
-ENSG00000102317 9.596620
-ENSG00000104368 6.308490
-ENSG00000100292 5.350899
-ENSG00000080824 4.351922
-ENSG00000133142 4.324081
-ENSG00000181019 4.268181</code></pre>
-<pre class="r"><code>results_treatment &lt;- get_results(fit, coef = &quot;Unstrain&quot;,
+results_treatment &lt;- get_results(fit, coef = &quot;Unstrain&quot;,
                               number = nrow(filt_counts), sort = &quot;none&quot;)
 ma_treatment &lt;- ggplot(data.frame(Amean = fit$Amean, logFC = fit$coef[, &quot;Unstrain&quot;]),
                        aes(x = Amean, y = logFC)) +
@@ -796,15 +815,89 @@ ma_treatment &lt;- ggplot(data.frame(Amean = fit$Amean, logFC = fit$coef[, &quot
        title = &quot;Treatment effect&quot;)
 ma_treatment</code></pre>
 <p><img src="figure/DEanalysis_bulkRNA.Rmd/model-results-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-model-results-1">
+Past versions of model-results-1.png
+</button>
+</p>
+<div id="fig-model-results-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/figure/DEanalysis_bulkRNA.Rmd/model-results-1.png" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>hist_treatment &lt;- ggplot(results_treatment, aes(x = P.Value)) +
   geom_histogram(binwidth = 0.01) +
   labs(x = &quot;p-value&quot;, y = &quot;Number of genes&quot;, title = &quot;Treatment effect&quot;)
 hist_treatment</code></pre>
 <p><img src="figure/DEanalysis_bulkRNA.Rmd/model-results-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-model-results-2">
+Past versions of model-results-2.png
+</button>
+</p>
+<div id="fig-model-results-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/figure/DEanalysis_bulkRNA.Rmd/model-results-2.png" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="use-ash-for-mutliple-testing-correction" class="section level2">
 <h2>Use ash for mutliple testing correction</h2>
-<p>Treatment effect.</p>
+<p>Run ash on the treatment results.</p>
 <pre class="r"><code>run_ash &lt;- function(x, coef) {
   # Perform multiple testing correction with adaptive shrinkage (ASH)
   #
@@ -826,10 +919,48 @@ class(ash_treatment)</code></pre>
 <pre><code>[1] 773</code></pre>
 <pre class="r"><code>hist(ash_treatment$result$svalue)</code></pre>
 <p><img src="figure/DEanalysis_bulkRNA.Rmd/ash-treatment-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ash-treatment-1">
+Past versions of ash-treatment-1.png
+</button>
+</p>
+<div id="fig-ash-treatment-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/figure/DEanalysis_bulkRNA.Rmd/ash-treatment-1.png" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="plots" class="section level1">
 <h1>Plots</h1>
+<p>Functions to make plots from the results</p>
 <pre class="r"><code>plot_ma &lt;- function(x, qval) {
   # Create MA plot.
   #
@@ -883,6 +1014,7 @@ plot_pval_hist &lt;- function(x, qval) {
     scale_fill_identity(drop = FALSE) +
     labs(x = &quot;p-value&quot;, y = &quot;Number of genes&quot;)
 }</code></pre>
+<p>Apply functions to build plots for FDR 0.05</p>
 <pre class="r"><code>tests &lt;- colnames(fit$coefficients)
 results &lt;- vector(length = length(tests), mode = &quot;list&quot;)
 names(results) &lt;- tests
@@ -907,10 +1039,121 @@ for (test in tests[c(1:7)]) {
 <pre class="r"><code>#FDR 0.05
 plot_ma(results[[&quot;Unstrain&quot;]], 0.05)</code></pre>
 <p><img src="figure/DEanalysis_bulkRNA.Rmd/use%20Functions-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-use-Functions-1">
+Past versions of “use Functions-1.png”
+</button>
+</p>
+<div id="fig-no-spaces-use-Functions-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/figure/DEanalysis_bulkRNA.Rmd/use Functions-1.png" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>plot_volcano(results[[&quot;Unstrain&quot;]], 0.05)</code></pre>
 <p><img src="figure/DEanalysis_bulkRNA.Rmd/use%20Functions-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-use-Functions-2">
+Past versions of “use Functions-2.png”
+</button>
+</p>
+<div id="fig-no-spaces-use-Functions-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/figure/DEanalysis_bulkRNA.Rmd/use Functions-2.png" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>plot_pval_hist(results[[&quot;Unstrain&quot;]], 0.05)</code></pre>
 <p><img src="figure/DEanalysis_bulkRNA.Rmd/use%20Functions-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-use-Functions-3">
+Past versions of “use Functions-3.png”
+</button>
+</p>
+<div id="fig-no-spaces-use-Functions-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/figure/DEanalysis_bulkRNA.Rmd/use Functions-3.png" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>table(results[[&quot;Unstrain&quot;]]$qvalue &lt; 0.05)</code></pre>
 <pre><code>
 FALSE  TRUE 
@@ -920,7 +1163,9 @@ significant_symbols_05 &lt;- gene_anno$external_gene_name[match(significant_gene
 head(significant_symbols_05)</code></pre>
 <pre><code>[1] DVL1   MRPL20 MMP23B PEX10  CEP104 ACOT7 
 56858 Levels: A1BG A1BG-AS1 A1CF A2M A2M-AS1 A2ML1 A2ML1-AS1 ... ZZEF1</code></pre>
-<pre class="r"><code>significant_anno_05 &lt;- gene_anno[match(significant_genes_05, gene_anno$ensembl_gene_id),]</code></pre>
+<pre class="r"><code>significant_anno_05 &lt;- gene_anno[match(significant_genes_05, gene_anno$ensembl_gene_id),]
+
+DE_results_original &lt;- results</code></pre>
 <div id="gene-ontology-analysis-with-topgo" class="section level2">
 <h2>Gene ontology analysis with topGO</h2>
 <p>Use topGO for GO analysis. It accounts for the nested graph structure of GO terms to prune the number of GO categories tested (<a href="http://www.ncbi.nlm.nih.gov/pubmed/16606683">Alexa et al. 2006</a>). Essentially, it decreases the redundancy of the results.</p>
@@ -989,11 +1234,48 @@ ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
     guides(colour=guide_legend(override.aes=list(size=2.5))) +
     coord_flip()</code></pre>
 <p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-ks-test-1">
+Past versions of “ks test-1.png”
+</button>
+</p>
+<div id="fig-no-spaces-ks-test-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/figure/DEanalysis_bulkRNA.Rmd/ks test-1.png" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="additional-analysis-permuting-samples" class="section level1">
 <h1>Additional analysis permuting samples:</h1>
-<p>From Ben Fair: “i have a suggestion for an analysis as a check that all your DE results (like the GO analysis, the enrichment for DE genes from published datasets) are robust… i’m not sure this is statistically perfect but its something that I think makes sense to try, for my own sanity: if you randomly reassign control and treatment labels and re-attampt DE testing, do all of those interesting results go away? the worry i am trying to address, is that you have some enrichment of DE genes in interesting GO categories for example, but is that just because you have more DE power for detecting highly expressed genes in this cell type (even if they are only modestly or not truly DE), and that is what drives the GO enrichment.”</p>
+<p>Randomly shuffle the strain/unstrain labels 6 times and perform DE analysis on each, looking at the enriched GO terms to make sure the DE genes are not primarily driven by increased expression of certain genes in my cell type(s). Store the DE results to look at enrichments in OA gene sets later as well.</p>
 <pre class="r"><code>#scramble treatment labels (x3) and store the DE genes (each time, randomly assign 9 samples to be strain)
 permuted_results &lt;- vector(&quot;list&quot;, 12)
 for(time in 1:6){
@@ -1294,160 +1576,7 @@ for(time in 1:6){
 18856_3_S                2 15807863  0.728747075 -0.9909086
 18856_2_U                1 15142152  0.359175096 -1.0809905
 18855_3_U                2 18157918  0.487681866 -1.2290497</code></pre>
-<pre class="r"><code>for (permutation in 7:12){
-     results &lt;- permuted_results[[permutation]]
-     
-     # k-s test making use of ranked based on p-values
-     genes &lt;- results$qvalue
-     names(genes) &lt;- rownames(results)
-
-     selection &lt;- function(allScore){ return(allScore &lt; 0.05)} # function that returns TRUE/FALSE for p-values&lt;0.05
-     allGO2genes &lt;- annFUN.org(whichOnto=&quot;BP&quot;, feasibleGenes=NULL, mapping=&quot;org.Hs.eg.db&quot;, ID=&quot;ensembl&quot;)
-     GOdata &lt;- new(&quot;topGOdata&quot;,
-       ontology=&quot;BP&quot;,
-       allGenes=genes,
-       annot=annFUN.GO2genes,
-       GO2genes=allGO2genes,
-       geneSel=selection,
-       nodeSize=10)
-
-     results.ks &lt;- runTest(GOdata, algorithm=&quot;classic&quot;, statistic=&quot;ks&quot;)
-     goEnrichment &lt;- GenTable(GOdata, KS=results.ks, orderBy=&quot;KS&quot;, topNodes=20)
-     goEnrichment &lt;- goEnrichment %&gt;% 
-          mutate(KS = ifelse(grepl(&quot;&lt;&quot;, KS), 1e-30, KS))
-     goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
-     goEnrichment &lt;- goEnrichment[goEnrichment$KS&lt;0.05,]
-     goEnrichment &lt;- goEnrichment[,c(&quot;GO.ID&quot;,&quot;Term&quot;,&quot;KS&quot;)]
-     goEnrichment$Term &lt;- gsub(&quot; [a-z]*\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
-     goEnrichment$Term &lt;- gsub(&quot;\\.\\.\\.$&quot;, &quot;&quot;, goEnrichment$Term)
-     goEnrichment$Term &lt;- paste(goEnrichment$GO.ID, goEnrichment$Term, sep=&quot;, &quot;)
-     goEnrichment$Term &lt;- factor(goEnrichment$Term, levels=rev(goEnrichment$Term))
-     goEnrichment$KS &lt;- as.numeric(goEnrichment$KS)
-
-     plot &lt;- ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
-         stat_summary(geom = &quot;bar&quot;, fun = mean, position = &quot;dodge&quot;) +
-         xlab(&quot;Biological process&quot;) +
-         ylab(&quot;Enrichment&quot;) +
-         ggtitle(&quot;Title&quot;) +
-         scale_y_continuous(breaks = round(seq(0, max(-log10(goEnrichment$KS)), by = 2), 1)) +
-         theme_bw(base_size=24) +
-         theme(
-             legend.position=&#39;none&#39;,
-             legend.background=element_rect(),
-             plot.title=element_text(angle=0, size=24, face=&quot;bold&quot;, vjust=1),
-             axis.text.x=element_text(angle=0, size=18, face=&quot;bold&quot;, hjust=1.10),
-             axis.text.y=element_text(angle=0, size=18, face=&quot;bold&quot;, vjust=0.5),
-             axis.title=element_text(size=24, face=&quot;bold&quot;),
-          legend.key=element_blank(),     #removes the border
-          legend.key.size=unit(1, &quot;cm&quot;),      #Sets overall area/size of the legend
-          legend.text=element_text(size=18),  #Text size
-          title=element_text(size=18)) +
-          guides(colour=guide_legend(override.aes=list(size=2.5))) +
-          coord_flip()
-
-     print(plot)
-}</code></pre>
-<pre><code>
-Building most specific GOs .....</code></pre>
-<pre><code>    ( 9780 GO terms found. )</code></pre>
-<pre><code>
-Build GO DAG topology ..........</code></pre>
-<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
-<pre><code>
-Annotating nodes ...............</code></pre>
-<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
-<pre><code>
-             -- Classic Algorithm -- 
-
-         the algorithm is scoring 5178 nontrivial nodes
-         parameters: 
-             test statistic: ks
-             score order: increasing</code></pre>
-<pre><code>
-Building most specific GOs .....</code></pre>
-<pre><code>    ( 9780 GO terms found. )</code></pre>
-<pre><code>
-Build GO DAG topology ..........</code></pre>
-<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
-<pre><code>
-Annotating nodes ...............</code></pre>
-<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
-<pre><code>
-             -- Classic Algorithm -- 
-
-         the algorithm is scoring 5178 nontrivial nodes
-         parameters: 
-             test statistic: ks
-             score order: increasing</code></pre>
-<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code>
-Building most specific GOs .....</code></pre>
-<pre><code>    ( 9780 GO terms found. )</code></pre>
-<pre><code>
-Build GO DAG topology ..........</code></pre>
-<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
-<pre><code>
-Annotating nodes ...............</code></pre>
-<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
-<pre><code>
-             -- Classic Algorithm -- 
-
-         the algorithm is scoring 5178 nontrivial nodes
-         parameters: 
-             test statistic: ks
-             score order: increasing</code></pre>
-<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-2.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code>
-Building most specific GOs .....</code></pre>
-<pre><code>    ( 9780 GO terms found. )</code></pre>
-<pre><code>
-Build GO DAG topology ..........</code></pre>
-<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
-<pre><code>
-Annotating nodes ...............</code></pre>
-<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
-<pre><code>
-             -- Classic Algorithm -- 
-
-         the algorithm is scoring 5178 nontrivial nodes
-         parameters: 
-             test statistic: ks
-             score order: increasing</code></pre>
-<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-3.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code>
-Building most specific GOs .....</code></pre>
-<pre><code>    ( 9780 GO terms found. )</code></pre>
-<pre><code>
-Build GO DAG topology ..........</code></pre>
-<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
-<pre><code>
-Annotating nodes ...............</code></pre>
-<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
-<pre><code>
-             -- Classic Algorithm -- 
-
-         the algorithm is scoring 5178 nontrivial nodes
-         parameters: 
-             test statistic: ks
-             score order: increasing</code></pre>
-<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-4.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code>
-Building most specific GOs .....</code></pre>
-<pre><code>    ( 9780 GO terms found. )</code></pre>
-<pre><code>
-Build GO DAG topology ..........</code></pre>
-<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
-<pre><code>
-Annotating nodes ...............</code></pre>
-<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
-<pre><code>
-             -- Classic Algorithm -- 
-
-         the algorithm is scoring 5178 nontrivial nodes
-         parameters: 
-             test statistic: ks
-             score order: increasing</code></pre>
-<p><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/DEanalysis_bulkRNA.Rmd/ks%20test%20permuted-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Perform ks test for enrichments of GO terms amongst the permuted DE genes</p>
 <pre class="r"><code>for (permutation in 7:12){
      results &lt;- permuted_results[[permutation]]
      
@@ -1705,16 +1834,16 @@ Annotating nodes ...............</code></pre>
 </div>
 <div id="look-at-enrichment-of-de-genes-amongst-previously-published-datasets-of-oa-related-genes" class="section level1">
 <h1>Look at enrichment of DE genes amongst previously published datasets of OA related genes</h1>
+<p>Return back first to the original DE results to evaluate enrichment.</p>
 <pre class="r"><code>library(dplyr)
 # load gene annotations
 gene_anno &lt;- read.delim(&quot;data/gene-annotation.txt&quot;,
                         sep = &quot;\t&quot;)
 
-DE_results &lt;- results
 threshold &lt;- 0.05
-DE_genes_ensg &lt;- rownames(DE_results[[&quot;Unstrain&quot;]])[DE_results[[&quot;Unstrain&quot;]]$qvalue &lt; threshold]
+DE_genes_ensg &lt;- rownames(DE_results_original[[&quot;Unstrain&quot;]])[DE_results_original[[&quot;Unstrain&quot;]]$qvalue &lt; threshold]
 DE_genes &lt;- gene_anno$external_gene_name[match(DE_genes_ensg, gene_anno$ensembl_gene_id)]
-other_genes_ensg &lt;- rownames(DE_results[[&quot;Unstrain&quot;]])[DE_results[[&quot;Unstrain&quot;]]$qvalue &gt;= threshold]
+other_genes_ensg &lt;- rownames(DE_results_original[[&quot;Unstrain&quot;]])[DE_results_original[[&quot;Unstrain&quot;]]$qvalue &gt;= threshold]
 other_genes &lt;- gene_anno$external_gene_name[match(other_genes_ensg, gene_anno$ensembl_gene_id)]
 
 #Genes from https://www.nature.com/articles/s41588-018-0327-1
@@ -1735,7 +1864,7 @@ cross_omic &lt;- c(s2, s2.1, s2.2)</code></pre>
 </div>
 <div id="enrichment-function" class="section level1">
 <h1>Enrichment Function</h1>
-<p>Use fisher’s exact test to compute significant enrichment.</p>
+<p>Use fisher’s exact test to compute enrichment of DE genes amongst the OA related gene sets.</p>
 <pre class="r"><code>enrich &lt;- function(genes_of_interest, DEgenes, backgroundgenes){
      #fill contingency table
      DE_interest &lt;- length(intersect(genes_of_interest, DEgenes))
@@ -1752,34 +1881,34 @@ cross_omic &lt;- c(s2, s2.1, s2.2)</code></pre>
 
 enrich(fungenomic, DE_genes_ensg, other_genes_ensg)</code></pre>
 <pre><code>     [,1] [,2]
-[1,]    0    0
-[2,]    0    0</code></pre>
+[1,]   49  293
+[2,]  938 9206</code></pre>
 <pre><code>
     Fisher&#39;s Exact Test for Count Data
 
 data:  contingency_table
-p-value = 1
+p-value = 0.001826
 alternative hypothesis: true odds ratio is greater than 1
 95 percent confidence interval:
-   0 Inf
+ 1.242775      Inf
 sample estimates:
 odds ratio 
-         0 </code></pre>
+  1.641232 </code></pre>
 <pre class="r"><code>enrich(cross_omic, DE_genes_ensg, other_genes_ensg)</code></pre>
 <pre><code>     [,1] [,2]
-[1,]    0    0
-[2,]    0    0</code></pre>
+[1,]   42  296
+[2,]  945 9203</code></pre>
 <pre><code>
     Fisher&#39;s Exact Test for Count Data
 
 data:  contingency_table
-p-value = 1
+p-value = 0.03712
 alternative hypothesis: true odds ratio is greater than 1
 95 percent confidence interval:
-   0 Inf
+ 1.025732      Inf
 sample estimates:
 odds ratio 
-         0 </code></pre>
+  1.381779 </code></pre>
 </div>
 <div id="look-at-enrichments-from-permuted-de-analysis-scrambled-strain-labels-to-make-sure-the-fet-results-arent-just-because-some-genes-are-more-likely-to-be-detected-as-de-in-these-cells" class="section level1">
 <h1>Look at enrichments from permuted DE analysis (scrambled strain labels to make sure the FET results aren’t just because some genes are more likely to be detected as DE in these cells)</h1>

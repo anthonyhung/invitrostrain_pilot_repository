@@ -52,6 +52,8 @@ colnames(design) <- gsub("treatment", "", colnames(design))
 colnames(design)
 ```
 
+# Fit the model using limma and voom
+
 ```{r fit-model, fig.width=8}
 # Model replicate as a random effect
 # Recommended to run both voom and duplicateCorrelation twice.
@@ -74,9 +76,10 @@ fit <- eBayes(fit)
 saveRDS(v2, "output/voom_results.rds")
 ```
 
-## Assess model results
+## Assess model results from voom
 
 ```{r model-results}
+#this function extracts the results from the voom output for each of the variables (each "test")
 get_results <- function(x, number = nrow(x$coefficients), sort.by = "none",
                         ...) {
   # x - object MArrayLM from eBayes output
@@ -85,9 +88,6 @@ get_results <- function(x, number = nrow(x$coefficients), sort.by = "none",
   results <- topTable(x, number = number, sort.by = sort.by, ...)
   return(results)
 }
-
-top_treatment <- get_results(fit, coef = "Unstrain", sort.by = "B")
-head(top_treatment)
 
 results_treatment <- get_results(fit, coef = "Unstrain",
                               number = nrow(filt_counts), sort = "none")
@@ -105,7 +105,7 @@ hist_treatment
 
 ## Use ash for mutliple testing correction
 
-Treatment effect.
+Run ash on the treatment results.
 
 ```{r ash-treatment}
 run_ash <- function(x, coef) {
@@ -128,6 +128,8 @@ hist(ash_treatment$result$svalue)
 ```
 
 # Plots
+
+Functions to make plots from the results
 
 ```{r Plot Functions}
 plot_ma <- function(x, qval) {
@@ -185,6 +187,8 @@ plot_pval_hist <- function(x, qval) {
 }
 ```
 
+Apply functions to build plots for FDR 0.05
+
 ```{r use Functions}
 tests <- colnames(fit$coefficients)
 results <- vector(length = length(tests), mode = "list")
@@ -210,6 +214,8 @@ significant_genes_05 <- row.names(results[["Unstrain"]])[results[["Unstrain"]]$q
 significant_symbols_05 <- gene_anno$external_gene_name[match(significant_genes_05, gene_anno$ensembl_gene_id)]
 head(significant_symbols_05)
 significant_anno_05 <- gene_anno[match(significant_genes_05, gene_anno$ensembl_gene_id),]
+
+DE_results_original <- results
 ```
 
 ## Gene ontology analysis with topGO
@@ -268,20 +274,17 @@ ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
         title=element_text(size=18)) +
     guides(colour=guide_legend(override.aes=list(size=2.5))) +
     coord_flip()
-
 ```
-
-
 
 
 # Additional analysis permuting samples:
 
-From Ben Fair: "i have a suggestion for an analysis as a check that all your DE results (like the GO analysis, the enrichment for DE genes from published datasets) are robust… i’m not sure this is statistically perfect but its something that I think makes sense to try, for my own sanity: if you randomly reassign control and treatment labels and re-attampt DE testing, do all of those interesting results go away? the worry i am trying to address, is that you have some enrichment of DE genes in interesting GO categories for example, but is that just because you have more DE power for detecting highly expressed genes in this cell type (even if they are only modestly or not truly DE), and that is what drives the GO enrichment."
+Randomly shuffle the strain/unstrain labels 10 times and perform DE analysis on each, looking at the enriched GO terms to make sure the DE genes are not primarily driven by increased expression of certain genes in my cell type(s). Store the DE results to look at enrichments in OA gene sets later as well.
 
 ```{r permute samples}
 #scramble treatment labels (x3) and store the DE genes (each time, randomly assign 9 samples to be strain)
 permuted_results <- vector("list", 12)
-for(time in 1:6){
+for(time in 1:10){
      #set up DE and scramble labels
      anno <- pData(RUVsOut)
      x <- paste0(anno$Individual, anno$treatment)
@@ -328,74 +331,19 @@ for(time in 1:6){
      }
 
      #store results
-     permuted_results[[6+time]] <- results[["Unstrain"]]
+     permuted_results[[10+time]] <- results[["Unstrain"]]
 }
 
 #visualize what the permutations look like (what the scrambled labels look like)
-for(time in 1:6){
+for(time in 1:10){
      print(permuted_results[[time]])
 }
 ```
 
+Perform ks test for enrichments of GO terms amongst the permuted DE genes
+
 ```{r ks test permuted}
-for (permutation in 7:12){
-     results <- permuted_results[[permutation]]
-     
-     # k-s test making use of ranked based on p-values
-     genes <- results$qvalue
-     names(genes) <- rownames(results)
-
-     selection <- function(allScore){ return(allScore < 0.05)} # function that returns TRUE/FALSE for p-values<0.05
-     allGO2genes <- annFUN.org(whichOnto="BP", feasibleGenes=NULL, mapping="org.Hs.eg.db", ID="ensembl")
-     GOdata <- new("topGOdata",
-       ontology="BP",
-       allGenes=genes,
-       annot=annFUN.GO2genes,
-       GO2genes=allGO2genes,
-       geneSel=selection,
-       nodeSize=10)
-
-     results.ks <- runTest(GOdata, algorithm="classic", statistic="ks")
-     goEnrichment <- GenTable(GOdata, KS=results.ks, orderBy="KS", topNodes=20)
-     goEnrichment <- goEnrichment %>% 
-          mutate(KS = ifelse(grepl("<", KS), 1e-30, KS))
-     goEnrichment$KS <- as.numeric(goEnrichment$KS)
-     goEnrichment <- goEnrichment[goEnrichment$KS<0.05,]
-     goEnrichment <- goEnrichment[,c("GO.ID","Term","KS")]
-     goEnrichment$Term <- gsub(" [a-z]*\\.\\.\\.$", "", goEnrichment$Term)
-     goEnrichment$Term <- gsub("\\.\\.\\.$", "", goEnrichment$Term)
-     goEnrichment$Term <- paste(goEnrichment$GO.ID, goEnrichment$Term, sep=", ")
-     goEnrichment$Term <- factor(goEnrichment$Term, levels=rev(goEnrichment$Term))
-     goEnrichment$KS <- as.numeric(goEnrichment$KS)
-
-     plot <- ggplot(goEnrichment, aes(x=Term, y=-log10(KS))) +
-         stat_summary(geom = "bar", fun = mean, position = "dodge") +
-         xlab("Biological process") +
-         ylab("Enrichment") +
-         ggtitle("Title") +
-         scale_y_continuous(breaks = round(seq(0, max(-log10(goEnrichment$KS)), by = 2), 1)) +
-         theme_bw(base_size=24) +
-         theme(
-             legend.position='none',
-             legend.background=element_rect(),
-             plot.title=element_text(angle=0, size=24, face="bold", vjust=1),
-             axis.text.x=element_text(angle=0, size=18, face="bold", hjust=1.10),
-             axis.text.y=element_text(angle=0, size=18, face="bold", vjust=0.5),
-             axis.title=element_text(size=24, face="bold"),
-          legend.key=element_blank(),     #removes the border
-          legend.key.size=unit(1, "cm"),      #Sets overall area/size of the legend
-          legend.text=element_text(size=18),  #Text size
-          title=element_text(size=18)) +
-          guides(colour=guide_legend(override.aes=list(size=2.5))) +
-          coord_flip()
-
-     print(plot)
-}
-```
-
-
-```{r}
-for (permutation in 7:12){
+for (permutation in 11:20){
      results <- permuted_results[[permutation]]
      
      # k-s test making use of ranked based on p-values
@@ -432,17 +380,18 @@ for (permutation in 7:12){
 
 # Look at enrichment of DE genes amongst previously published datasets of OA related genes
 
+Return back first to the original DE results to evaluate enrichment.
+
 ```{r load}
 library(dplyr)
 # load gene annotations
 gene_anno <- read.delim("data/gene-annotation.txt",
                         sep = "\t")
 
-DE_results <- results
 threshold <- 0.05
-DE_genes_ensg <- rownames(DE_results[["Unstrain"]])[DE_results[["Unstrain"]]$qvalue < threshold]
+DE_genes_ensg <- rownames(DE_results_original[["Unstrain"]])[DE_results_original[["Unstrain"]]$qvalue < threshold]
 DE_genes <- gene_anno$external_gene_name[match(DE_genes_ensg, gene_anno$ensembl_gene_id)]
-other_genes_ensg <- rownames(DE_results[["Unstrain"]])[DE_results[["Unstrain"]]$qvalue >= threshold]
+other_genes_ensg <- rownames(DE_results_original[["Unstrain"]])[DE_results_original[["Unstrain"]]$qvalue >= threshold]
 other_genes <- gene_anno$external_gene_name[match(other_genes_ensg, gene_anno$ensembl_gene_id)]
 
 #Genes from https://www.nature.com/articles/s41588-018-0327-1
@@ -464,7 +413,7 @@ cross_omic <- c(s2, s2.1, s2.2)
 
 # Enrichment Function
 
-Use fisher's exact test to compute significant enrichment.
+Use fisher's exact test to compute enrichment of DE genes amongst the OA related gene sets.
 
 ```{r function}
 enrich <- function(genes_of_interest, DEgenes, backgroundgenes){
@@ -489,7 +438,7 @@ enrich(cross_omic, DE_genes_ensg, other_genes_ensg)
 
 ```{r permuted}
 threshold <- 0.05
-for(permutation in 7:12){
+for(permutation in 11:20){
      print(permutation)
      DE_results <- permuted_results[[permutation]]
      DE_genes_ensg <- rownames(DE_results)[DE_results$qvalue < threshold]
