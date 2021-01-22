@@ -420,7 +420,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -429,7 +429,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -441,7 +441,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-01-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -457,12 +457,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree8542407ba567fe01e9b930f1fc69822a37a6f926targetblank8542407a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/8542407ba567fe01e9b930f1fc69822a37a6f926" target="_blank">8542407</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree5026544eae39860c293361865709756e94bfa2eetargetblank5026544a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/5026544eae39860c293361865709756e94bfa2ee" target="_blank">5026544</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree8542407ba567fe01e9b930f1fc69822a37a6f926targetblank8542407a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree5026544eae39860c293361865709756e94bfa2eetargetblank5026544a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/8542407ba567fe01e9b930f1fc69822a37a6f926" target="_blank">8542407</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/5026544eae39860c293361865709756e94bfa2ee" target="_blank">5026544</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -575,7 +575,6 @@ Ignored files:
 
 Unstaged changes:
     Modified:   .gitignore
-    Modified:   analysis/DEanalysis_bulkRNA.Rmd
 
 </code></pre>
 <p>
@@ -614,6 +613,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/5026544eae39860c293361865709756e94bfa2ee/analysis/DEanalysis_bulkRNA.Rmd" target="_blank">5026544</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+permute 10 times
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/5026544eae39860c293361865709756e94bfa2ee/docs/DEanalysis_bulkRNA.html" target="_blank">5026544</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+permute 10 times
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1275,10 +1308,10 @@ Anthony Hung
 </div>
 <div id="additional-analysis-permuting-samples" class="section level1">
 <h1>Additional analysis permuting samples:</h1>
-<p>Randomly shuffle the strain/unstrain labels 6 times and perform DE analysis on each, looking at the enriched GO terms to make sure the DE genes are not primarily driven by increased expression of certain genes in my cell type(s). Store the DE results to look at enrichments in OA gene sets later as well.</p>
+<p>Randomly shuffle the strain/unstrain labels 10 times and perform DE analysis on each, looking at the enriched GO terms to make sure the DE genes are not primarily driven by increased expression of certain genes in my cell type(s). Store the DE results to look at enrichments in OA gene sets later as well.</p>
 <pre class="r"><code>#scramble treatment labels (x3) and store the DE genes (each time, randomly assign 9 samples to be strain)
 permuted_results &lt;- vector(&quot;list&quot;, 12)
-for(time in 1:6){
+for(time in 1:10){
      #set up DE and scramble labels
      anno &lt;- pData(RUVsOut)
      x &lt;- paste0(anno$Individual, anno$treatment)
@@ -1325,7 +1358,7 @@ for(time in 1:6){
      }
 
      #store results
-     permuted_results[[6+time]] &lt;- results[[&quot;Unstrain&quot;]]
+     permuted_results[[10+time]] &lt;- results[[&quot;Unstrain&quot;]]
 }</code></pre>
 <pre><code>Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
 maxit, : Too much damping - convergence tolerance not achievable
@@ -1355,9 +1388,33 @@ Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
 maxit, : Too much damping - convergence tolerance not achievable
 
 Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
+maxit, : Too much damping - convergence tolerance not achievable
+
+Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit =
 maxit, : Too much damping - convergence tolerance not achievable</code></pre>
 <pre class="r"><code>#visualize what the permutations look like (what the scrambled labels look like)
-for(time in 1:6){
+for(time in 1:10){
      print(permuted_results[[time]])
 }</code></pre>
 <pre><code>          Sample_ID Individual Sex Replicate treatment  RIN
@@ -1575,9 +1632,153 @@ for(time in 1:6){
 18855_1_U                1 20146697  0.649711618 -1.4110342
 18856_3_S                2 15807863  0.728747075 -0.9909086
 18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3  Unstrain 10.0
+18856_3_U 18856_3_U   NA18856    M         3    Strain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
+19160_3_U 19160_3_U   NA19160    M         3    Strain 10.0
+18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0
+19160_2_S 19160_2_S   NA19160    M         2  Unstrain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2  Unstrain 10.0
+18855_1_U 18855_1_U   NA18855    F         1    Strain 10.0
+18856_3_S 18856_3_S   NA18856    M         3  Unstrain  9.6
+18856_2_U 18856_2_U   NA18856    M         2    Strain  9.5
+18855_3_U 18855_3_U   NA18855    F         3    Strain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3  Unstrain 10.0
+18856_3_U 18856_3_U   NA18856    M         3    Strain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
+18856_2_S 18856_2_S   NA18856    M         2  Unstrain  9.6
+19160_3_U 19160_3_U   NA19160    M         3  Unstrain 10.0
+18855_2_U 18855_2_U   NA18855    F         2    Strain 10.0
+19160_2_S 19160_2_S   NA19160    M         2  Unstrain 10.0
+18855_1_S 18855_1_S   NA18855    F         1    Strain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1    Strain  9.9
+19160_2_U 19160_2_U   NA19160    M         2    Strain 10.0
+18855_1_U 18855_1_U   NA18855    F         1    Strain 10.0
+18856_3_S 18856_3_S   NA18856    M         3  Unstrain  9.6
+18856_2_U 18856_2_U   NA18856    M         2  Unstrain  9.5
+18855_3_U 18855_3_U   NA18855    F         3    Strain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3  Unstrain 10.0
+19160_3_S 19160_3_S   NA19160    M         3  Unstrain 10.0
+18856_3_U 18856_3_U   NA18856    M         3  Unstrain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
+18856_2_S 18856_2_S   NA18856    M         2    Strain  9.6
+19160_3_U 19160_3_U   NA19160    M         3    Strain 10.0
+18855_2_U 18855_2_U   NA18855    F         2  Unstrain 10.0
+19160_2_S 19160_2_S   NA19160    M         2    Strain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1    Strain  8.5
+19160_1_S 19160_1_S   NA19160    M         1  Unstrain  9.9
+19160_2_U 19160_2_U   NA19160    M         2    Strain 10.0
+18855_1_U 18855_1_U   NA18855    F         1    Strain 10.0
+18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6
+18856_2_U 18856_2_U   NA18856    M         2    Strain  9.5
+18855_3_U 18855_3_U   NA18855    F         3  Unstrain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
+18855_3_U                2 18157918  0.487681866 -1.2290497
+          Sample_ID Individual Sex Replicate treatment  RIN
+18855_3_S 18855_3_S   NA18855    F         3    Strain 10.0
+19160_3_S 19160_3_S   NA19160    M         3    Strain 10.0
+18856_3_U 18856_3_U   NA18856    M         3  Unstrain 10.0
+18856_1_U 18856_1_U   NA18856    M         1  Unstrain  9.9
+18855_2_S 18855_2_S   NA18855    F         2    Strain 10.0
+18856_2_S 18856_2_S   NA18856    M         2  Unstrain  9.6
+19160_3_U 19160_3_U   NA19160    M         3    Strain 10.0
+18855_2_U 18855_2_U   NA18855    F         2    Strain 10.0
+19160_2_S 19160_2_S   NA19160    M         2  Unstrain 10.0
+18855_1_S 18855_1_S   NA18855    F         1  Unstrain  9.9
+18856_1_S 18856_1_S   NA18856    M         1  Unstrain  8.5
+19160_1_S 19160_1_S   NA19160    M         1  Unstrain  9.9
+19160_2_U 19160_2_U   NA19160    M         2  Unstrain 10.0
+18855_1_U 18855_1_U   NA18855    F         1    Strain 10.0
+18856_3_S 18856_3_S   NA18856    M         3    Strain  9.6
+18856_2_U 18856_2_U   NA18856    M         2    Strain  9.5
+18855_3_U 18855_3_U   NA18855    F         3    Strain 10.0
+          LibraryPrepBatch  LibSize          W_1        W_2
+18855_3_S                2 15419569  0.541963415 -1.1181740
+19160_3_S                2 15177653  0.376349314 -1.4100700
+18856_3_U                2 13722909  0.857248982 -0.8808562
+18856_1_U                1 18647599  1.113674153 -1.5466409
+18855_2_S                1 18256163  0.733375747 -0.7617020
+18856_2_S                1 16782764 -0.051863231 -1.3484210
+19160_3_U                2 19839604  0.224499121 -1.5560509
+18855_2_U                1 18618691  0.665015743 -0.9464050
+19160_2_S                1 16622407  0.308745015 -1.5149287
+18855_1_S                1 19712744  0.626769726 -1.5366695
+18856_1_S                1 13571439  1.038716806 -1.2664724
+19160_1_S                1 20979958  0.461484490 -2.0300296
+19160_2_U                1 20924281  0.002654243 -1.9184820
+18855_1_U                1 20146697  0.649711618 -1.4110342
+18856_3_S                2 15807863  0.728747075 -0.9909086
+18856_2_U                1 15142152  0.359175096 -1.0809905
 18855_3_U                2 18157918  0.487681866 -1.2290497</code></pre>
 <p>Perform ks test for enrichments of GO terms amongst the permuted DE genes</p>
-<pre class="r"><code>for (permutation in 7:12){
+<pre class="r"><code>for (permutation in 11:20){
      results &lt;- permuted_results[[permutation]]
      
      # k-s test making use of ranked based on p-values
@@ -1831,6 +2032,154 @@ Annotating nodes ...............</code></pre>
 [19] GO:0043486, histone exchange                      
 [20] GO:0010950, positive regulation of endopeptidase  
 20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0006614, SRP-dependent cotranslational protein
+ [2] GO:0045047, protein targeting to ER              
+ [3] GO:0072599, establishment of protein localization
+ [4] GO:0006613, cotranslational protein targeting to 
+ [5] GO:0000184, nuclear-transcribed mRNA catabolic   
+ [6] GO:0070972, protein localization to endoplasmic  
+ [7] GO:0019083, viral transcription                  
+ [8] GO:0019080, viral gene expression                
+ [9] GO:0006612, protein targeting to membrane        
+[10] GO:0006413, translational initiation             
+[11] GO:0000956, nuclear-transcribed mRNA catabolic   
+[12] GO:0006605, protein targeting                    
+[13] GO:0006412, translation                          
+[14] GO:0043043, peptide biosynthetic process         
+[15] GO:0010469, regulation of signaling receptor     
+[16] GO:0030198, extracellular matrix organization    
+[17] GO:0006518, peptide metabolic process            
+[18] GO:0035295, tube development                     
+[19] GO:0043062, extracellular structure organization 
+[20] GO:1901342, regulation of vasculature development
+20 Levels: GO:1901342, regulation of vasculature development ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0010591, regulation of lamellipodium assembly  
+ [2] GO:0043038, amino acid activation                 
+ [3] GO:0043039, tRNA aminoacylation                   
+ [4] GO:0003230, cardiac atrium development            
+ [5] GO:0006418, tRNA aminoacylation for protein       
+ [6] GO:0010592, positive regulation of lamellipodium  
+ [7] GO:0032635, interleukin-6 production              
+ [8] GO:0043489, RNA stabilization                     
+ [9] GO:0060021, roof of mouth development             
+[10] GO:0021536, diencephalon development              
+[11] GO:0003209, cardiac atrium morphogenesis          
+[12] GO:0003283, atrial septum development             
+[13] GO:0002820, negative regulation of adaptive immune
+[14] GO:0050919, negative chemotaxis                   
+[15] GO:0006928, movement of cell or subcellular       
+[16] GO:0048255, mRNA stabilization                    
+[17] GO:0045669, positive regulation of osteoblast     
+[18] GO:0061029, eyelid development in camera-type eye 
+[19] GO:0043486, histone exchange                      
+[20] GO:0010950, positive regulation of endopeptidase  
+20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0010591, regulation of lamellipodium assembly  
+ [2] GO:0043038, amino acid activation                 
+ [3] GO:0043039, tRNA aminoacylation                   
+ [4] GO:0003230, cardiac atrium development            
+ [5] GO:0006418, tRNA aminoacylation for protein       
+ [6] GO:0010592, positive regulation of lamellipodium  
+ [7] GO:0032635, interleukin-6 production              
+ [8] GO:0043489, RNA stabilization                     
+ [9] GO:0060021, roof of mouth development             
+[10] GO:0021536, diencephalon development              
+[11] GO:0003209, cardiac atrium morphogenesis          
+[12] GO:0003283, atrial septum development             
+[13] GO:0002820, negative regulation of adaptive immune
+[14] GO:0050919, negative chemotaxis                   
+[15] GO:0006928, movement of cell or subcellular       
+[16] GO:0048255, mRNA stabilization                    
+[17] GO:0045669, positive regulation of osteoblast     
+[18] GO:0061029, eyelid development in camera-type eye 
+[19] GO:0043486, histone exchange                      
+[20] GO:0010950, positive regulation of endopeptidase  
+20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
+<pre><code>
+Building most specific GOs .....</code></pre>
+<pre><code>    ( 9780 GO terms found. )</code></pre>
+<pre><code>
+Build GO DAG topology ..........</code></pre>
+<pre><code>    ( 13861 GO terms and 32652 relations. )</code></pre>
+<pre><code>
+Annotating nodes ...............</code></pre>
+<pre><code>    ( 9204 genes annotated to the GO terms. )</code></pre>
+<pre><code>
+             -- Classic Algorithm -- 
+
+         the algorithm is scoring 5178 nontrivial nodes
+         parameters: 
+             test statistic: ks
+             score order: increasing</code></pre>
+<pre><code> [1] GO:0010591, regulation of lamellipodium assembly  
+ [2] GO:0043038, amino acid activation                 
+ [3] GO:0043039, tRNA aminoacylation                   
+ [4] GO:0003230, cardiac atrium development            
+ [5] GO:0006418, tRNA aminoacylation for protein       
+ [6] GO:0010592, positive regulation of lamellipodium  
+ [7] GO:0032635, interleukin-6 production              
+ [8] GO:0043489, RNA stabilization                     
+ [9] GO:0060021, roof of mouth development             
+[10] GO:0021536, diencephalon development              
+[11] GO:0003209, cardiac atrium morphogenesis          
+[12] GO:0003283, atrial septum development             
+[13] GO:0002820, negative regulation of adaptive immune
+[14] GO:0050919, negative chemotaxis                   
+[15] GO:0006928, movement of cell or subcellular       
+[16] GO:0048255, mRNA stabilization                    
+[17] GO:0045669, positive regulation of osteoblast     
+[18] GO:0061029, eyelid development in camera-type eye 
+[19] GO:0043486, histone exchange                      
+[20] GO:0010950, positive regulation of endopeptidase  
+20 Levels: GO:0010950, positive regulation of endopeptidase ...</code></pre>
 </div>
 <div id="look-at-enrichment-of-de-genes-amongst-previously-published-datasets-of-oa-related-genes" class="section level1">
 <h1>Look at enrichment of DE genes amongst previously published datasets of OA related genes</h1>
@@ -1913,7 +2262,7 @@ odds ratio
 <div id="look-at-enrichments-from-permuted-de-analysis-scrambled-strain-labels-to-make-sure-the-fet-results-arent-just-because-some-genes-are-more-likely-to-be-detected-as-de-in-these-cells" class="section level1">
 <h1>Look at enrichments from permuted DE analysis (scrambled strain labels to make sure the FET results aren’t just because some genes are more likely to be detected as DE in these cells)</h1>
 <pre class="r"><code>threshold &lt;- 0.05
-for(permutation in 7:12){
+for(permutation in 11:20){
      print(permutation)
      DE_results &lt;- permuted_results[[permutation]]
      DE_genes_ensg &lt;- rownames(DE_results)[DE_results$qvalue &lt; threshold]
@@ -1924,131 +2273,7 @@ for(permutation in 7:12){
      print(enrich(fungenomic, DE_genes_ensg, other_genes_ensg))
      print(enrich(cross_omic, DE_genes_ensg, other_genes_ensg))
 }</code></pre>
-<pre><code>[1] 7
-     [,1]  [,2]
-[1,]    0   342
-[2,]    0 10144
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-     [,1]  [,2]
-[1,]    0   338
-[2,]    0 10148
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-[1] 8
-     [,1]  [,2]
-[1,]    0   342
-[2,]    0 10144
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-     [,1]  [,2]
-[1,]    0   338
-[2,]    0 10148
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-[1] 9
-     [,1]  [,2]
-[1,]    0   342
-[2,]    0 10144
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-     [,1]  [,2]
-[1,]    0   338
-[2,]    0 10148
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-[1] 10
-     [,1]  [,2]
-[1,]    0   342
-[2,]    7 10137
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-     [,1]  [,2]
-[1,]    0   338
-[2,]    7 10141
-
-    Fisher&#39;s Exact Test for Count Data
-
-data:  contingency_table
-p-value = 1
-alternative hypothesis: true odds ratio is greater than 1
-95 percent confidence interval:
-   0 Inf
-sample estimates:
-odds ratio 
-         0 
-
-[1] 11
+<pre><code>[1] 11
      [,1]  [,2]
 [1,]    0   342
 [2,]    0 10144
@@ -2080,6 +2305,254 @@ odds ratio
          0 
 
 [1] 12
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 13
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 14
+     [,1]  [,2]
+[1,]    0   342
+[2,]    7 10137
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    7 10141
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 15
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 16
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 17
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 18
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 19
+     [,1]  [,2]
+[1,]    0   342
+[2,]    0 10144
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+     [,1]  [,2]
+[1,]    0   338
+[2,]    0 10148
+
+    Fisher&#39;s Exact Test for Count Data
+
+data:  contingency_table
+p-value = 1
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+   0 Inf
+sample estimates:
+odds ratio 
+         0 
+
+[1] 20
      [,1]  [,2]
 [1,]    0   342
 [2,]    0 10144

@@ -31,7 +31,7 @@ heritability <- 0.16 # median cis-heritability based on Gusev et al. 2016, Wheel
 lambda <- sqrt(heritability / (1-heritability))
 ```
 
-Next, we make the plot for sample sizes ranging from 3 to 100.
+Next, we make the plot for sample sizes ranging from 3 to 100. Here, vertical lines representing the average .99 quantile cdf eQTL effect sizes across conditions in each of the three external studies analyzed below are also plotted.
 
 ```{r curve}
 colors <- cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
