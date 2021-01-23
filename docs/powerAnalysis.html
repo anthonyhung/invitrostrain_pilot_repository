@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Anthony Hung" />
+
+<meta name="date" content="2021-01-19" />
+
+<title>Conducting power analysis for eQTL mapping</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">invitroOA_pilot_repository</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Conducting power analysis for eQTL mapping</h1>
+<h4 class="author">Anthony Hung</h4>
+<h4 class="date">2021-01-19</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-01-21
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210119code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210119)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210119code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree77338dc34fe63189799329061d42d2d0d1e166f6targetblank77338dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/77338dc34fe63189799329061d42d2d0d1e166f6" target="_blank">77338dc</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree77338dc34fe63189799329061d42d2d0d1e166f6targetblank77338dca" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/77338dc34fe63189799329061d42d2d0d1e166f6" target="_blank">77338dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/shadow/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
+    Ignored:    code/bulkRNA_preprocessing/fastq/
+    Ignored:    code/bulkRNA_preprocessing/out/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda/
+    Ignored:    code/single_cell_preprocessing/.snakemake/locks/
+    Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
+    Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
+    Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
+    Ignored:    code/single_cell_preprocessing/fastq/
+    Ignored:    data/external_scRNA/Chou_et_al2020/
+    Ignored:    data/external_scRNA/Jietal2018/
+    Ignored:    data/external_scRNA/Wuetal2021/
+    Ignored:    data/external_scRNA/merged_external_scRNA.rds
+    Ignored:    data/poweranalysis/alasoo_et_al/
+    Ignored:    output/GO_terms_enriched.csv
+    Ignored:    output/topicModel_k=7.rds
+    Ignored:    output/voom_results.rds
+
+Unstaged changes:
+    Modified:   .gitignore
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/powerAnalysis.Rmd</code>) and HTML (<code>docs/powerAnalysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/77338dc34fe63189799329061d42d2d0d1e166f6/analysis/powerAnalysis.Rmd" target="_blank">77338dc</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+knit analysis files
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/78cfbcd3204249a8673228d684ae77444c63266b/analysis/powerAnalysis.Rmd" target="_blank">78cfbcd</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+finish paring down files
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/cd95c28a3aa248aad780f77cf95c3940483d940a/analysis/powerAnalysis.Rmd" target="_blank">cd95c28</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add caliskan data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/e3fbd0fe2858abab87d6cc265d85f30638d8e531/analysis/powerAnalysis.Rmd" target="_blank">e3fbd0f</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add ward et al data files to data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/98724f05ddb3f0b4c9051345902c611302f43f11/analysis/powerAnalysis.Rmd" target="_blank">98724f0</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+finish topic model rmd
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/28f57faed7255644b4858290aed125d5466312ea/analysis/powerAnalysis.Rmd" target="_blank">28f57fa</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-19
+</td>
+<td>
+Add files for analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Here, we plot power curves under the assumptions of different sample sizes for an eQTL study. We also look at eQTL effect sizes from previously published response-eQTL studies to contextualize the power curves.</p>
+<p>Power Curve derivations based on Abhishek Sarkar’s calculations: <a href="https://users.rcc.uchicago.edu/~aksarkar/hypoxia/reqtl.html" class="uri">https://users.rcc.uchicago.edu/~aksarkar/hypoxia/reqtl.html</a></p>
+</div>
+<div id="load-libraries" class="section level1">
+<h1>Load libraries</h1>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>── Attaching packages ────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>✓ tibble  3.0.4     ✓ purrr   0.3.4
+✓ tidyr   1.1.2     ✓ stringr 1.4.0
+✓ readr   1.3.1     ✓ forcats 0.4.0</code></pre>
+<pre><code>── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ashr)</code></pre>
+</div>
+<div id="plot-a-power-curve" class="section level1">
+<h1>Plot a power curve</h1>
+<p>First, we need to specify the heritability for our model.</p>
+<pre class="r"><code>heritability &lt;- 0.16 # median cis-heritability based on Gusev et al. 2016, Wheeler et al. 2016
+lambda &lt;- sqrt(heritability / (1-heritability))</code></pre>
+<p>Next, we make the plot for sample sizes ranging from 3 to 100. Here, vertical lines representing the average .99 quantile cdf eQTL effect sizes across conditions in each of the three external studies analyzed below are also plotted.</p>
+<pre class="r"><code>colors &lt;- cbPalette &lt;- c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;)
+samp_size &lt;- c(3, 10, 20, 40, 58, 100) # sample sizes for power curve
+alpha &lt;- 5e-6 #for FWER of 0.05 and a list of 10000 genes, we have an adjusted alpha (based on bonferroni correction) of 5e-6 
+
+power_function &lt;- function(x, n){ 
+     pnorm(qnorm(alpha/2) + x * sqrt(n))
+}
+
+#The False positive rate for calling an eQTL discovered in one condition (out of two total condition) as a condition specific eQTL (a.k.a. a &quot;response eQTL&quot;) is computed by this function.
+FPR_function &lt;- function(x, n){ 
+     1 - pnorm(qnorm(alpha/2) + x * sqrt(n))
+}
+
+p &lt;- ggplot(data.frame(x = c(0, 2)), aes(x = x)) +
+     stat_function(fun = power_function, args = list(n = 3),
+                      aes(colour = &quot;3&quot;, linetype = &quot;Power&quot;), size = 1.5) +
+     stat_function(fun = FPR_function, args = list(n = 3),
+                      aes(colour = &quot;3&quot;, linetype = &quot;dynamic QTL FPR&quot;), size = 1, alpha = 0.7) +
+     stat_function(fun = power_function, args = list(n = 10),
+                      aes(colour = &quot;10&quot;, linetype = &quot;Power&quot;), size = 1.5) +
+     stat_function(fun = FPR_function, args = list(n = 10),
+                      aes(colour = &quot;10&quot;, linetype = &quot;dynamic QTL FPR&quot;), size = 1, alpha = 0.7) +
+     stat_function(fun = power_function, args = list(n = 30),
+                      aes(colour = &quot;30&quot;, linetype = &quot;Power&quot;), size = 1.5) +
+     stat_function(fun = FPR_function, args = list(n = 30),
+                      aes(colour = &quot;30&quot;, linetype = &quot;dynamic QTL FPR&quot;), size = 1, alpha = 0.7) +
+     stat_function(fun = power_function, args = list(n = 58),
+                      aes(colour = &quot;58&quot;, linetype = &quot;Power&quot;), size = 1.5) +
+     stat_function(fun = FPR_function, args = list(n = 58),
+                      aes(colour = &quot;58&quot;, linetype = &quot;dynamic QTL FPR&quot;), size = 1, alpha = 0.7) +
+     stat_function(fun = power_function, args = list(n = 100),
+                      aes(colour = &quot;100&quot;, linetype = &quot;Power&quot;), size = 1.5) +
+     stat_function(fun = FPR_function, args = list(n = 100),
+                      aes(colour = &quot;100&quot;, linetype = &quot;dynamic QTL FPR&quot;), size = 1, alpha = 0.7) +
+     
+     # annotate(&quot;rect&quot;, xmin = 0.25340626, xmax = 0.2652244, ymin = -Inf, ymax = Inf, alpha = .2, fill = &quot;blue&quot;) +
+     annotate(&quot;segment&quot;, x = 0.2593153, xend = 0.2593153, y = -Inf, yend = Inf, alpha = 0.3, color = &quot;blue&quot;, size = 1) + 
+     # annotate(&quot;rect&quot;, xmin = 0.7232331, xmax = 0.8596644, ymin = -Inf, ymax = Inf, alpha = .2, fill = &quot;purple&quot;) +
+     annotate(&quot;segment&quot;, x = 0.793114125, xend = 0.793114125, y = -Inf, yend = Inf, alpha = 0.3, color = &quot;purple&quot;, size = 1) + 
+     #annotate(&quot;rect&quot;, xmin = 0.6035850, xmax = 0.6097121, ymin = -Inf, ymax = Inf, alpha = .2, fill = &quot;brown&quot;) +
+     annotate(&quot;segment&quot;, x = 0.605953025, xend = 0.605953025, y = -Inf, yend = Inf, alpha = 0.3, color = &quot;brown&quot;, size = 1) + 
+     # stat_function(fun = function(x) x^2/(1+x^2),
+     #                  aes(colour = &quot;heritability&quot;), size = 1, alpha = 0.5) +
+     scale_x_continuous(name = &quot;Standardized Effect Size&quot;,
+                              limits=c(0, 2)) +
+     scale_y_continuous(name = &quot;Power&quot;,
+                           limits = c(0,1)) +
+     ggtitle(&quot;eQTL Power Curves&quot;) +
+     scale_colour_manual(&quot;Sample Size&quot;, breaks = c(&quot;3&quot;, &quot;10&quot;, &quot;30&quot;, &quot;58&quot;, &quot;100&quot;), values = colors) +
+     scale_linetype_manual(&quot;Curve Type&quot;, breaks = c(&quot;Power&quot;, &quot;dynamic QTL FPR&quot;), values = c(&quot;dynamic QTL FPR&quot; = &quot;dotted&quot;, &quot;Power&quot; = &quot;solid&quot;)) +
+     theme_bw() +
+     geom_hline(yintercept = .8, linetype = &quot;dashed&quot;, color = &quot;red&quot;)
+p</code></pre>
+<p><img src="figure/powerAnalysis.Rmd/curve-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="import-outside-data-on-eqtls-to-see-distributions-of-standardized-effect-sizes" class="section level1">
+<h1>Import outside data on eQTLs to see distributions of standardized effect sizes</h1>
+<p>After plotting our power curve, we would like to get a sense of the range of standardized effect sizes in several previously published response-eQTL papers.</p>
+<pre class="r"><code>#This function creates an empirical cdf from a vector of effect sizes and prints out several quantiles of the ecdf
+get_ecdf &lt;- function(vector_of_SES){
+     SES_ecdf &lt;- ecdf(vector_of_SES)
+     print(quantile(SES_ecdf, c(.75, .95, .99)))
+     print(plot(SES_ecdf, ylim = c(-2,2)))
+}</code></pre>
+</div>
+<div id="ward-et-al-hypoxia-response-eqtl-study" class="section level1">
+<h1>Ward et al hypoxia response eQTL study</h1>
+<pre class="r"><code>#michelle hypoxia reQTL study
+conditionA &lt;- as_tibble(read.table(&#39;data/poweranalysis/ward_et_al_2020/A-adjust.txt.gz&#39;, fill = TRUE, stringsAsFactors = FALSE))
+conditionB &lt;- as_tibble(read.table(&#39;data/poweranalysis/ward_et_al_2020/B-adjust.txt.gz&#39;, fill = TRUE, stringsAsFactors = FALSE))
+conditionC &lt;- as_tibble(read.table(&#39;data/poweranalysis/ward_et_al_2020/C-adjust.txt.gz&#39;, fill = TRUE, stringsAsFactors = FALSE))
+conditionD &lt;- as_tibble(read.table(&#39;data/poweranalysis/ward_et_al_2020/D-adjust.txt.gz&#39;, fill = TRUE, stringsAsFactors = FALSE))
+
+zz &lt;- gzfile(&#39;data/poweranalysis/ward_et_al_2020/reqtls.txt.gz&#39;,&#39;rt&#39;)  
+hypoxia &lt;- as_tibble(read.table(zz, fill = TRUE, stringsAsFactors = FALSE))
+
+names(hypoxia) &lt;- hypoxia %&gt;% 
+     dplyr::slice(1) %&gt;% 
+     unlist()
+hypoxia &lt;- hypoxia %&gt;% 
+     dplyr::slice(-1)
+
+## find SNP-gene pairs that were tested in all conditions and compute allelic effect sizes
+common &lt;- sort(Reduce(intersect, list(paste0(conditionA$TEST.SNP.CHROM, conditionA$TEST.SNP.POS, &quot; &quot;, conditionA$PHENO),
+                           paste0(conditionB$TEST.SNP.CHROM, conditionB$TEST.SNP.POS, &quot; &quot;, conditionB$PHENO),
+                           paste0(conditionC$TEST.SNP.CHROM, conditionC$TEST.SNP.POS, &quot; &quot;, conditionC$PHENO),
+                           paste0(conditionD$TEST.SNP.CHROM, conditionD$TEST.SNP.POS, &quot; &quot;, conditionD$PHENO)
+                           )))
+length(common)</code></pre>
+<pre><code>[1] 1040874</code></pre>
+<pre class="r"><code>conditionA &lt;- conditionA %&gt;% 
+     dplyr::mutate(temp = paste0(TEST.SNP.CHROM, TEST.SNP.POS, &quot; &quot;, PHENO)) %&gt;% 
+     dplyr::filter(temp %in% common) %&gt;% 
+     dplyr::mutate(slope = log(ALPHA/BETA))%&gt;% 
+     dplyr::mutate(zscore = sign(ALPHA - BETA) * sqrt(qchisq(p = p_adjusted + 1e-30, df = 1))) %&gt;% 
+     dplyr::select(-temp)
+conditionB &lt;- conditionB %&gt;% 
+     dplyr::mutate(temp = paste0(TEST.SNP.CHROM, TEST.SNP.POS, &quot; &quot;, PHENO)) %&gt;% 
+     dplyr::filter(temp %in% common) %&gt;% 
+     dplyr::mutate(slope = log(ALPHA/BETA))%&gt;% 
+     dplyr::mutate(zscore = sign(ALPHA - BETA) * sqrt(qchisq(p = p_adjusted + 1e-30, df = 1))) %&gt;% 
+     dplyr::select(-temp)
+conditionC &lt;- conditionC %&gt;% 
+     dplyr::mutate(temp = paste0(TEST.SNP.CHROM, TEST.SNP.POS, &quot; &quot;, PHENO)) %&gt;% 
+     dplyr::filter(temp %in% common) %&gt;% 
+     dplyr::mutate(slope = log(ALPHA/BETA))%&gt;% 
+     dplyr::mutate(zscore = sign(ALPHA - BETA) * sqrt(qchisq(p = p_adjusted + 1e-30, df = 1))) %&gt;% 
+     dplyr::select(-temp)
+conditionD &lt;- conditionD %&gt;% 
+     dplyr::mutate(temp = paste0(TEST.SNP.CHROM, TEST.SNP.POS, &quot; &quot;, PHENO)) %&gt;% 
+     dplyr::filter(temp %in% common) %&gt;% 
+     dplyr::mutate(slope = log(ALPHA/BETA))%&gt;% 
+     dplyr::mutate(zscore = sign(ALPHA - BETA) * sqrt(qchisq(p = p_adjusted + 1e-30, df = 1))) %&gt;% 
+     dplyr::select(-temp)
+dim(conditionA)</code></pre>
+<pre><code>[1] 1040874      22</code></pre>
+<pre class="r"><code>dim(conditionB)</code></pre>
+<pre><code>[1] 1040874      22</code></pre>
+<pre class="r"><code>dim(conditionC)</code></pre>
+<pre><code>[1] 1040874      22</code></pre>
+<pre class="r"><code>dim(conditionD)</code></pre>
+<pre><code>[1] 1040874      22</code></pre>
+<pre class="r"><code># For each condiiton in the study, compute the empirical CDF and quantiles after obtaining the effect sizes by dividing the zscore by the sqrt of the number of individuals in the study (15).
+#conditionA
+get_ecdf(conditionA$zscore/sqrt(15))</code></pre>
+<pre><code>      75%       95%       99% 
+0.1552778 0.4150685 0.6053753 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/hypoxia-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>#conditionB
+get_ecdf(conditionB$zscore/sqrt(15))</code></pre>
+<pre><code>      75%       95%       99% 
+0.1572876 0.4167222 0.6051397 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/hypoxia-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>#conditionC
+get_ecdf(conditionC$zscore/sqrt(15))</code></pre>
+<pre><code>      75%       95%       99% 
+0.1564676 0.4154604 0.6035850 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/hypoxia-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>#conditionD
+get_ecdf(conditionD$zscore/sqrt(15))</code></pre>
+<pre><code>      75%       95%       99% 
+0.1582968 0.4196211 0.6097121 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/hypoxia-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<div id="alasoo-et-al-2019-ifn-gamma-and-salmonella-reqtl-study" class="section level2">
+<h2>Alasoo et al 2019 IFN gamma and salmonella reQTL study</h2>
+<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6548559/#FN5" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6548559/#FN5</a> data on Zenodo: <a href="https://zenodo.org/record/1158560" class="uri">https://zenodo.org/record/1158560</a></p>
+<p>Run the following chunk to download the data to the repository.</p>
+<pre class="bash"><code>cd data/poweranalysis/alasoo_et_al/
+
+#load in data from eQTL analysis downloaded using wget from zenodo 
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz  
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz 
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz 
+wget https://zenodo.org/record/1158560/files/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz </code></pre>
+<pre class="r"><code># load data into R
+n_sorted &lt;- as_tibble(read.table(&quot;data/poweranalysis/alasoo_et_al/RNA_FastQTL_naive_500kb_pvalues.sorted.txt.gz&quot;))
+sal_sorted &lt;- as_tibble(read.table(&quot;data/poweranalysis/alasoo_et_al/RNA_FastQTL_SL1344_500kb_pvalues.sorted.txt.gz&quot;))
+IFN_sorted &lt;- as_tibble(read.table(&quot;data/poweranalysis/alasoo_et_al/RNA_FastQTL_IFNg_500kb_pvalues.sorted.txt.gz&quot;))
+salIFN_sorted &lt;- as_tibble(read.table(&quot;data/poweranalysis/alasoo_et_al/RNA_FastQTL_IFNg_SL1344_500kb_pvalues.sorted.txt.gz&quot;))
+
+#for sorted data, 
+#V1 = gene 
+#V2 = chromosome
+#V3 = location of SNP
+#V4 = SNP
+#V5 = distance to gene from SNP?
+#V6 = p-value
+#v7 = slope of regression
+
+#We can use the p-value to obtain the zscore (pvalue -&gt; Zscore)
+#then use slopes and zscores to obtain SE (slope/zscore = SE)
+n_sorted &lt;- n_sorted %&gt;% 
+     dplyr::filter(V6 != 1) %&gt;% 
+     dplyr::mutate(zscore = if_else(V7 &lt; 0, true = qnorm(V6/2), false = qnorm(1-V6/2))) %&gt;% 
+     dplyr::mutate(SE = V7/zscore)
+sal_sorted &lt;- sal_sorted %&gt;% 
+     dplyr::filter(V6 != 1) %&gt;% 
+     dplyr::mutate(zscore = if_else(V7 &lt; 0, true = qnorm(V6/2), false = qnorm(1-V6/2))) %&gt;% 
+     dplyr::mutate(SE = V7/zscore)
+IFN_sorted &lt;- IFN_sorted %&gt;% 
+     dplyr::filter(V6 != 1) %&gt;% 
+     dplyr::mutate(zscore = if_else(V7 &lt; 0, true = qnorm(V6/2), false = qnorm(1-V6/2))) %&gt;% 
+     dplyr::mutate(SE = V7/zscore)
+salIFN_sorted &lt;- salIFN_sorted %&gt;% 
+     dplyr::filter(V6 != 1) %&gt;% 
+     dplyr::mutate(zscore = if_else(V7 &lt; 0, true = qnorm(V6/2), false = qnorm(1-V6/2))) %&gt;% 
+     dplyr::mutate(SE = V7/zscore)
+
+
+# use ashr to estimate true effect sizes from the data in order to compute SES
+n_sorted_ash_out &lt;- ash(betahat = n_sorted$V7, sebetahat = n_sorted$SE, df = 84)
+sal_sorted_ash_out &lt;- ash(betahat = sal_sorted$V7, sebetahat = sal_sorted$SE, df = 84)
+IFN_sorted_ash_out &lt;- ash(betahat = IFN_sorted$V7, sebetahat = IFN_sorted$SE, df = 84)
+salIFN_sorted_ash_out &lt;- ash(betahat = salIFN_sorted$V7, sebetahat = salIFN_sorted$SE, df = 84)
+
+#add columns to datasets corresponding to the SES computed from ash betas and sds
+n_sorted$SES &lt;- n_sorted_ash_out$result$PosteriorMean/n_sorted_ash_out$result$PosteriorSD
+sal_sorted$SES &lt;- sal_sorted_ash_out$result$PosteriorMean/sal_sorted_ash_out$result$PosteriorSD
+IFN_sorted$SES &lt;- IFN_sorted_ash_out$result$PosteriorMean/IFN_sorted_ash_out$result$PosteriorSD
+salIFN_sorted$SES &lt;- salIFN_sorted_ash_out$result$PosteriorMean/salIFN_sorted_ash_out$result$PosteriorSD
+
+#Run the ecdf function separately on each of the different conditions
+#naive
+get_ecdf(n_sorted$SES)</code></pre>
+<pre><code>      75%       95%       99% 
+0.1606588 0.4507322 0.8475118 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>get_ecdf(n_sorted_ash_out$result$PosteriorMean)</code></pre>
+<pre><code>        75%         95%         99% 
+0.002599666 0.010322366 0.042398086 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>#salmonella condition
+get_ecdf(sal_sorted$SES)</code></pre>
+<pre><code>      75%       95%       99% 
+0.1341273 0.3958948 0.7232331 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>#IFN treated condition
+get_ecdf(IFN_sorted$SES)</code></pre>
+<pre><code>      75%       95%       99% 
+0.1537379 0.4549502 0.8596644 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>#salmonella and ifn treated condition
+get_ecdf(salIFN_sorted$SES)</code></pre>
+<pre><code>      75%       95%       99% 
+0.1370046 0.4083029 0.7420472 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+</div>
+<div id="caliskan-et-al-2015-rhinovirus-reqtl-study" class="section level2">
+<h2>Caliskan et al 2015 Rhinovirus reQTL study</h2>
+<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4395341/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4395341/</a></p>
+<p>Data output from MatrixeQTL kindly provided by Dr. Minal Caliskan.</p>
+<pre class="r"><code>rhinovirus_data &lt;- as.tibble(read.table(&quot;data/poweranalysis/caliskan_et_al/eQTL_results_cis_response.txt.gz&quot;, 
+                              sep = &quot;\t&quot;,
+                              header = TRUE))</code></pre>
+<pre><code>Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
+Please use `as_tibble()` instead.
+The signature and semantics have changed, see `?as_tibble`.
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<pre class="r"><code>#obtain standard errors by using beta and t.stat
+rhinovirus_data &lt;- rhinovirus_data %&gt;% 
+     dplyr::mutate(se = beta/t.stat)
+
+#add column to denote which condition the association comes from; separate into two datasets
+rhinovirus_data &lt;- rhinovirus_data %&gt;% 
+     mutate(condition = ifelse(grepl(&quot;_f&quot;, SNP), &quot;f&quot;, &quot;r&quot;))
+
+rhinovirus_data_f &lt;- rhinovirus_data %&gt;% 
+     dplyr::filter(condition == &quot;f&quot;)
+
+rhinovirus_data_r &lt;- rhinovirus_data %&gt;% 
+     dplyr::filter(condition == &quot;r&quot;)
+
+# use ashr to estimate true effect sizes from the data in order to compute SES (separately for each half of the data)
+rhinovirus_f_ashr_out &lt;- ash(betahat = rhinovirus_data_f$beta, sebetahat = rhinovirus_data_f$se, df = 96)
+rhinovirus_r_ashr_out &lt;- ash(betahat = rhinovirus_data_r$beta, sebetahat = rhinovirus_data_r$se, df = 96)
+
+#add column for SES (based on ash output)
+rhinovirus_data_f$SES &lt;- rhinovirus_f_ashr_out$result$PosteriorMean/rhinovirus_f_ashr_out$result$PosteriorSD
+rhinovirus_data_r$SES &lt;- rhinovirus_r_ashr_out$result$PosteriorMean/rhinovirus_r_ashr_out$result$PosteriorSD
+
+#Run the ecdf function separately on each of the different conditions
+#uninfected
+get_ecdf(rhinovirus_data_f$SES)</code></pre>
+<pre><code>      75%       95%       99% 
+0.0486464 0.1414978 0.2271107 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/rhinovirus-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>get_ecdf(rhinovirus_f_ashr_out$result$PosteriorMean)</code></pre>
+<pre><code>         75%          95%          99% 
+0.0001144159 0.0003825204 0.0007927461 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/rhinovirus-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>#rhinovirus
+get_ecdf(rhinovirus_data_r$SES)</code></pre>
+<pre><code>      75%       95%       99% 
+0.0540109 0.1631119 0.2652244 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/rhinovirus-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+<pre class="r"><code>get_ecdf(rhinovirus_r_ashr_out$result$PosteriorMean)</code></pre>
+<pre><code>         75%          95%          99% 
+0.0001393432 0.0004605828 0.0009016914 </code></pre>
+<p><img src="figure/powerAnalysis.Rmd/rhinovirus-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>NULL</code></pre>
+</div>
+</div>
+<div id="number-of-genes-meeting-the-ses-threshold" class="section level1">
+<h1>Number of genes meeting the SES threshold</h1>
+<p>For the supplementary table, we are interested in the number of eQTLs that meet the SES threshold in each study for each sample size.</p>
+<pre class="r"><code># Compute the SES thresholds for 80% power at each sample size
+alpha &lt;- 5e-6 #for FWER of 0.05 (assuming 10,000 genes)
+#for Power = 0.8, what is the Standardized effect size?
+#n = 100
+n100_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
+#n = 58
+n58_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(58)
+#n = 30
+n30_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
+#n = 10
+n10_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
+
+#Ward et al study
+# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition. 
+n_egenes_ward &lt;- matrix(NA, nrow = 4, ncol = 4)
+colnames(n_egenes_ward) &lt;- c(&quot;n=100&quot;, &quot;n=58&quot;, &quot;n=30&quot;, &quot;n=10&quot;)
+rownames(n_egenes_ward) &lt;- c(&quot;conditionA&quot;, &quot;conditionB&quot;, &quot;conditionC&quot;, &quot;conditionD&quot;)
+i &lt;- 1
+for(condition in list(conditionA, conditionB, conditionC, conditionD)){
+     j &lt;- 1
+     for(threshold in c(n100_ses_threshold, n58_ses_threshold, n30_ses_threshold, n10_ses_threshold)){
+         n_egenes_ward[i,j] &lt;- length(unique(condition %&gt;% dplyr::filter(zscore/sqrt(15) &gt; threshold | zscore/sqrt(15) &lt; -threshold) %&gt;% pull(PHENO)))
+         j &lt;- j + 1
+     }
+     i &lt;- i + 1
+}
+
+
+#Alasoo et al study
+# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition. 
+alpha &lt;- 0.05/15786 #for FWER of 0.05 (assuming 15786 genes)
+#for Power = 0.8, what is the SES?
+#n = 100
+n100_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
+#n = 58
+n58_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(58)
+#n = 30
+n30_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
+#n = 10
+n10_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
+
+n_egenes_alasoo &lt;- matrix(NA, nrow = 4, ncol = 4)
+colnames(n_egenes_alasoo) &lt;- c(&quot;n=100&quot;, &quot;n=58&quot;, &quot;n=30&quot;, &quot;n=10&quot;)
+rownames(n_egenes_alasoo) &lt;- c(&quot;naive&quot;, &quot;IFN&quot;, &quot;salmonella&quot;, &quot;IFN + salmonella&quot;)
+i &lt;- 1
+for(condition in list(n_sorted, IFN_sorted, sal_sorted, salIFN_sorted)){
+     j &lt;- 1
+     for(threshold in c(n100_ses_threshold, n58_ses_threshold, n30_ses_threshold, n10_ses_threshold)){
+         n_egenes_alasoo[i,j] &lt;- length(unique(condition %&gt;% dplyr::filter(SES &gt; threshold | SES &lt; -threshold) %&gt;% pull(V1)))
+         j &lt;- j + 1
+     }
+     i &lt;- i + 1
+}
+
+
+#Caliskan et al study
+# See how many genes have at least one test that meets each of the 3 SES thresholds determined above in each condition. 
+alpha &lt;- 0.05/length(unique(rhinovirus_data_f$gene)) #for FWER of 0.05 (assuming 10893 genes)
+#for Power = 0.8, what is the SES?
+#n = 100
+n100_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(100)
+#n = 58
+n58_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(58)
+#n = 30
+n30_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(30)
+#n = 10
+n10_ses_threshold &lt;- (qnorm(.8) - qnorm(alpha/2))/sqrt(10)
+
+n_egenes_caliskan &lt;- matrix(NA, nrow = 2, ncol = 4)
+colnames(n_egenes_caliskan) &lt;- c(&quot;n=100&quot;, &quot;n=58&quot;, &quot;n=30&quot;, &quot;n=10&quot;)
+rownames(n_egenes_caliskan) &lt;- c(&quot;f&quot;, &quot;r&quot;)
+i &lt;- 1
+for(condition in list(rhinovirus_data_f, rhinovirus_data_r)){
+     j &lt;- 1
+     for(threshold in c(n100_ses_threshold, n58_ses_threshold, n30_ses_threshold, n10_ses_threshold)){
+         n_egenes_caliskan[i,j] &lt;- length(unique(condition %&gt;% dplyr::filter(SES &gt; threshold | SES &lt; -threshold) %&gt;% pull(gene)))
+         j &lt;- j + 1
+     }
+     i &lt;- i + 1
+}
+
+#These values populate the supplementary table
+n_egenes_ward</code></pre>
+<pre><code>           n=100 n=58 n=30 n=10
+conditionA  7140 2854  151    0
+conditionB  7171 2867  157    0
+conditionC  7119 2846  168    1
+conditionD  7179 2960  165    0</code></pre>
+<pre class="r"><code>n_egenes_alasoo</code></pre>
+<pre><code>                 n=100  n=58 n=30 n=10
+naive            13291 11063 7621 3548
+IFN              12704 10594 7379 3442
+salmonella       11518  9128 5991 2752
+IFN + salmonella 11518  9184 5931 2624</code></pre>
+<pre class="r"><code>n_egenes_caliskan</code></pre>
+<pre><code>  n=100 n=58 n=30 n=10
+f   289   93   41   24
+r   326  105   44   24</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ashr_2.2-47     forcats_0.4.0   stringr_1.4.0   purrr_0.3.4    
+ [5] readr_1.3.1     tidyr_1.1.2     tibble_3.0.4    tidyverse_1.3.0
+ [9] dplyr_1.0.2     ggplot2_3.3.3  
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.5       lubridate_1.7.9  invgamma_1.1     lattice_0.20-41 
+ [5] assertthat_0.2.1 rprojroot_2.0.2  digest_0.6.27    truncnorm_1.0-8 
+ [9] R6_2.5.0         cellranger_1.1.0 backports_1.1.10 reprex_0.3.0    
+[13] evaluate_0.14    httr_1.4.2       pillar_1.4.7     rlang_0.4.10    
+[17] readxl_1.3.1     rstudioapi_0.13  irlba_2.3.3      whisker_0.3-2   
+[21] Matrix_1.2-18    rmarkdown_1.13   labeling_0.4.2   munsell_0.5.0   
+[25] mixsqp_0.3-43    broom_0.7.0      compiler_3.6.1   httpuv_1.5.1    
+[29] modelr_0.1.8     xfun_0.8         pkgconfig_2.0.3  etrunct_0.1     
+[33] SQUAREM_2020.4   htmltools_0.5.0  tidyselect_1.1.0 workflowr_1.6.2 
+[37] fansi_0.4.1      crayon_1.3.4     dbplyr_1.4.2     withr_2.3.0     
+[41] later_1.1.0.1    grid_3.6.1       jsonlite_1.7.2   gtable_0.3.0    
+[45] lifecycle_0.2.0  DBI_1.1.0        git2r_0.26.1     magrittr_2.0.1  
+[49] scales_1.1.1     cli_2.2.0        stringi_1.4.6    farver_2.0.3    
+[53] fs_1.3.1         promises_1.1.1   xml2_1.3.2       ellipsis_0.3.1  
+[57] generics_0.0.2   vctrs_0.3.6      tools_3.6.1      glue_1.4.2      
+[61] hms_0.5.3        yaml_2.2.1       colorspace_2.0-0 rvest_0.3.6     
+[65] knitr_1.23       haven_2.3.1     </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
