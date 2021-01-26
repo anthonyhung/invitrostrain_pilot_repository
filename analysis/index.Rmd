@@ -18,6 +18,8 @@ If you are running the files in this repository to recreate the analyses, runnin
 
 * [Pre-processing of raw 10x files into count matrices and demultiplexing](preProcess_scRNA.html)
 
+    + Figure S3
+    
 * [Integration and clustering of scRNA sequencing data](clustering_scRNA.html)
 
     + Figures 2B, 2C, 2D
@@ -26,7 +28,7 @@ If you are running the files in this repository to recreate the analyses, runnin
 
 * [Fitting and interpreting topic model with external data](topicModel_scRNA.html)
 
-    + Figure 2A, S3
+    + Figure 2A, S4, S5
 
 ## Bulk Data
 
@@ -36,11 +38,11 @@ If you are running the files in this repository to recreate the analyses, runnin
 
 * [Normalization and filtering of bulkRNAseq data](normFilter_bulkRNA.html)
 
-    + Figure S8
+    + Figure S10
 
 * [Modeling and removing unwanted technical variation](removeUnwantedVariation_bulkRNA.html)
 
-    + Figures 3A, 3B, S5, S6, S7
+    + Figures 3A, 3B, S6, S8, S9
 
 * [Differential expression using limma/voom](DEanalysis_bulkRNA.html)
 
@@ -48,7 +50,7 @@ If you are running the files in this repository to recreate the analyses, runnin
 
 * [Variance partitioning the bulk RNAseq data](variation_bulkRNA.html)
 
-    + Figures 3C, S5
+    + Figures 3C, S7
 
 * [Selected examples of inter-individual heterogeneity](heterogeneity_bulkRNA.html)
 

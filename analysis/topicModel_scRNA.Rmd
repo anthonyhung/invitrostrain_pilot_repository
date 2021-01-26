@@ -221,3 +221,109 @@ p7 <- volcano_plot_with_highlighted_genes(diff_count_topics,
 plot_grid(p1,p2,p3,p4,p5,p6,p7,nrow = 3,ncol = 3)
 ```
 
+
+# For Supplement: Fit Topic models with k = 6 and k = 8 and plot a Structure plot in each case
+
+```{r fit topic model k6}
+if (file.exists("output/topicModel_k=6.rds")) {
+  fit <- readRDS("output/topicModel_k=6.rds")
+} else {
+  fit <- fit_poisson_nmf(raw_counts,k = 6,numiter = 120)
+  saveRDS(fit, "output/topicModel_k=6.rds")
+}
+
+#compute weights and topics (rescale each of l and f to add up to 1)
+l <- fit$L
+f <- fit$F
+weights <- sweep(l, MARGIN = 2, colSums(f), `*`)
+scale <- rowSums(weights)
+weights <- weights / scale
+topics <- f / colSums(f) # add up to 1
+
+
+#get labels of cells (cell type) and reorder to group them
+sample <- as.data.frame(merged_data@meta.data$Cell.Type)
+sample_labels <- sample %>% 
+     dplyr::transmute(Cell.Type = stringr::word(`merged_data@meta.data$Cell.Type`, start = 1))
+rownames(sample_labels) <- rownames(merged_data@meta.data)
+sample <- sample_labels %>% 
+     dplyr::arrange(Cell.Type)
+
+set.seed(1)
+topic_colors <- c("gold", "grey","firebrick","salmon","forestgreen", "turquoise", "royalblue", "black",
+                  "orangered")
+topics_order <- c(2, 3, 1, 4, 6, 7, 5)
+rows_keep <- sort(c(sample(which(sample_labels$Cell.Type == "Hepatocyte"), 800),
+               sample(which(sample_labels$Cell.Type == "iPSC"), 800),
+               sample(which(sample_labels$Cell.Type == "iPSC-MSC"), 800),
+               which(sample_labels$Cell.Type == "iPSC-Chondrocyte"),
+               sample(which(sample_labels$Cell.Type == "iPSC-Chondro_GAH"), 800),
+               sample(which(sample_labels$Cell.Type == "iPSC-Osteo"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d7"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d14"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d28"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d42"), 800),
+               sample(which(sample_labels$Cell.Type == "chou_chondrocyte"), 800),
+               sample(which(sample_labels$Cell.Type == "ji_chondrocyte"), 800)))
+structure_plot <- structure_plot(select(poisson2multinom(fit),loadings = rows_keep),
+                      grouping = factor(sample_labels[rows_keep,"Cell.Type"], 
+                                        c("Hepatocyte", "iPSC", "iPSC-MSC", "iPSC-Osteo", 
+                                          "iPSC-Chondro_GAH", "iPSC-Chondrocyte", "Wu_chondrogenic_pellet_d7", "Wu_chondrogenic_pellet_d14", "Wu_chondrogenic_pellet_d28", "Wu_chondrogenic_pellet_d42", "chou_chondrocyte", "ji_chondrocyte")),
+                      topics = topics_order,
+                      colors = topic_colors[topics_order],
+                      perplexity = c(50),
+                      n = 6043,gap = 100,num_threads = 4,verbose = FALSE)
+print(structure_plot)
+```
+
+```{r fit topic model k8}
+if (file.exists("output/topicModel_k=8.rds")) {
+  fit <- readRDS("output/topicModel_k=8.rds")
+} else {
+  fit <- fit_poisson_nmf(raw_counts,k = 8,numiter = 150)
+  saveRDS(fit, "output/topicModel_k=8.rds")
+}
+
+#compute weights and topics (rescale each of l and f to add up to 1)
+l <- fit$L
+f <- fit$F
+weights <- sweep(l, MARGIN = 2, colSums(f), `*`)
+scale <- rowSums(weights)
+weights <- weights / scale
+topics <- f / colSums(f) # add up to 1
+
+
+#get labels of cells (cell type) and reorder to group them
+sample <- as.data.frame(merged_data@meta.data$Cell.Type)
+sample_labels <- sample %>% 
+     dplyr::transmute(Cell.Type = stringr::word(`merged_data@meta.data$Cell.Type`, start = 1))
+rownames(sample_labels) <- rownames(merged_data@meta.data)
+sample <- sample_labels %>% 
+     dplyr::arrange(Cell.Type)
+
+set.seed(1)
+topic_colors <- c("gold", "grey","firebrick","salmon","forestgreen", "turquoise", "royalblue", "black",
+                  "orangered")
+topics_order <- c(2, 3, 1, 4, 6, 7, 5)
+rows_keep <- sort(c(sample(which(sample_labels$Cell.Type == "Hepatocyte"), 800),
+               sample(which(sample_labels$Cell.Type == "iPSC"), 800),
+               sample(which(sample_labels$Cell.Type == "iPSC-MSC"), 800),
+               which(sample_labels$Cell.Type == "iPSC-Chondrocyte"),
+               sample(which(sample_labels$Cell.Type == "iPSC-Chondro_GAH"), 800),
+               sample(which(sample_labels$Cell.Type == "iPSC-Osteo"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d7"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d14"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d28"), 800),
+               sample(which(sample_labels$Cell.Type == "Wu_chondrogenic_pellet_d42"), 800),
+               sample(which(sample_labels$Cell.Type == "chou_chondrocyte"), 800),
+               sample(which(sample_labels$Cell.Type == "ji_chondrocyte"), 800)))
+structure_plot <- structure_plot(select(poisson2multinom(fit),loadings = rows_keep),
+                      grouping = factor(sample_labels[rows_keep,"Cell.Type"], 
+                                        c("Hepatocyte", "iPSC", "iPSC-MSC", "iPSC-Osteo", 
+                                          "iPSC-Chondro_GAH", "iPSC-Chondrocyte", "Wu_chondrogenic_pellet_d7", "Wu_chondrogenic_pellet_d14", "Wu_chondrogenic_pellet_d28", "Wu_chondrogenic_pellet_d42", "chou_chondrocyte", "ji_chondrocyte")),
+                      topics = topics_order,
+                      colors = topic_colors[topics_order],
+                      perplexity = c(50),
+                      n = 6043,gap = 100,num_threads = 4,verbose = FALSE)
+print(structure_plot)
+```
