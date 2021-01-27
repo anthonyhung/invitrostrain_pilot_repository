@@ -18,46 +18,48 @@ If you are running the files in this repository to recreate the analyses, runnin
 
 * [Pre-processing of raw 10x files into count matrices and demultiplexing](preProcess_scRNA.html)
 
-    + Figure S3
+    + Figure S10
     
 * [Integration and clustering of scRNA sequencing data](clustering_scRNA.html)
 
-    + Figures 2B, 2C, 2D
+    + Figures 2a, 2b, 2c, S3
 
 * [Aggregation of external scRNA-seq data for topic model](external_scRNA.html)
 
 * [Fitting and interpreting topic model with external data](topicModel_scRNA.html)
 
-    + Figure 2A, S4, S5
+    + Figure 2d, S4, S11
 
 ## Bulk Data
 
 * [Pre-processing of raw bulk RNA sequencing files](preProcess_bulkRNA.html)
 
+    + Figure S5
+
 * [Download Gene Annotations for GO analysis](download_gene_annotation.html)
 
 * [Normalization and filtering of bulkRNAseq data](normFilter_bulkRNA.html)
 
-    + Figure S10
+    + Figure S11
 
 * [Modeling and removing unwanted technical variation](removeUnwantedVariation_bulkRNA.html)
 
-    + Figures 3A, 3B, S6, S8, S9
+    + Figure 5a, 5b, S6, S7, S8; Table S6
 
 * [Differential expression using limma/voom](DEanalysis_bulkRNA.html)
 
-    + Figure 4
+    + Figure 3; Table S2, S5
 
 * [Variance partitioning the bulk RNAseq data](variation_bulkRNA.html)
 
-    + Figures 3C, S7
+    + Figure 5C, S9
 
 * [Selected examples of inter-individual heterogeneity](heterogeneity_bulkRNA.html)
 
-    + Figure 5
+    + Figure 4
 
 ## Power Analysis
 
 * [Conducting power analysis for eQTL mapping](powerAnalysis.html)
 
-    + Figure 6
+    + Figure 6; Table S7
