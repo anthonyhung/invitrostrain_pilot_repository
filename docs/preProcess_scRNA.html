@@ -438,7 +438,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-01-21
+<strong>Last updated:</strong> 2021-01-28
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree58e93fde90f2d936b7dff46f3905f1d0b713b9e8targetblank58e93fda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/58e93fde90f2d936b7dff46f3905f1d0b713b9e8" target="_blank">58e93fd</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree1b6031b5c87069ced8ab09d113f5e774a53d3d06targetblank1b6031ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/1b6031b5c87069ced8ab09d113f5e774a53d3d06" target="_blank">1b6031b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree58e93fde90f2d936b7dff46f3905f1d0b713b9e8targetblank58e93fda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree1b6031b5c87069ced8ab09d113f5e774a53d3d06targetblank1b6031ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/58e93fde90f2d936b7dff46f3905f1d0b713b9e8" target="_blank">58e93fd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/1b6031b5c87069ced8ab09d113f5e774a53d3d06" target="_blank">1b6031b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -570,7 +570,9 @@ Ignored files:
     Ignored:    data/external_scRNA/merged_external_scRNA.rds
     Ignored:    data/poweranalysis/alasoo_et_al/
     Ignored:    output/GO_terms_enriched.csv
+    Ignored:    output/topicModel_k=6.rds
     Ignored:    output/topicModel_k=7.rds
+    Ignored:    output/topicModel_k=8.rds
     Ignored:    output/voom_results.rds
 
 Unstaged changes:
@@ -613,6 +615,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/1b6031b5c87069ced8ab09d113f5e774a53d3d06/analysis/preProcess_scRNA.Rmd" target="_blank">1b6031b</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-28
+</td>
+<td>
+add human.vcf to repo
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/37a702d29509d17181eaa450b1c271494ac244ad/docs/preProcess_scRNA.html" target="_blank">37a702d</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+add clustering details
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -834,7 +870,6 @@ Add files for analysis
 <li><p>Move the fastq files from all samples (these are output files from 10x runs, containing both forward and reverse sequences) into the folder code/single_cell_preprocessing/fastq/. Undetermined data files are not required.</p></li>
 <li><p>Modify the code/single_cell_preprocessing/Pipeline/cluster_solo.json file to correspond to the computing cluster you are working with.</p></li>
 <li><p>Unzip the whitelist file in the code/single_cell_preprocessing/ directory.</p></li>
-<li><p>Place the human.YRI.cellranger.exons.vcf file into the code/single_cell_preprocessing/ directory.</p></li>
 <li><p>Install the conda working by running “conda env create –file environment.yaml”</p></li>
 <li><p>Run “source activate dropseq2” to activate the conda environment.</p></li>
 <li><p>Run the file “submit.sh”.</p></li>
@@ -1226,20 +1261,20 @@ ANT1.2 &lt;- RunUMAP(ANT1.2, dims = 1:num_PCs)</code></pre>
 <pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
 This message will be shown once per session</code></pre>
-<pre><code>17:40:41 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>17:40:41 Read 1815 rows and found 50 numeric columns</code></pre>
-<pre><code>17:40:41 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>17:40:41 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>10:15:19 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>10:15:19 Read 1815 rows and found 50 numeric columns</code></pre>
+<pre><code>10:15:19 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>10:15:19 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>**************************************************|
-17:40:42 Writing NN index file to temp file /tmp/RtmpC9TKaD/file3919e8491c1d
-17:40:42 Searching Annoy index using 1 thread, search_k = 3000
-17:40:42 Annoy recall = 100%
-17:40:42 Commencing smooth kNN distance calibration using 1 thread
-17:40:43 Initializing from normalized Laplacian + noise
-17:40:43 Commencing optimization for 500 epochs, with 73932 positive edges
-17:40:49 Optimization finished</code></pre>
+10:15:19 Writing NN index file to temp file /tmp/RtmplSureM/filee122510e200b
+10:15:19 Searching Annoy index using 1 thread, search_k = 3000
+10:15:19 Annoy recall = 100%
+10:15:20 Commencing smooth kNN distance calibration using 1 thread
+10:15:21 Initializing from normalized Laplacian + noise
+10:15:21 Commencing optimization for 500 epochs, with 73932 positive edges
+10:15:26 Optimization finished</code></pre>
 <pre class="r"><code>p1 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;)
 p2 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;orig.ident&quot;)
 p3 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;labels&quot;)
@@ -1269,6 +1304,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/37a702d29509d17181eaa450b1c271494ac244ad/docs/figure/preProcess_scRNA.Rmd/merge-5.png" target="_blank">37a702d</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/58e93fde90f2d936b7dff46f3905f1d0b713b9e8/docs/figure/preProcess_scRNA.Rmd/merge-5.png" target="_blank">58e93fd</a>
 </td>
 <td>
@@ -1295,8 +1341,82 @@ Anthony Hung
 </div>
 <pre class="r"><code>p2</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-6">
+Past versions of merge-6.png
+</button>
+</p>
+<div id="fig-merge-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/37a702d29509d17181eaa450b1c271494ac244ad/docs/figure/preProcess_scRNA.Rmd/merge-6.png" target="_blank">37a702d</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>p3</code></pre>
 <p><img src="figure/preProcess_scRNA.Rmd/merge-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-merge-7">
+Past versions of merge-7.png
+</button>
+</p>
+<div id="fig-merge-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/37a702d29509d17181eaa450b1c271494ac244ad/docs/figure/preProcess_scRNA.Rmd/merge-7.png" target="_blank">37a702d</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="save-seurat-objects" class="section level1">
 <h1>Save Seurat objects</h1>
