@@ -21,14 +21,12 @@ code/single_cell_preprocessing/fastq/. Undetermined data files are not required.
 
 3. Unzip the whitelist file in the code/single_cell_preprocessing/ directory.
 
-4. Place the human.YRI.cellranger.exons.vcf file into the code/single_cell_preprocessing/ directory.
-
-5. Install the conda working by running
+4. Install the conda working by running
 "conda env create --file environment.yaml"
 
-6. Run "source activate dropseq2" to activate the conda environment.
+5. Run "source activate dropseq2" to activate the conda environment.
 
-7. Run the file "submit.sh".
+6. Run the file "submit.sh".
 
 # Load files into R
 

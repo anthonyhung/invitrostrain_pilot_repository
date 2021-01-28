@@ -420,7 +420,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -429,7 +429,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -438,10 +438,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-01-21
+<strong>Last updated:</strong> 2021-01-26
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -457,12 +457,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -529,16 +529,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbctargetblank0ef10b1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbc" target="_blank">0ef10b1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree833430f4103edbc35ce09aca8bc4a7fae9ba9d08targetblank833430fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/833430f4103edbc35ce09aca8bc4a7fae9ba9d08" target="_blank">833430f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbctargetblank0ef10b1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree833430f4103edbc35ce09aca8bc4a7fae9ba9d08targetblank833430fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0ef10b172cb29c1b75705d1f6dfbe2e8fcc74fbc" target="_blank">0ef10b1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/833430f4103edbc35ce09aca8bc4a7fae9ba9d08" target="_blank">833430f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -570,11 +570,14 @@ Ignored files:
     Ignored:    data/external_scRNA/merged_external_scRNA.rds
     Ignored:    data/poweranalysis/alasoo_et_al/
     Ignored:    output/GO_terms_enriched.csv
+    Ignored:    output/topicModel_k=6.rds
     Ignored:    output/topicModel_k=7.rds
+    Ignored:    output/topicModel_k=8.rds
     Ignored:    output/voom_results.rds
 
 Unstaged changes:
     Modified:   .gitignore
+    Modified:   analysis/clustering_scRNA.Rmd
 
 </code></pre>
 <p>
@@ -613,6 +616,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/8542407ba567fe01e9b930f1fc69822a37a6f926/docs/clustering_scRNA.html" target="_blank">8542407</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-21
+</td>
+<td>
+knit anlaysis files
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1036,20 +1056,20 @@ Anthony Hung
 </div>
 </div>
 <pre class="r"><code>SCT.integrated &lt;- RunUMAP(SCT.integrated, dims = 1:38)</code></pre>
-<pre><code>18:11:02 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>18:11:02 Read 1203 rows and found 38 numeric columns</code></pre>
-<pre><code>18:11:02 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>18:11:02 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>21:05:46 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>21:05:46 Read 1203 rows and found 38 numeric columns</code></pre>
+<pre><code>21:05:46 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>21:05:46 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>**************************************************|
-18:11:03 Writing NN index file to temp file /tmp/RtmpTjEck1/file39d869f3180b
-18:11:03 Searching Annoy index using 1 thread, search_k = 3000
-18:11:03 Annoy recall = 100%
-18:11:03 Commencing smooth kNN distance calibration using 1 thread
-18:11:04 Initializing from normalized Laplacian + noise
-18:11:04 Commencing optimization for 500 epochs, with 45058 positive edges
-18:11:08 Optimization finished</code></pre>
+21:05:46 Writing NN index file to temp file /tmp/RtmpVstoIG/file2f0197c684e6a
+21:05:46 Searching Annoy index using 1 thread, search_k = 3000
+21:05:46 Annoy recall = 100%
+21:05:47 Commencing smooth kNN distance calibration using 1 thread
+21:05:47 Initializing from normalized Laplacian + noise
+21:05:48 Commencing optimization for 500 epochs, with 45058 positive edges
+21:05:51 Optimization finished</code></pre>
 <pre class="r"><code>p1_SCT &lt;- DimPlot(SCT.integrated, group.by = c(&quot;orig.ident&quot;))
 p2_SCT &lt;- DimPlot(SCT.integrated, group.by = c(&quot;labels&quot;))
 p3_SCT &lt;- DimPlot(SCT.integrated, group.by = c(&quot;seurat_clusters&quot;))
@@ -1279,7 +1299,7 @@ Anthony Hung
 </div>
 <div id="explore-some-cluster-marker-genes" class="section level1">
 <h1>Explore some cluster marker genes</h1>
-<p>Here, we fit a poisson ash model to raw counts from each of the three clusters for a few MSC and chondrocyte marker genes and plot their distributions broken down by cluster and by individual. It looks like cluster 2 has higher expression of chondrocyte markers, while more or less all three clusters have similar expression of MSC markers.</p>
+<p>Here, we fit a poisson ash model to raw counts from each of the three clusters for chondrocyte marker genes and plot their distributions broken down by cluster and by individual.</p>
 <pre class="r"><code>#run poisson ash to data per cluster and per indivdiual, then show the estimated prior distribution
 #plot curves for genes separated by indivdual (information for indivdual contained in labels)
 plot_by_labels &lt;- function(gene, counts, labels){
@@ -1308,15 +1328,15 @@ plot_by_labels &lt;- function(gene, counts, labels){
      return(plot)
 }
 
-features.plot.chond &lt;- c(&quot;TIMP3&quot;, &quot;TIMP2&quot;, &quot;COL11A1&quot;, 
-                   &quot;SOX5&quot;, &quot;SOX6&quot;,
-                   &quot;TGFBI&quot;)
-features.plot.msc &lt;- c(&quot;THY1&quot;,  &quot;NT5E&quot;)
 
-#by cluster
-for (marker in c(features.plot.msc, features.plot.chond)){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + labs(color = &quot;Cluster&quot;))
-}</code></pre>
+#plots for figures
+#COL11A1
+a &lt;- plot_by_labels(&quot;COL11A1&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = &quot;none&quot;) + 
+     scale_color_manual(values=c(&quot;plum3&quot;, &quot;#E69F00&quot;, &quot;#654321&quot;))
+b &lt;- plot_by_labels(&quot;COL11A1&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = &quot;none&quot;) 
+grid.arrange(a, b, nrow = 1)</code></pre>
 <p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-1">
@@ -1355,6 +1375,13 @@ Anthony Hung
 </table>
 </div>
 </div>
+<pre class="r"><code>#SOX5
+a &lt;- plot_by_labels(&quot;SOX5&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = &quot;none&quot;) + 
+     scale_color_manual(values=c(&quot;plum3&quot;, &quot;#E69F00&quot;, &quot;#654321&quot;))
+b &lt;- plot_by_labels(&quot;SOX5&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = &quot;none&quot;) 
+grid.arrange(a, b, nrow = 1)</code></pre>
 <p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-2">
@@ -1393,6 +1420,13 @@ Anthony Hung
 </table>
 </div>
 </div>
+<pre class="r"><code>#SOX6
+a &lt;- plot_by_labels(&quot;SOX6&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = &quot;none&quot;) + 
+     scale_color_manual(values=c(&quot;plum3&quot;, &quot;#E69F00&quot;, &quot;#654321&quot;))
+b &lt;- plot_by_labels(&quot;SOX6&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = &quot;none&quot;) 
+grid.arrange(a, b, nrow = 1)</code></pre>
 <p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-3.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-3">
@@ -1431,6 +1465,13 @@ Anthony Hung
 </table>
 </div>
 </div>
+<pre class="r"><code>#TIMP2
+a &lt;- plot_by_labels(&quot;TIMP2&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = &quot;none&quot;) + 
+     scale_color_manual(values=c(&quot;plum3&quot;, &quot;#E69F00&quot;, &quot;#654321&quot;))
+b &lt;- plot_by_labels(&quot;TIMP2&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = &quot;none&quot;) 
+grid.arrange(a, b, nrow = 1)</code></pre>
 <p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-4.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-4">
@@ -1469,6 +1510,13 @@ Anthony Hung
 </table>
 </div>
 </div>
+<pre class="r"><code>#TIMP3
+a &lt;- plot_by_labels(&quot;TIMP3&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = &quot;none&quot;) + 
+     scale_color_manual(values=c(&quot;plum3&quot;, &quot;#E69F00&quot;, &quot;#654321&quot;))
+b &lt;- plot_by_labels(&quot;TIMP3&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = &quot;none&quot;) 
+grid.arrange(a, b, nrow = 1)</code></pre>
 <p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-5.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-5">
@@ -1495,634 +1543,6 @@ Date
 <tr>
 <td>
 <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-5.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-6">
-Past versions of “poisson ash-6.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-6.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-7.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-7">
-Past versions of “poisson ash-7.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-7" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-7.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-8.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-8">
-Past versions of “poisson ash-8.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-8" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-8.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#by individual
-for (marker in c(features.plot.msc, features.plot.chond)){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + labs(color = &quot;Individual&quot;))
-}</code></pre>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-9.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-9">
-Past versions of “poisson ash-9.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-9" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-9.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-10.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-10">
-Past versions of “poisson ash-10.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-10" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-10.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-11.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-11">
-Past versions of “poisson ash-11.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-11" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-11.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-12.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-12">
-Past versions of “poisson ash-12.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-12" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-12.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-13.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-13">
-Past versions of “poisson ash-13.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-13" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-13.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-14.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-14">
-Past versions of “poisson ash-14.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-14" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-14.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-15.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-15">
-Past versions of “poisson ash-15.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-15" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-15.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-16.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-16">
-Past versions of “poisson ash-16.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-16" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-16.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#plots for figure
-a &lt;- plot_by_labels(&quot;COL11A1&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
-     theme(legend.position = &quot;none&quot;) + 
-     scale_color_manual(values=c(&quot;plum3&quot;, &quot;#E69F00&quot;, &quot;#654321&quot;))
-b &lt;- plot_by_labels(&quot;COL11A1&quot;, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
-     theme(legend.position = &quot;none&quot;) 
-grid.arrange(a, b, nrow = 1)</code></pre>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-17.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-17">
-Past versions of “poisson ash-17.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-17" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-17.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>a&lt;- c(&quot;MMP2&quot;, &quot;MMP14&quot;)
-
-for (marker in a){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + labs(color = &quot;Cluster&quot;))
-}</code></pre>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-18.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-18">
-Past versions of “poisson ash-18.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-18" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-18.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-19.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-19">
-Past versions of “poisson ash-19.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-19" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-19.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#by individual
-for (marker in a){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + labs(color = &quot;Individual&quot;))
-}</code></pre>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-20.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-20">
-Past versions of “poisson ash-20.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-20" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-20.png" target="_blank">9cf26dc</a>
-</td>
-<td>
-Anthony Hung
-</td>
-<td>
-2021-01-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/clustering_scRNA.Rmd/poisson%20ash-21.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-poisson-ash-21">
-Past versions of “poisson ash-21.png”
-</button>
-</p>
-<div id="fig-no-spaces-poisson-ash-21" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/9cf26dc79b2f56a205b44ad6c67f9b8d7d52739c/docs/figure/clustering_scRNA.Rmd/poisson ash-21.png" target="_blank">9cf26dc</a>
 </td>
 <td>
 Anthony Hung

@@ -102,7 +102,7 @@ ggplot(long_cluster_memberships_proportions, aes(x = Var2, y = Freq, fill = Var1
 
 # Explore some cluster marker genes
 
-Here, we fit a poisson ash model to raw counts from each of the three clusters for a few MSC and chondrocyte marker genes and plot their distributions broken down by cluster and by individual. It looks like cluster 2 has higher expression of chondrocyte markers, while more or less all three clusters have similar expression of MSC markers.
+Here, we fit a poisson ash model to raw counts from each of the three clusters for chondrocyte marker genes and plot their distributions broken down by cluster and by individual.
 
 ```{r poisson ash}
 #run poisson ash to data per cluster and per indivdiual, then show the estimated prior distribution
@@ -133,22 +133,9 @@ plot_by_labels <- function(gene, counts, labels){
      return(plot)
 }
 
-features.plot.chond <- c("TIMP3", "TIMP2", "COL11A1", 
-                   "SOX5", "SOX6",
-                   "TGFBI")
-features.plot.msc <- c("THY1",  "NT5E")
 
-#by cluster
-for (marker in c(features.plot.msc, features.plot.chond)){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + labs(color = "Cluster"))
-}
-
-#by individual
-for (marker in c(features.plot.msc, features.plot.chond)){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + labs(color = "Individual"))
-}
-
-#plots for figure
+#plots for figures
+#COL11A1
 a <- plot_by_labels("COL11A1", SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
      theme(legend.position = "none") + 
      scale_color_manual(values=c("plum3", "#E69F00", "#654321"))
@@ -156,14 +143,35 @@ b <- plot_by_labels("COL11A1", SCT.integrated@assays$RNA@counts, SCT.integrated$
      theme(legend.position = "none") 
 grid.arrange(a, b, nrow = 1)
 
-a<- c("MMP2", "MMP14")
+#SOX5
+a <- plot_by_labels("SOX5", SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = "none") + 
+     scale_color_manual(values=c("plum3", "#E69F00", "#654321"))
+b <- plot_by_labels("SOX5", SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = "none") 
+grid.arrange(a, b, nrow = 1)
 
-for (marker in a){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + labs(color = "Cluster"))
-}
+#SOX6
+a <- plot_by_labels("SOX6", SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = "none") + 
+     scale_color_manual(values=c("plum3", "#E69F00", "#654321"))
+b <- plot_by_labels("SOX6", SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = "none") 
+grid.arrange(a, b, nrow = 1)
 
-#by individual
-for (marker in a){
-     print(plot_by_labels(marker, SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + labs(color = "Individual"))
-}
+#TIMP2
+a <- plot_by_labels("TIMP2", SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = "none") + 
+     scale_color_manual(values=c("plum3", "#E69F00", "#654321"))
+b <- plot_by_labels("TIMP2", SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = "none") 
+grid.arrange(a, b, nrow = 1)
+
+#TIMP3
+a <- plot_by_labels("TIMP3", SCT.integrated@assays$RNA@counts, SCT.integrated$integrated_snn_res.0.4) + 
+     theme(legend.position = "none") + 
+     scale_color_manual(values=c("plum3", "#E69F00", "#654321"))
+b <- plot_by_labels("TIMP3", SCT.integrated@assays$RNA@counts, SCT.integrated$labels) + 
+     theme(legend.position = "none") 
+grid.arrange(a, b, nrow = 1)
 ```
