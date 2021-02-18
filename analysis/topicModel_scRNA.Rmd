@@ -39,7 +39,7 @@ dim(raw_counts)
 if (file.exists("output/topicModel_k=7.rds")) {
   fit <- readRDS("output/topicModel_k=7.rds")
 } else {
-  fit <- fit_poisson_nmf(raw_counts,k = 7,numiter = 100)
+  fit <- fit_poisson_nmf(raw_counts,k = 7,numiter = 150)
   saveRDS(fit, "output/topicModel_k=7.rds")
 }
 
@@ -92,9 +92,8 @@ sample <- sample_labels %>%
 
 
 set.seed(1)
-topic_colors <- c("gold", "grey","firebrick","salmon","forestgreen", "turquoise", "royalblue", "black",
-                  "orangered")
-topics_order <- c(2, 3, 1, 4, 6, 7, 5)
+topic_colors <- c("gold", "grey", "firebrick", "forestgreen", "royalblue", "turquoise", "salmon")
+topics_order <- c(2, 3, 1, 7, 5, 4, 6)
 rows_keep <- sort(c(sample(which(sample_labels$Cell.Type == "Hepatocyte"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC-MSC"), 800),
@@ -109,8 +108,9 @@ rows_keep <- sort(c(sample(which(sample_labels$Cell.Type == "Hepatocyte"), 800),
                sample(which(sample_labels$Cell.Type == "ji_chondrocyte"), 800)))
 structure_plot <- structure_plot(select(poisson2multinom(fit),loadings = rows_keep),
                       grouping = factor(sample_labels[rows_keep,"Cell.Type"], 
-                                        c("Hepatocyte", "iPSC", "iPSC-MSC", "iPSC-Osteo", 
-                                          "iPSC-Chondro_GAH", "iPSC-Chondrocyte", "Wu_chondrogenic_pellet_d7", "Wu_chondrogenic_pellet_d14", "Wu_chondrogenic_pellet_d28", "Wu_chondrogenic_pellet_d42", "chou_chondrocyte", "ji_chondrocyte")),
+                                        c("Hepatocyte", "iPSC", "iPSC-MSC", 
+                                          "iPSC-Osteo", "iPSC-Chondro_GAH",
+                                          "iPSC-Chondrocyte", "Wu_chondrogenic_pellet_d7", "Wu_chondrogenic_pellet_d14", "Wu_chondrogenic_pellet_d28", "Wu_chondrogenic_pellet_d42", "chou_chondrocyte", "ji_chondrocyte")),
                       topics = topics_order,
                       colors = topic_colors[topics_order],
                       perplexity = c(50),
@@ -191,12 +191,12 @@ p3 <- volcano_plot_with_highlighted_genes(diff_count_topics,
      guides(fill = "none") +
      ggtitle("topic 1 (iPSC-MSCs)")
 p4 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k4",
+                                          "k7",
                                           NA,
                                           label_above_quantile = 0.9995) +
      #ylim(c(0,225)) +
      guides(fill = "none") +
-     ggtitle("topic 4 (iPSC-Chondrocytes)")
+     ggtitle("topic 7 (iPSC-Chondrocytes)")
 p5 <- volcano_plot_with_highlighted_genes(diff_count_topics,
                                           "k5",
                                           NA,
@@ -205,19 +205,19 @@ p5 <- volcano_plot_with_highlighted_genes(diff_count_topics,
      guides(fill = "none") +
      ggtitle("topic 5 (Chondrocyte 1)")
 p6 <- volcano_plot_with_highlighted_genes(diff_count_topics,
+                                          "k4",
+                                          NA,
+                                          label_above_quantile = 0.9995) +
+     #ylim(c(0,225)) +
+     guides(fill = "none") +
+     ggtitle("topic 4 (Chondrocyte 2)")
+p7 <- volcano_plot_with_highlighted_genes(diff_count_topics,
                                           "k6",
                                           NA,
                                           label_above_quantile = 0.9995) +
      #ylim(c(0,225)) +
      guides(fill = "none") +
-     ggtitle("topic 6 (Chondrocyte 2)")
-p7 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k7",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topic 7 (Chondrocyte 3)")
+     ggtitle("topic 6 (Chondrocyte 3)")
 plot_grid(p1,p2,p3,p4,p5,p6,p7,nrow = 3,ncol = 3)
 ```
 
@@ -228,7 +228,7 @@ plot_grid(p1,p2,p3,p4,p5,p6,p7,nrow = 3,ncol = 3)
 if (file.exists("output/topicModel_k=6.rds")) {
   fit <- readRDS("output/topicModel_k=6.rds")
 } else {
-  fit <- fit_poisson_nmf(raw_counts,k = 6,numiter = 120)
+  fit <- fit_poisson_nmf(raw_counts,k = 6,numiter = 100)
   saveRDS(fit, "output/topicModel_k=6.rds")
 }
 
@@ -250,9 +250,8 @@ sample <- sample_labels %>%
      dplyr::arrange(Cell.Type)
 
 set.seed(1)
-topic_colors <- c("grey", "turquoise", "firebrick", "gold","salmon","forestgreen", "turquoise", "royalblue", "black",
-                  "orangered")
-topics_order <- c(1, 3, 4, 5, 6, 2)
+topic_colors <- c("turquoise", "firebrick", "grey", "salmon", "royalblue", "forestgreen")
+topics_order <- c(3, 2, 4, 6, 5, 1)
 rows_keep <- sort(c(sample(which(sample_labels$Cell.Type == "Hepatocyte"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC-MSC"), 800),
@@ -302,9 +301,8 @@ sample <- sample_labels %>%
      dplyr::arrange(Cell.Type)
 
 set.seed(1)
-topic_colors <- c("firebrick", "forestgreen","black","royalblue","grey", "turquoise", "salmon", "gold",
-                  "orangered")
-topics_order <- c(5, 1, 8, 7, 2, 3, 4, 6)
+topic_colors <- c("royalblue", "turquoise","firebrick","gold","grey", "black", "salmon", "forestgreen")
+topics_order <- c(5, 3, 4, 7, 6, 1, 8, 2)
 rows_keep <- sort(c(sample(which(sample_labels$Cell.Type == "Hepatocyte"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC"), 800),
                sample(which(sample_labels$Cell.Type == "iPSC-MSC"), 800),

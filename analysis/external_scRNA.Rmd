@@ -150,7 +150,7 @@ GH_iPSCMSC <- readRDS("data/external_scRNA/GH_cells/gh_msc.rds")
 GH_iPSCChond <- readRDS("data/external_scRNA/GH_cells/gh_ipscChond.rds")
 GH_iPSCOsteo <- readRDS("data/external_scRNA/GH_cells/gh_ipscOsteo.rds")
 #merge all the datasets into one seurat object
-GH_merged <- merge(GH_iPSC, y = c(GH_iPSCMSC, GH_iPSCChond, GH_iPSCOsteo), 
+GH_merged <- merge(GH_iPSC, y = c(GH_iPSCMSC, GH_iPSCChond, GH_iPSCOsteo),
                 add.cell.ids = c("ipsc", "msc", "chondrogh", "osteo"), project = "ghousman")
 GH_merged <- Seurat::AddMetaData(GH_merged, "Ghousman", col.name = "orig.ident")
 dim(GH_merged)
