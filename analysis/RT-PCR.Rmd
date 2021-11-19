@@ -1,0 +1,306 @@
+---
+title: "RT-PCR of cartilage hypertrophy markers"
+author: "Anthony Hung"
+date: "2021-11-19"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# qPCR Analysis for H20157, H23555, NA18855 data
+
+```{r load libraries, include = FALSE}
+library(readr)
+library(tidyverse)
+library(plyr)
+library(magrittr)
+library(ggthemes)
+library(ggsignif)
+library(cowplot)
+```
+
+```{r assign names}
+housekeeping <- c("GUSB")
+targets <- c("GUSB", "MMP1_", "MMP13", "TIMP2")
+samples <- c("H20157 24 2.5",
+"H20157 NO STRAIN",
+"H23555 24 2.5",
+"H23555 NO STRAIN",
+"18855 P11+19+9 24H 2.5 ELONG",
+"18855 P11+19+9 NOSTRAIN"
+)
+```
+
+# Load in data
+```{r load data}
+#load in results from qpcr experiment, subset for only the three columns we care about for this analysis, and remove all rows with undetermined as the value
+results <- read_csv("data/qPCR_results.csv") %>% 
+  dplyr::filter(CT != "Undetermined") %>% 
+  select(Sample = `Sample Name`, Target = `Target Name`, CT, `StandardMolecules`)
+results$CT %<>% as.numeric
+```
+
+# First, let's work with the qPCR standards and determine efficiencies
+```{r Standards}
+find_efficiency <- function(target, data){
+  #subset the data to only contain rows with standards of your target
+  standards <- data %>% 
+    filter(stringr::str_detect(Sample, target))
+  
+  #fit linear model and calculate efficiency using slope
+  linearmodel <- lm(CT~StandardMolecules, standards)
+  slope <- linearmodel$coefficients[2]
+  efficiency <- 10^(-1/slope)
+  
+  #plot the linear model along with the data
+  plot <- standards %>% 
+    ggplot() +
+    geom_point(aes(x = StandardMolecules, y = CT)) +
+    geom_abline(slope=linearmodel$coefficients[2], intercept = linearmodel$coefficients[1]) + 
+    ggtitle(target) +
+    theme_cowplot(12)
+
+
+  #extract rsqured value
+  rsquared <- summary(linearmodel)$r.squared
+    
+  return(list("target" = target, "efficiency" = efficiency, plot, "r^2" = rsquared))
+}
+```
+
+# Now, we run the function on all our targets
+```{r run efficiency function}
+lapply(targets, find_efficiency, data=results)
+```
+
+# Now, we can do some analyses using the $\Delta \Delta$ CT method
+```{r deltadeltaCT methods}
+#function to find the control CT mean given the name of the control and the target
+find_ctrl_mean <- function(data, target, ctrl){
+  ctrl <- data %>% 
+    filter(Target == target) %>% 
+    filter(Sample == ctrl)
+  return(mean(ctrl$CT))
+}
+
+#function to calculate deltadeltaCT
+calc_deltadeltaCT <- function(HKG_ctrl_mean, GOI_ctrl_mean, HKG_efficiency, GOI_efficiency, HKG_obs, GOI_obs){
+  deltadeltaCT <- GOI_efficiency^(GOI_ctrl_mean - GOI_obs) / HKG_efficiency^(HKG_ctrl_mean - HKG_obs)
+  return(deltadeltaCT)
+}
+
+#function to calculate mean and stdev of deltadeltaCT for a given sample and GOI target combo
+calc_stats_deltadeltaCT <- function(GOI, HKG, data, control, sample){
+  Housekeeping_ctrl_CT_mean <- find_ctrl_mean(data, target=HKG, ctrl=control)
+  GOI_ctrl_CT_mean <- find_ctrl_mean(data, target=GOI, ctrl=control)
+  HKG_eff <- unname(find_efficiency(HKG, data)[[2]])
+  GOI_eff <- unname(find_efficiency(GOI, data)[[2]])
+  
+  HKG_data <- data %>% 
+    filter(Target == HKG) %>% 
+    filter(Sample == sample)
+  GOI_data <- data %>% 
+    filter(Target == GOI) %>% 
+    filter(Sample == sample)
+  
+  deltadeltaCTs <- c()
+  for(i in 1:min(nrow(HKG_data), nrow(GOI_data))){
+    deltadeltaCTs <- c(deltadeltaCTs, calc_deltadeltaCT(Housekeeping_ctrl_CT_mean, GOI_ctrl_CT_mean, HKG_eff, GOI_eff, HKG_data$CT[i], GOI_data$CT[i]))
+  }
+  
+  mean_ddCT <- mean(deltadeltaCTs)
+  sdev_ddCT <- sd(deltadeltaCTs)
+  
+  return(list(mean_ddCT, sdev_ddCT, deltadeltaCTs))
+}
+```
+
+```{r plots_}
+plot_results <- function(mean_table, sd_table, control, sample_names, sample_order){
+  targets <- colnames(mean_table)
+  
+  SD_table_long <- sd_table %>% 
+    tibble::rownames_to_column("Sample") %>% 
+    gather(targets, key=target, value=sd)
+  
+  mean_table_long <- mean_table %>% 
+    tibble::rownames_to_column("Sample") %>% 
+    gather(targets, key=target, value=mean)
+  
+  long_data_combined <- merge(mean_table_long, SD_table_long, by=c("Sample", "target"))
+  long_data_combined$Sample <- factor(long_data_combined$Sample,levels = sample_order)
+
+  
+  plot <- ggplot(long_data_combined, aes(x=target, y=mean, fill = Sample)) +
+    geom_bar(position="dodge", stat="identity") +
+    geom_errorbar(position=position_dodge(), aes(x=target, ymin=mean-sd, ymax=mean+sd), color="black") + 
+    scale_fill_discrete(name="Sample",
+                         breaks=sample_order,
+                         labels=sample_names) + 
+    labs(x="Target",y= "E^-(delta delta Ct)") + 
+    scale_colour_colorblind() + 
+    theme_cowplot(12)
+  
+  return(plot)
+}
+```
+
+# Function to calculate significance between measurements
+```{r significance}
+compute_significance <- function(target, sample1, sample2, data, HKG, control){
+  deltadeltaCTs_sample1 <- log10(calc_stats_deltadeltaCT(GOI=target, HKG=HKG, data=data, control=control, sample=sample1)[[3]])
+  deltadeltaCTs_sample2 <- log10(calc_stats_deltadeltaCT(GOI=target, HKG=HKG, data=data, control=control, sample=sample2)[[3]])
+
+  if(length(deltadeltaCTs_sample1) < 2 | length(deltadeltaCTs_sample2) < 2){
+    return("NA")
+  } else{
+
+  #perform ftest and use the result to inform your ttest parameters
+  f_test <- var.test(deltadeltaCTs_sample1, deltadeltaCTs_sample2, alternative="two.sided")
+  if(f_test$p.value < 0.05){
+    if(mean(deltadeltaCTs_sample1) < mean(deltadeltaCTs_sample2)){
+      t_test <- t.test(deltadeltaCTs_sample1, deltadeltaCTs_sample2, alternative="less", var.equal=FALSE)
+    } else {
+      t_test <- t.test(deltadeltaCTs_sample1, deltadeltaCTs_sample2, alternative="greater", var.equal=FALSE)
+    }
+  } else {
+    if(mean(deltadeltaCTs_sample1) < mean(deltadeltaCTs_sample2)){
+      t_test <- t.test(deltadeltaCTs_sample1, deltadeltaCTs_sample2, alternative="less", var.equal=TRUE)
+    } else {
+      t_test <- t.test(deltadeltaCTs_sample1, deltadeltaCTs_sample2, alternative="greater", var.equal=TRUE)
+    }
+  }
+  return(t_test$p.value)
+  }
+}
+
+compute_significance_df <- function(target, data, samples_, HKG, control){
+  df <- matrix(nrow=length(samples_), ncol=length(samples_))
+  for(i in 1:length(samples_)){
+    for(j in 1:length(samples_)){
+      df[i, j] <- compute_significance(target=target, sample1=samples_[i], sample2=samples_[j], data=data, HKG=HKG, control=control)
+    }
+  }
+  df <- data.frame(df)
+  colnames(df) <- samples_
+  rownames(df) <- samples_
+
+  df_long <- df %>%
+    tibble::rownames_to_column("Sample1")
+  return(df_long)
+}
+
+```
+
+
+# H20157
+
+# Strain markers (control is No Strain)
+
+## HKG = GUSB
+
+```{r compute_strain_h20157_gusb}
+control <- samples[2]
+targets_strain <- targets[2:4]
+samples_strain <- samples[1:2]
+
+#initialize a dataframe to store the values for mean, then for sd
+means_strain <- data.frame(matrix(ncol = length(targets_strain), nrow = length(samples_strain)))
+colnames(means_strain) <- targets_strain
+rownames(means_strain) <- samples_strain
+
+sds_strain <- means_strain
+
+for(i in 1:length(rownames(means_strain))){
+  for(j in 1:length(colnames(means_strain))){
+  stats_tmp <- calc_stats_deltadeltaCT(GOI=colnames(means_strain)[j], HKG=housekeeping, data=results, control=control, sample=rownames(means_strain)[i])
+  means_strain[i,j] <- stats_tmp[[1]]
+  sds_strain[i,j] <- stats_tmp[[2]]
+  }
+}
+
+strain_plot <- plot_results(means_strain, sds_strain, control_strain, c("H20157 Control", "H20157 Strain"), samples[c(2,1)])
+strain_plot
+
+
+#output tables for significance for all samples for all targets
+for(target in targets_strain){
+  print(target)
+  print(compute_significance_df(target, results, samples_strain, housekeeping, control))
+}
+```
+
+
+# H23555
+
+# Strain markers (control is No Strain)
+
+## HKG = GUSB
+
+```{r compute_strain_h23555_gusb}
+control <- samples[4]
+targets_strain <- targets[2:4]
+samples_strain <- samples[3:4]
+
+#initialize a dataframe to store the values for mean, then for sd
+means_strain <- data.frame(matrix(ncol = length(targets_strain), nrow = length(samples_strain)))
+colnames(means_strain) <- targets_strain
+rownames(means_strain) <- samples_strain
+
+sds_strain <- means_strain
+
+for(i in 1:length(rownames(means_strain))){
+  for(j in 1:length(colnames(means_strain))){
+  stats_tmp <- calc_stats_deltadeltaCT(GOI=colnames(means_strain)[j], HKG=housekeeping, data=results, control=control, sample=rownames(means_strain)[i])
+  means_strain[i,j] <- stats_tmp[[1]]
+  sds_strain[i,j] <- stats_tmp[[2]]
+  }
+}
+
+strain_plot <- plot_results(means_strain, sds_strain, control_strain, c("H23555 Control", "H23555 Strain"), samples[c(4,3)])
+strain_plot
+
+#output tables for significance for all samples for all targets
+for(target in targets_strain){
+  print(target)
+  print(compute_significance_df(target, results, samples_strain, housekeeping, control))
+}
+
+```
+
+
+# NA18855 alone
+
+# Strain markers (control is No Strain)
+
+## HKG = GUSB
+
+```{r compute_strain_na18855_gusb_alone}
+control <- samples[6]
+targets_strain <- targets[2:4]
+samples_strain <- samples[5:6]
+
+#initialize a dataframe to store the values for mean, then for sd
+means_strain <- data.frame(matrix(ncol = length(targets_strain), nrow = length(samples_strain)))
+colnames(means_strain) <- targets_strain
+rownames(means_strain) <- samples_strain
+
+sds_strain <- means_strain
+
+for(i in 1:length(rownames(means_strain))){
+  for(j in 1:length(colnames(means_strain))){
+  stats_tmp <- calc_stats_deltadeltaCT(GOI=colnames(means_strain)[j], HKG=housekeeping, data=results, control=control, sample=rownames(means_strain)[i])
+  means_strain[i,j] <- stats_tmp[[1]]
+  sds_strain[i,j] <- stats_tmp[[2]]
+  }
+}
+
+strain_plot <- plot_results(means_strain, sds_strain, control_strain, c("NA18855 Control", "NA18855 Strain"), samples[c(6,5)])
+strain_plot
+
+#output tables for significance for all samples for all targets
+for(target in targets_strain){
+  print(target)
+  print(compute_significance_df(target, results, samples_strain, housekeeping, control))
+}
+```
