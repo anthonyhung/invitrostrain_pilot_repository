@@ -438,7 +438,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-01-21
+<strong>Last updated:</strong> 2021-11-12
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -529,24 +529,26 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree77338dc34fe63189799329061d42d2d0d1e166f6targetblank77338dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/77338dc34fe63189799329061d42d2d0d1e166f6" target="_blank">77338dc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree3962af3b110de40a363885f4c8dcf11607c14c78targetblank3962af3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/3962af3b110de40a363885f4c8dcf11607c14c78" target="_blank">3962af3</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree77338dc34fe63189799329061d42d2d0d1e166f6targetblank77338dca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree3962af3b110de40a363885f4c8dcf11607c14c78targetblank3962af3a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/77338dc34fe63189799329061d42d2d0d1e166f6" target="_blank">77338dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/3962af3b110de40a363885f4c8dcf11607c14c78" target="_blank">3962af3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    code/.DS_Store
     Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
     Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
     Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
@@ -570,11 +572,20 @@ Ignored files:
     Ignored:    data/external_scRNA/merged_external_scRNA.rds
     Ignored:    data/poweranalysis/alasoo_et_al/
     Ignored:    output/GO_terms_enriched.csv
+    Ignored:    output/topicModel_k=6.rds
     Ignored:    output/topicModel_k=7.rds
+    Ignored:    output/topicModel_k=8.rds
     Ignored:    output/voom_results.rds
+
+Untracked files:
+    Untracked:  data/Homo_sapiens_Bgee_14_2/
+    Untracked:  data/anatdata.RData
+    Untracked:  data/release.tsv
+    Untracked:  data/species_Bgee_14_2.tsv
 
 Unstaged changes:
     Modified:   .gitignore
+    Modified:   analysis/DEanalysis_bulkRNA.Rmd
 
 </code></pre>
 <p>
@@ -613,6 +624,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/powerAnalysis.html" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+<td>
+knit analysis files
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -809,6 +837,43 @@ p &lt;- ggplot(data.frame(x = c(0, 2)), aes(x = x)) +
      geom_hline(yintercept = .8, linetype = &quot;dashed&quot;, color = &quot;red&quot;)
 p</code></pre>
 <p><img src="figure/powerAnalysis.Rmd/curve-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-curve-1">
+Past versions of curve-1.png
+</button>
+</p>
+<div id="fig-curve-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/curve-1.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="import-outside-data-on-eqtls-to-see-distributions-of-standardized-effect-sizes" class="section level1">
 <h1>Import outside data on eQTLs to see distributions of standardized effect sizes</h1>
@@ -883,24 +948,172 @@ get_ecdf(conditionA$zscore/sqrt(15))</code></pre>
 <pre><code>      75%       95%       99% 
 0.1552778 0.4150685 0.6053753 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/hypoxia-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hypoxia-1">
+Past versions of hypoxia-1.png
+</button>
+</p>
+<div id="fig-hypoxia-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/hypoxia-1.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>#conditionB
 get_ecdf(conditionB$zscore/sqrt(15))</code></pre>
 <pre><code>      75%       95%       99% 
 0.1572876 0.4167222 0.6051397 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/hypoxia-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hypoxia-2">
+Past versions of hypoxia-2.png
+</button>
+</p>
+<div id="fig-hypoxia-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/hypoxia-2.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>#conditionC
 get_ecdf(conditionC$zscore/sqrt(15))</code></pre>
 <pre><code>      75%       95%       99% 
 0.1564676 0.4154604 0.6035850 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/hypoxia-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hypoxia-3">
+Past versions of hypoxia-3.png
+</button>
+</p>
+<div id="fig-hypoxia-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/hypoxia-3.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>#conditionD
 get_ecdf(conditionD$zscore/sqrt(15))</code></pre>
 <pre><code>      75%       95%       99% 
 0.1582968 0.4196211 0.6097121 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/hypoxia-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hypoxia-4">
+Past versions of hypoxia-4.png
+</button>
+</p>
+<div id="fig-hypoxia-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/hypoxia-4.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <div id="alasoo-et-al-2019-ifn-gamma-and-salmonella-reqtl-study" class="section level2">
 <h2>Alasoo et al 2019 IFN gamma and salmonella reQTL study</h2>
@@ -966,29 +1179,214 @@ get_ecdf(n_sorted$SES)</code></pre>
 <pre><code>      75%       95%       99% 
 0.1606588 0.4507322 0.8475118 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ifn_salmonella-1">
+Past versions of ifn_salmonella-1.png
+</button>
+</p>
+<div id="fig-ifn_salmonella-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/ifn_salmonella-1.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>get_ecdf(n_sorted_ash_out$result$PosteriorMean)</code></pre>
 <pre><code>        75%         95%         99% 
 0.002599666 0.010322366 0.042398086 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ifn_salmonella-2">
+Past versions of ifn_salmonella-2.png
+</button>
+</p>
+<div id="fig-ifn_salmonella-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/ifn_salmonella-2.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>#salmonella condition
 get_ecdf(sal_sorted$SES)</code></pre>
 <pre><code>      75%       95%       99% 
 0.1341273 0.3958948 0.7232331 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ifn_salmonella-3">
+Past versions of ifn_salmonella-3.png
+</button>
+</p>
+<div id="fig-ifn_salmonella-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/ifn_salmonella-3.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>#IFN treated condition
 get_ecdf(IFN_sorted$SES)</code></pre>
 <pre><code>      75%       95%       99% 
 0.1537379 0.4549502 0.8596644 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ifn_salmonella-4">
+Past versions of ifn_salmonella-4.png
+</button>
+</p>
+<div id="fig-ifn_salmonella-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/ifn_salmonella-4.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>#salmonella and ifn treated condition
 get_ecdf(salIFN_sorted$SES)</code></pre>
 <pre><code>      75%       95%       99% 
 0.1370046 0.4083029 0.7420472 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/ifn_salmonella-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ifn_salmonella-5">
+Past versions of ifn_salmonella-5.png
+</button>
+</p>
+<div id="fig-ifn_salmonella-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/ifn_salmonella-5.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 </div>
 <div id="caliskan-et-al-2015-rhinovirus-reqtl-study" class="section level2">
@@ -1031,22 +1429,170 @@ get_ecdf(rhinovirus_data_f$SES)</code></pre>
 <pre><code>      75%       95%       99% 
 0.0486464 0.1414978 0.2271107 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/rhinovirus-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-rhinovirus-1">
+Past versions of rhinovirus-1.png
+</button>
+</p>
+<div id="fig-rhinovirus-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/rhinovirus-1.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>get_ecdf(rhinovirus_f_ashr_out$result$PosteriorMean)</code></pre>
 <pre><code>         75%          95%          99% 
 0.0001144159 0.0003825204 0.0007927461 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/rhinovirus-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-rhinovirus-2">
+Past versions of rhinovirus-2.png
+</button>
+</p>
+<div id="fig-rhinovirus-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/rhinovirus-2.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>#rhinovirus
 get_ecdf(rhinovirus_data_r$SES)</code></pre>
 <pre><code>      75%       95%       99% 
 0.0540109 0.1631119 0.2652244 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/rhinovirus-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-rhinovirus-3">
+Past versions of rhinovirus-3.png
+</button>
+</p>
+<div id="fig-rhinovirus-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/rhinovirus-3.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 <pre class="r"><code>get_ecdf(rhinovirus_r_ashr_out$result$PosteriorMean)</code></pre>
 <pre><code>         75%          95%          99% 
 0.0001393432 0.0004605828 0.0009016914 </code></pre>
 <p><img src="figure/powerAnalysis.Rmd/rhinovirus-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-rhinovirus-4">
+Past versions of rhinovirus-4.png
+</button>
+</p>
+<div id="fig-rhinovirus-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/d22555c207443a2dd80dd90a96e74a4cf9ffbb66/docs/figure/powerAnalysis.Rmd/rhinovirus-4.png" target="_blank">d22555c</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>NULL</code></pre>
 </div>
 </div>

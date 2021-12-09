@@ -438,7 +438,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-01-28
+<strong>Last updated:</strong> 2021-11-19
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -529,24 +529,26 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree1b6031b5c87069ced8ab09d113f5e774a53d3d06targetblank1b6031ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/1b6031b5c87069ced8ab09d113f5e774a53d3d06" target="_blank">1b6031b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree3962af3b110de40a363885f4c8dcf11607c14c78targetblank3962af3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/3962af3b110de40a363885f4c8dcf11607c14c78" target="_blank">3962af3</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree1b6031b5c87069ced8ab09d113f5e774a53d3d06targetblank1b6031ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree3962af3b110de40a363885f4c8dcf11607c14c78targetblank3962af3a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/1b6031b5c87069ced8ab09d113f5e774a53d3d06" target="_blank">1b6031b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/3962af3b110de40a363885f4c8dcf11607c14c78" target="_blank">3962af3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    code/.DS_Store
     Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
     Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
     Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
@@ -575,8 +577,18 @@ Ignored files:
     Ignored:    output/topicModel_k=8.rds
     Ignored:    output/voom_results.rds
 
+Untracked files:
+    Untracked:  analysis/RT-PCR.Rmd
+    Untracked:  data/Homo_sapiens_Bgee_14_2/
+    Untracked:  data/anatdata.RData
+    Untracked:  data/qPCR_results.csv
+    Untracked:  data/release.tsv
+    Untracked:  data/species_Bgee_14_2.tsv
+
 Unstaged changes:
     Modified:   .gitignore
+    Modified:   analysis/DEanalysis_bulkRNA.Rmd
+    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -615,6 +627,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/anthonyhung/invitroOA_pilot_repository/7cb9196eaad780b01499321ececc45a6f2ff5ae1/docs/preProcess_scRNA.html" target="_blank">7cb9196</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-01-28
+</td>
+<td>
+knit anlaysis files
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1261,20 +1290,20 @@ ANT1.2 &lt;- RunUMAP(ANT1.2, dims = 1:num_PCs)</code></pre>
 <pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
 This message will be shown once per session</code></pre>
-<pre><code>10:15:19 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>10:15:19 Read 1815 rows and found 50 numeric columns</code></pre>
-<pre><code>10:15:19 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>10:15:19 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>09:58:57 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>09:58:57 Read 1815 rows and found 50 numeric columns</code></pre>
+<pre><code>09:58:57 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>09:58:57 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>**************************************************|
-10:15:19 Writing NN index file to temp file /tmp/RtmplSureM/filee122510e200b
-10:15:19 Searching Annoy index using 1 thread, search_k = 3000
-10:15:19 Annoy recall = 100%
-10:15:20 Commencing smooth kNN distance calibration using 1 thread
-10:15:21 Initializing from normalized Laplacian + noise
-10:15:21 Commencing optimization for 500 epochs, with 73932 positive edges
-10:15:26 Optimization finished</code></pre>
+09:58:58 Writing NN index file to temp file /tmp/RtmpXd3o0f/file1613975457851
+09:58:58 Searching Annoy index using 1 thread, search_k = 3000
+09:58:58 Annoy recall = 100%
+09:58:58 Commencing smooth kNN distance calibration using 1 thread
+09:58:59 Initializing from normalized Laplacian + noise
+09:58:59 Commencing optimization for 500 epochs, with 73932 positive edges
+09:59:05 Optimization finished</code></pre>
 <pre class="r"><code>p1 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;)
 p2 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;orig.ident&quot;)
 p3 &lt;- DimPlot(ANT1.2, reduction = &quot;umap&quot;, group.by = &quot;labels&quot;)
