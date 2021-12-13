@@ -19,6 +19,7 @@ The merged data were created by running the code located in [Aggregation of exte
 library(fastTopics)
 library(Seurat)
 library(Matrix)
+library(cowplot)
 
 #load data (stored in a seurat object)
 merged_data <- readRDS("data/external_scRNA/merged_external_scRNA.rds")
@@ -123,110 +124,33 @@ print(structure_plot)
 First, calculate differential occurrence of genes in individual topics vs all other topics.
 
 ```{r DE}
-if (file.exists("output/topicModel_k=7.rds")) {
-  fit <- readRDS("output/topicModel_k=7.rds")
+if (file.exists("output/DEresults_k=7.rds")) {
+  diff_count_topics_k7 <- readRDS("output/DEresults_k=7.rds")
 } else {
-  fit <- fit_poisson_nmf(raw_counts,k = 7,numiter = 150)
-  saveRDS(fit, "output/topicModel_k=7.rds")
+  diff_count_topics_k7 <- de_analysis(fit, 
+                                 raw_counts, 
+                                 pseudocount = 0.1, 
+                                 control = list(ns = 1e4, nc = 20, nsplit = 1000)
+) #runs using 20 cores, 10,000 simulations
+
+
+saveRDS(diff_count_topics_k7, file = "output/DEresults_k=7.rds")
 }
 
-```
+#volcano plots
 
-Then plot the results using a volcanoplot for each topic
+genes <- rownames(fit$F)
 
-```{r volcanoplot function}
-library(ggrepel)
-library(cowplot)
-volcano_plot_with_highlighted_genes <- function (diff_count_res, k, 
-                                                 genes, ...) {
-  dat <- data.frame(beta  = diff_count_res$beta[genes,k],
-                    y     = abs(diff_count_res$Z[genes,k]),
-                    label = genes) 
-  rows <- match(genes,rownames(diff_count_res$beta))
-  rownames(diff_count_res$beta)[rows] <- ""
-  rownames(diff_count_res$Z)[rows] <- ""
-  return(volcano_plot(diff_count_res,k = k,
-                      ggplot_call = volcano_plot_ggplot_call,...) +
-         geom_text_repel(data = dat,
-                         mapping = aes(x = beta,y = y,label = label),
-                         inherit.aes = FALSE,color = "black",size = 5,
-                         fontface = "italic",segment.color = "black",
-                         segment.size = 0.25,
-                         na.rm = TRUE))
-}
-
-
-# This is used by volcano_plot_with_highlighted_genes to create the
-# volcano plot.
-ggplot_call_for_volcano_plot <- function (dat, y.label, topic.label) {
-  ggplot(dat,aes_string(x = "beta",y = "y",fill = "mean",label = "label")) +
-    geom_point(color = "white",stroke = 0.3,shape = 21,na.rm = TRUE) +
-    scale_y_continuous(trans = "sqrt",
-      breaks = c(0,1,2,5,10,20,50,100,200,500,1e3,2e3,5e3,1e4,2e4,5e4)) +
-    scale_fill_gradient2(low = "deepskyblue",mid = "gold",high = "orangered",
-                         midpoint = mean(range(dat$mean))) +
-    geom_text_repel(color = "gray",size = 5,fontface = "italic",
-                    segment.color = "gray",segment.size = 0.25,na.rm = TRUE) +
-    labs(x = "log-fold change (\u03b2)",y = y.label,fill = "log10 mean") +
-    theme_cowplot(font_size = 18) +
-    theme(plot.title = element_text(size = 18,face = "plain"))}
-
-```
-
-```{r DE plots}
-#plots
-p1 <- volcano_plot_with_highlighted_genes(diff_count_res = diff_count_topics,
-                                          k = "k2",
-                                          genes = NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,5000)) +
-     guides(fill = "none") +
-     ggtitle("topic 2 (Hepatocytes)")
-p2 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k3",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topic 3 (iPSCs)")
-p3 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k1",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topic 1 (iPSC-MSCs)")
-p4 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k7",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topic 7 (iPSC-Chondrocytes)")
-p5 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k5",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topic 5 (Chondrocyte 1)")
-p6 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k4",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topic 4 (Chondrocyte 2)")
-p7 <- volcano_plot_with_highlighted_genes(diff_count_topics,
-                                          "k6",
-                                          NA,
-                                          label_above_quantile = 0.9995) +
-     #ylim(c(0,225)) +
-     guides(fill = "none") +
-     ggtitle("topic 6 (Chondrocyte 3)")
+p1 <- volcano_plot(diff_count_topics_k7,k = "k1",ymax = 300,labels = genes)
+p2 <- volcano_plot(diff_count_topics_k7,k = "k2",ymax = 175,labels = genes)
+p3 <- volcano_plot(diff_count_topics_k7,k = "k3",ymax = 150,labels = genes)
+p4 <- volcano_plot(diff_count_topics_k7,k = "k4",ymax = 175,labels = genes)
+p5 <- volcano_plot(diff_count_topics_k7,k = "k5",ymax = 175,labels = genes)
+p6 <- volcano_plot(diff_count_topics_k7,k = "k6",ymax = 200,labels = genes)
+p7 <- volcano_plot(diff_count_topics_k7,k = "k7",ymax = 200,labels = genes)
 plot_grid(p1,p2,p3,p4,p5,p6,p7,nrow = 3,ncol = 3)
-```
 
+```
 
 # For Supplement: Fit Topic models with k = 6 and k = 8 and plot a Structure plot in each case
 
@@ -279,6 +203,32 @@ structure_plot <- structure_plot(select(poisson2multinom(fit),loadings = rows_ke
                       perplexity = c(50),
                       n = 6043,gap = 100,num_threads = 4,verbose = FALSE)
 print(structure_plot)
+
+if (file.exists("output/DEresults_k=8.rds")) {
+  diff_count_topics_k6 <- readRDS("output/DEresults_k=6.rds")
+} else {
+  diff_count_topics_k6 <- de_analysis(fit, 
+                                 raw_counts, 
+                                 pseudocount = 0.1, 
+                                 control = list(ns = 1e4, nc = 20, nsplit = 1000)
+) #runs using 20 cores, 10,000 simulations
+
+
+saveRDS(diff_count_topics_k6, file = "output/DEresults_k=6.rds")
+}
+
+#volcano plots
+
+genes <- rownames(fit$F)
+
+p1 <- volcano_plot(diff_count_topics_k6,k = "k1",ymax = 300,labels = genes)
+p2 <- volcano_plot(diff_count_topics_k6,k = "k2",ymax = 175,labels = genes)
+p3 <- volcano_plot(diff_count_topics_k6,k = "k3",ymax = 150,labels = genes)
+p4 <- volcano_plot(diff_count_topics_k6,k = "k4",ymax = 175,labels = genes)
+p5 <- volcano_plot(diff_count_topics_k6,k = "k5",ymax = 175,labels = genes)
+p6 <- volcano_plot(diff_count_topics_k6,k = "k6",ymax = 200,labels = genes)
+plot_grid(p1,p2,p3,p4,p5,p6,nrow = 3,ncol = 3)
+
 ```
 
 ```{r fit topic model k8}
@@ -330,4 +280,34 @@ structure_plot <- structure_plot(select(poisson2multinom(fit),loadings = rows_ke
                       perplexity = c(50),
                       n = 6043,gap = 100,num_threads = 4,verbose = FALSE)
 print(structure_plot)
+
+
+
+if (file.exists("output/DEresults_k=8.rds")) {
+  diff_count_topics_k8 <- readRDS("output/DEresults_k=8.rds")
+} else {
+  diff_count_topics_k8 <- de_analysis(fit, 
+                                 raw_counts, 
+                                 pseudocount = 0.1, 
+                                 control = list(ns = 1e4, nc = 20, nsplit = 1000)
+) #runs using 20 cores, 10,000 simulations
+
+
+saveRDS(diff_count_topics_k8, file = "output/DEresults_k=8.rds")
+}
+
+#volcano plots
+
+genes <- rownames(fit$F)
+
+p1 <- volcano_plot(diff_count_topics_k8,k = "k1",ymax = 300,labels = genes)
+p2 <- volcano_plot(diff_count_topics_k8,k = "k2",ymax = 175,labels = genes)
+p3 <- volcano_plot(diff_count_topics_k8,k = "k3",ymax = 150,labels = genes)
+p4 <- volcano_plot(diff_count_topics_k8,k = "k4",ymax = 175,labels = genes)
+p5 <- volcano_plot(diff_count_topics_k8,k = "k5",ymax = 175,labels = genes)
+p6 <- volcano_plot(diff_count_topics_k8,k = "k6",ymax = 200,labels = genes)
+p7 <- volcano_plot(diff_count_topics_k8,k = "k7",ymax = 200,labels = genes)
+p8 <- volcano_plot(diff_count_topics_k8,k = "k8",ymax = 200,labels = genes)
+plot_grid(p1,p2,p3,p4,p5,p6,p7,p8,nrow = 3,ncol = 3)
+
 ```
