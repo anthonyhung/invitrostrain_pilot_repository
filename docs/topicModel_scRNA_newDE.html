@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Anthony Hung" />
+
+<meta name="date" content="2021-01-19" />
+
+<title>Fitting and interpreting topic model with external data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">invitroOA_pilot_repository</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Fitting and interpreting topic model with external data</h1>
+<h4 class="author">Anthony Hung</h4>
+<h4 class="date">2021-01-19</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-12-14
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>invitroOA_pilot_repository/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210119code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210119)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210119code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0054a6ea7a5597bf32cc43c7b2c7243e2823207atargetblank0054a6ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0054a6ea7a5597bf32cc43c7b2c7243e2823207a" target="_blank">0054a6e</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomanthonyhunginvitroOApilotrepositorytree0054a6ea7a5597bf32cc43c7b2c7243e2823207atargetblank0054a6ea" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/anthonyhung/invitroOA_pilot_repository/tree/0054a6ea7a5597bf32cc43c7b2c7243e2823207a" target="_blank">0054a6e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    code/.DS_Store
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/conda/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/locks/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/shadow/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/singularity/
+    Ignored:    code/bulkRNA_preprocessing/.snakemake/tmp.3ekfs3n5/
+    Ignored:    code/bulkRNA_preprocessing/fastq/
+    Ignored:    code/bulkRNA_preprocessing/out/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda-archive/
+    Ignored:    code/single_cell_preprocessing/.snakemake/conda/
+    Ignored:    code/single_cell_preprocessing/.snakemake/locks/
+    Ignored:    code/single_cell_preprocessing/.snakemake/shadow/
+    Ignored:    code/single_cell_preprocessing/.snakemake/singularity/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-1_S1_L008/
+    Ignored:    code/single_cell_preprocessing/YG-AH-2S-ANT-2_S2_L008/
+    Ignored:    code/single_cell_preprocessing/demuxlet/.DS_Store
+    Ignored:    code/single_cell_preprocessing/fastq/
+    Ignored:    data/external_scRNA/Chou_et_al2020/
+    Ignored:    data/external_scRNA/Jietal2018/
+    Ignored:    data/external_scRNA/Wuetal2021/
+    Ignored:    data/external_scRNA/merged_external_scRNA.rds
+    Ignored:    data/poweranalysis/alasoo_et_al/
+    Ignored:    output/DEresults_k=6.rds
+    Ignored:    output/DEresults_k=7.rds
+    Ignored:    output/DEresults_k=8.rds
+    Ignored:    output/GO_terms_enriched.csv
+    Ignored:    output/topicModel_k=6.rds
+    Ignored:    output/topicModel_k=7.rds
+    Ignored:    output/topicModel_k=8.rds
+    Ignored:    output/voom_results.rds
+
+Unstaged changes:
+    Modified:   .gitignore
+    Deleted:    analysis/figure/topicModel_scRNA_newDE.Rmd/DE-1.png
+    Deleted:    analysis/figure/topicModel_scRNA_newDE.Rmd/fit topic model k6-1.png
+    Deleted:    analysis/figure/topicModel_scRNA_newDE.Rmd/fit topic model k6-2.png
+    Deleted:    analysis/figure/topicModel_scRNA_newDE.Rmd/fit topic model k8-1.png
+    Deleted:    analysis/figure/topicModel_scRNA_newDE.Rmd/fit topic model k8-2.png
+    Deleted:    analysis/figure/topicModel_scRNA_newDE.Rmd/plot correlations external-1.png
+    Deleted:    analysis/figure/topicModel_scRNA_newDE.Rmd/structure plot external-1.png
+    Modified:   analysis/topicModel_scRNA_newDE.Rmd
+    Deleted:    fig-limma-treatment-hit-1.eps
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/topicModel_scRNA_newDE.Rmd</code>) and HTML (<code>docs/topicModel_scRNA_newDE.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/0054a6ea7a5597bf32cc43c7b2c7243e2823207a/analysis/topicModel_scRNA_newDE.Rmd" target="_blank">0054a6e</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-12-13
+</td>
+<td>
+Add volcano plots to new DE
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/anthonyhung/invitroOA_pilot_repository/blob/b2818747d9e0fc739c7418d4c174e9f8765864da/analysis/topicModel_scRNA_newDE.Rmd" target="_blank">b281874</a>
+</td>
+<td>
+Anthony Hung
+</td>
+<td>
+2021-12-09
+</td>
+<td>
+add test for new DE fasttopics
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This code will load in the combined scRNA seq data from external datasets combined with the iPSC-chondrocytes from the current study and fit a topic model (k=7) to the data. It then interprets the topics.</p>
+</div>
+<div id="load-data-and-packages" class="section level1">
+<h1>Load data and packages</h1>
+<p>The merged data were created by running the code located in <a href="external_scRNA.html">Aggregation of external scRNA-seq data for topic model</a>.</p>
+<pre class="r"><code>library(fastTopics)
+library(Seurat)</code></pre>
+<pre><code>Registered S3 method overwritten by &#39;shiny&#39;:
+  method            from   
+  print.key_missing fastmap</code></pre>
+<pre class="r"><code>library(Matrix)
+library(cowplot)
+
+#load data (stored in a seurat object)
+merged_data &lt;- readRDS(&quot;data/external_scRNA/merged_external_scRNA.rds&quot;)
+
+#Extract raw count matrix from seurat object and get it in correct format for fastTopics
+#need to fit the model to the count data (unintegrated)
+raw_counts &lt;- merged_data@assays$RNA@counts
+#remove genes without any counts in droplets
+raw_counts &lt;- raw_counts[rowSums(raw_counts &gt; 0) &gt; 0,] 
+#get into correct orientation (barcodes x features)
+raw_counts &lt;- t(raw_counts)
+dim(raw_counts)</code></pre>
+<pre><code>[1] 33218 36470</code></pre>
+</div>
+<div id="use-fasttopics-functions-to-fit-a-topic-model-k7-to-the-data" class="section level1">
+<h1>Use fastTopics functions to fit a topic model k=7 to the data</h1>
+<pre class="r"><code>if (file.exists(&quot;output/topicModel_k=7.rds&quot;)) {
+  fit &lt;- readRDS(&quot;output/topicModel_k=7.rds&quot;)
+} else {
+  fit &lt;- fit_poisson_nmf(raw_counts,k = 7,numiter = 150)
+  saveRDS(fit, &quot;output/topicModel_k=7.rds&quot;)
+}
+
+#compute weights and topics (rescale each of l and f to add up to 1)
+l &lt;- fit$L
+f &lt;- fit$F
+weights &lt;- sweep(l, MARGIN = 2, colSums(f), `*`)
+scale &lt;- rowSums(weights)
+weights &lt;- weights / scale
+topics &lt;- f / colSums(f) # add up to 1</code></pre>
+</div>
+<div id="heatmap" class="section level1">
+<h1>Heatmap</h1>
+<p>Here we select a few marker genes to represent iPSCs, MSCs, Hepatocytes, and Chondrocytes and visualize the relative loadings of these marker genes in each of the 7 fitted topics using a scaled heatmap.</p>
+<pre class="r"><code>library(stringr)
+library(pheatmap)
+library(dummies)</code></pre>
+<pre><code>dummies-1.5.6 provided by Decision Patterns</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>Registered S3 method overwritten by &#39;cli&#39;:
+  method     from    
+  print.boxx spatstat</code></pre>
+<pre><code>── Attaching packages ────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+✓ tibble  3.1.6     ✓ dplyr   1.0.7
+✓ tidyr   1.1.4     ✓ forcats 0.4.0
+✓ readr   1.3.1     </code></pre>
+<pre><code>── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+x tidyr::expand() masks Matrix::expand()
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+x tidyr::pack()   masks Matrix::pack()
+x tidyr::unpack() masks Matrix::unpack()</code></pre>
+<pre class="r"><code>#selected markers for different cell types
+MSC_markers &lt;- c(&quot;THY1&quot;, &quot;NT5E&quot;, &quot;ENG&quot;)
+Chondrocyte_markers &lt;- c(&quot;COL2A1&quot;, &quot;ACAN&quot;, &quot;SOX9&quot;, &quot;SOX5&quot;, &quot;SOX6&quot;, &quot;COL9A1&quot;)
+Hepatocyte_markers &lt;- c(&quot;ALB&quot;)
+iPSC_markers &lt;- c(&quot;POU5F1&quot;, &quot;SOX2&quot;, &quot;NANOG&quot;)
+markers &lt;- c(iPSC_markers, Hepatocyte_markers, Chondrocyte_markers, MSC_markers)
+#annotate the markers with the cell type they represent
+markers_description &lt;- data.frame(marker_type = c(rep(&quot;iPSC&quot;, 3), rep(&quot;Hepatocyte&quot;, 1), rep(&quot;Chondrocyte&quot;, 6), rep(&quot;MSC&quot;, 3)))
+rownames(markers_description) &lt;- markers
+
+#plot heatmap of relative expression of marker genes in each topic
+topics_markers &lt;- topics[markers,]
+pheatmap(topics_markers, cluster_cols = FALSE, cluster_rows = FALSE, annotation_row = markers_description, scale = &quot;row&quot;)</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/plot%20correlations%20external-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="structure-plot" class="section level1">
+<h1>Structure Plot</h1>
+<p>The structure plot represents the topic membership proportions of individual cells in each of the cell types using stacked bar plots.</p>
+<pre class="r"><code>#get labels of cells (cell type) and reorder to group them
+sample &lt;- as.data.frame(merged_data@meta.data$Cell.Type)
+sample_labels &lt;- sample %&gt;% 
+     dplyr::transmute(Cell.Type = stringr::word(`merged_data@meta.data$Cell.Type`, start = 1))
+rownames(sample_labels) &lt;- rownames(merged_data@meta.data)
+sample &lt;- sample_labels %&gt;% 
+     dplyr::arrange(Cell.Type)
+
+
+set.seed(1)
+topic_colors &lt;- c(&quot;gold&quot;, &quot;grey&quot;, &quot;firebrick&quot;, &quot;forestgreen&quot;, &quot;royalblue&quot;, &quot;turquoise&quot;, &quot;salmon&quot;)
+topics_order &lt;- c(2, 3, 1, 7, 5, 4, 6)
+rows_keep &lt;- sort(c(sample(which(sample_labels$Cell.Type == &quot;Hepatocyte&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-MSC&quot;), 800),
+               which(sample_labels$Cell.Type == &quot;iPSC-Chondrocyte&quot;),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-Chondro_GAH&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-Osteo&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d7&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d14&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d28&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d42&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;chou_chondrocyte&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;ji_chondrocyte&quot;), 800)))
+structure_plot &lt;- structure_plot(select(poisson2multinom(fit),loadings = rows_keep),
+                      grouping = factor(sample_labels[rows_keep,&quot;Cell.Type&quot;], 
+                                        c(&quot;Hepatocyte&quot;, &quot;iPSC&quot;, &quot;iPSC-MSC&quot;, 
+                                          &quot;iPSC-Osteo&quot;, &quot;iPSC-Chondro_GAH&quot;,
+                                          &quot;iPSC-Chondrocyte&quot;, &quot;Wu_chondrogenic_pellet_d7&quot;, &quot;Wu_chondrogenic_pellet_d14&quot;, &quot;Wu_chondrogenic_pellet_d28&quot;, &quot;Wu_chondrogenic_pellet_d42&quot;, &quot;chou_chondrocyte&quot;, &quot;ji_chondrocyte&quot;)),
+                      topics = topics_order,
+                      colors = topic_colors[topics_order],
+                      perplexity = c(50),
+                      n = 6043,gap = 100,num_threads = 4,verbose = FALSE)</code></pre>
+<pre><code>Running tsne on 447 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 475 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 489 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 467 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 1037 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 443 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 452 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 436 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 447 x 7 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 7 matrix.</code></pre>
+<pre class="r"><code>print(structure_plot)</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/structure%20plot%20external-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="differential-expression-analysis" class="section level1">
+<h1>Differential Expression analysis</h1>
+<p>First, calculate differential occurrence of genes in individual topics vs all other topics.</p>
+<pre class="r"><code>if (file.exists(&quot;output/DEresults_k=7.rds&quot;)) {
+  diff_count_topics_k7 &lt;- readRDS(&quot;output/DEresults_k=7.rds&quot;)
+} else {
+  diff_count_topics_k7 &lt;- de_analysis(fit, 
+                                 raw_counts, 
+                                 pseudocount = 0.1, 
+                                 control = list(ns = 1e4, nc = 20, nsplit = 1000)
+) #runs using 20 cores, 10,000 simulations
+
+
+saveRDS(diff_count_topics_k7, file = &quot;output/DEresults_k=7.rds&quot;)
+}
+
+#volcano plots
+
+genes &lt;- rownames(fit$F)
+
+p1 &lt;- volcano_plot(diff_count_topics_k7,k = &quot;k1&quot;,ymax = 300,labels = genes)
+p2 &lt;- volcano_plot(diff_count_topics_k7,k = &quot;k2&quot;,ymax = 175,labels = genes)
+p3 &lt;- volcano_plot(diff_count_topics_k7,k = &quot;k3&quot;,ymax = 150,labels = genes)
+p4 &lt;- volcano_plot(diff_count_topics_k7,k = &quot;k4&quot;,ymax = 175,labels = genes)
+p5 &lt;- volcano_plot(diff_count_topics_k7,k = &quot;k5&quot;,ymax = 175,labels = genes)
+p6 &lt;- volcano_plot(diff_count_topics_k7,k = &quot;k6&quot;,ymax = 200,labels = genes)
+p7 &lt;- volcano_plot(diff_count_topics_k7,k = &quot;k7&quot;,ymax = 200,labels = genes)
+p1</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/DE-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p2</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/DE-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p3</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/DE-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p4</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/DE-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p5</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/DE-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p6</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/DE-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p7</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/DE-7.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="for-supplement-fit-topic-models-with-k-6-and-k-8-and-plot-a-structure-plot-in-each-case" class="section level1">
+<h1>For Supplement: Fit Topic models with k = 6 and k = 8 and plot a Structure plot in each case</h1>
+<pre class="r"><code>if (file.exists(&quot;output/topicModel_k=6.rds&quot;)) {
+  fit &lt;- readRDS(&quot;output/topicModel_k=6.rds&quot;)
+} else {
+  fit &lt;- fit_poisson_nmf(raw_counts,k = 6,numiter = 100)
+  saveRDS(fit, &quot;output/topicModel_k=6.rds&quot;)
+}
+
+#compute weights and topics (rescale each of l and f to add up to 1)
+l &lt;- fit$L
+f &lt;- fit$F
+weights &lt;- sweep(l, MARGIN = 2, colSums(f), `*`)
+scale &lt;- rowSums(weights)
+weights &lt;- weights / scale
+topics &lt;- f / colSums(f) # add up to 1
+
+
+#get labels of cells (cell type) and reorder to group them
+sample &lt;- as.data.frame(merged_data@meta.data$Cell.Type)
+sample_labels &lt;- sample %&gt;% 
+     dplyr::transmute(Cell.Type = stringr::word(`merged_data@meta.data$Cell.Type`, start = 1))
+rownames(sample_labels) &lt;- rownames(merged_data@meta.data)
+sample &lt;- sample_labels %&gt;% 
+     dplyr::arrange(Cell.Type)
+
+set.seed(1)
+topic_colors &lt;- c(&quot;turquoise&quot;, &quot;firebrick&quot;, &quot;grey&quot;, &quot;salmon&quot;, &quot;royalblue&quot;, &quot;forestgreen&quot;)
+topics_order &lt;- c(3, 2, 4, 6, 5, 1)
+rows_keep &lt;- sort(c(sample(which(sample_labels$Cell.Type == &quot;Hepatocyte&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-MSC&quot;), 800),
+               which(sample_labels$Cell.Type == &quot;iPSC-Chondrocyte&quot;),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-Chondro_GAH&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-Osteo&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d7&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d14&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d28&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d42&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;chou_chondrocyte&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;ji_chondrocyte&quot;), 800)))
+structure_plot &lt;- structure_plot(select(poisson2multinom(fit),loadings = rows_keep),
+                      grouping = factor(sample_labels[rows_keep,&quot;Cell.Type&quot;], 
+                                        c(&quot;Hepatocyte&quot;, &quot;iPSC&quot;, &quot;iPSC-MSC&quot;, &quot;iPSC-Osteo&quot;, 
+                                          &quot;iPSC-Chondro_GAH&quot;, &quot;iPSC-Chondrocyte&quot;, &quot;Wu_chondrogenic_pellet_d7&quot;, &quot;Wu_chondrogenic_pellet_d14&quot;, &quot;Wu_chondrogenic_pellet_d28&quot;, &quot;Wu_chondrogenic_pellet_d42&quot;, &quot;chou_chondrocyte&quot;, &quot;ji_chondrocyte&quot;)),
+                      topics = topics_order,
+                      colors = topic_colors[topics_order],
+                      perplexity = c(50),
+                      n = 6043,gap = 100,num_threads = 4,verbose = FALSE)</code></pre>
+<pre><code>Running tsne on 447 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 475 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 489 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 467 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 1037 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 443 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 452 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 436 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 447 x 6 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 6 matrix.</code></pre>
+<pre class="r"><code>print(structure_plot)</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if (file.exists(&quot;output/DEresults_k=8.rds&quot;)) {
+  diff_count_topics_k6 &lt;- readRDS(&quot;output/DEresults_k=6.rds&quot;)
+} else {
+  diff_count_topics_k6 &lt;- de_analysis(fit, 
+                                 raw_counts, 
+                                 pseudocount = 0.1, 
+                                 control = list(ns = 1e4, nc = 20, nsplit = 1000)
+) #runs using 20 cores, 10,000 simulations
+
+
+saveRDS(diff_count_topics_k6, file = &quot;output/DEresults_k=6.rds&quot;)
+}
+
+#volcano plots
+
+genes &lt;- rownames(fit$F)
+
+p1 &lt;- volcano_plot(diff_count_topics_k6,k = &quot;k1&quot;,ymax = 300,labels = genes)
+p2 &lt;- volcano_plot(diff_count_topics_k6,k = &quot;k2&quot;,ymax = 175,labels = genes)
+p3 &lt;- volcano_plot(diff_count_topics_k6,k = &quot;k3&quot;,ymax = 150,labels = genes)
+p4 &lt;- volcano_plot(diff_count_topics_k6,k = &quot;k4&quot;,ymax = 175,labels = genes)
+p5 &lt;- volcano_plot(diff_count_topics_k6,k = &quot;k5&quot;,ymax = 175,labels = genes)
+p6 &lt;- volcano_plot(diff_count_topics_k6,k = &quot;k6&quot;,ymax = 200,labels = genes)
+p1</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p2</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k6-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p3</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k6-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p4</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k6-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p5</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k6-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p6</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k6-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if (file.exists(&quot;output/topicModel_k=8.rds&quot;)) {
+  fit &lt;- readRDS(&quot;output/topicModel_k=8.rds&quot;)
+} else {
+  fit &lt;- fit_poisson_nmf(raw_counts,k = 8,numiter = 150)
+  saveRDS(fit, &quot;output/topicModel_k=8.rds&quot;)
+}
+
+#compute weights and topics (rescale each of l and f to add up to 1)
+l &lt;- fit$L
+f &lt;- fit$F
+weights &lt;- sweep(l, MARGIN = 2, colSums(f), `*`)
+scale &lt;- rowSums(weights)
+weights &lt;- weights / scale
+topics &lt;- f / colSums(f) # add up to 1
+
+
+#get labels of cells (cell type) and reorder to group them
+sample &lt;- as.data.frame(merged_data@meta.data$Cell.Type)
+sample_labels &lt;- sample %&gt;% 
+     dplyr::transmute(Cell.Type = stringr::word(`merged_data@meta.data$Cell.Type`, start = 1))
+rownames(sample_labels) &lt;- rownames(merged_data@meta.data)
+sample &lt;- sample_labels %&gt;% 
+     dplyr::arrange(Cell.Type)
+
+set.seed(1)
+topic_colors &lt;- c(&quot;royalblue&quot;, &quot;turquoise&quot;,&quot;firebrick&quot;,&quot;gold&quot;,&quot;grey&quot;, &quot;black&quot;, &quot;salmon&quot;, &quot;forestgreen&quot;)
+topics_order &lt;- c(5, 3, 4, 7, 6, 1, 8, 2)
+rows_keep &lt;- sort(c(sample(which(sample_labels$Cell.Type == &quot;Hepatocyte&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-MSC&quot;), 800),
+               which(sample_labels$Cell.Type == &quot;iPSC-Chondrocyte&quot;),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-Chondro_GAH&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;iPSC-Osteo&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d7&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d14&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d28&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;Wu_chondrogenic_pellet_d42&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;chou_chondrocyte&quot;), 800),
+               sample(which(sample_labels$Cell.Type == &quot;ji_chondrocyte&quot;), 800)))
+structure_plot &lt;- structure_plot(select(poisson2multinom(fit),loadings = rows_keep),
+                      grouping = factor(sample_labels[rows_keep,&quot;Cell.Type&quot;], 
+                                        c(&quot;Hepatocyte&quot;, &quot;iPSC&quot;, &quot;iPSC-MSC&quot;, &quot;iPSC-Osteo&quot;, 
+                                          &quot;iPSC-Chondro_GAH&quot;, &quot;iPSC-Chondrocyte&quot;, &quot;Wu_chondrogenic_pellet_d7&quot;, &quot;Wu_chondrogenic_pellet_d14&quot;, &quot;Wu_chondrogenic_pellet_d28&quot;, &quot;Wu_chondrogenic_pellet_d42&quot;, &quot;chou_chondrocyte&quot;, &quot;ji_chondrocyte&quot;)),
+                      topics = topics_order,
+                      colors = topic_colors[topics_order],
+                      perplexity = c(50),
+                      n = 6043,gap = 100,num_threads = 4,verbose = FALSE)</code></pre>
+<pre><code>Running tsne on 447 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 475 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 489 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 467 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 1037 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 443 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 452 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 436 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 447 x 8 matrix.</code></pre>
+<pre><code>Running tsne on 450 x 8 matrix.</code></pre>
+<pre class="r"><code>print(structure_plot)</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if (file.exists(&quot;output/DEresults_k=8.rds&quot;)) {
+  diff_count_topics_k8 &lt;- readRDS(&quot;output/DEresults_k=8.rds&quot;)
+} else {
+  diff_count_topics_k8 &lt;- de_analysis(fit, 
+                                 raw_counts, 
+                                 pseudocount = 0.1, 
+                                 control = list(ns = 1e4, nc = 20, nsplit = 1000)
+) #runs using 20 cores, 10,000 simulations
+
+
+saveRDS(diff_count_topics_k8, file = &quot;output/DEresults_k=8.rds&quot;)
+}
+
+#volcano plots
+
+genes &lt;- rownames(fit$F)
+
+p1 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k1&quot;,ymax = 300,labels = genes)
+p2 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k2&quot;,ymax = 175,labels = genes)
+p3 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k3&quot;,ymax = 150,labels = genes)
+p4 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k4&quot;,ymax = 175,labels = genes)
+p5 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k5&quot;,ymax = 175,labels = genes)
+p6 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k6&quot;,ymax = 200,labels = genes)
+p7 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k7&quot;,ymax = 200,labels = genes)
+p8 &lt;- volcano_plot(diff_count_topics_k8,k = &quot;k8&quot;,ymax = 200,labels = genes)
+p1</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p2</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p3</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p4</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p5</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p6</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p7</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p8</code></pre>
+<p><img src="figure/topicModel_scRNA_newDE.Rmd/fit%20topic%20model%20k8-9.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] forcats_0.4.0     dplyr_1.0.7       purrr_0.3.4      
+ [4] readr_1.3.1       tidyr_1.1.4       tibble_3.1.6     
+ [7] ggplot2_3.3.5     tidyverse_1.3.0   dummies_1.5.6    
+[10] pheatmap_1.0.12   stringr_1.4.0     cowplot_1.1.1    
+[13] Matrix_1.2-18     Seurat_3.2.3      fastTopics_0.6-93
+
+loaded via a namespace (and not attached):
+  [1] utf8_1.2.2            reticulate_1.16       tidyselect_1.1.1     
+  [4] htmlwidgets_1.5.4     grid_3.6.1            Rtsne_0.15           
+  [7] pROC_1.18.0           munsell_0.5.0         codetools_0.2-16     
+ [10] ica_1.0-2             future_1.23.0         miniUI_0.1.1.1       
+ [13] withr_2.4.3           colorspace_2.0-2      knitr_1.23           
+ [16] rstudioapi_0.13       stats4_3.6.1          ROCR_1.0-7           
+ [19] tensor_1.5            listenv_0.8.0         labeling_0.4.2       
+ [22] git2r_0.26.1          mixsqp_0.3-43         polyclip_1.10-0      
+ [25] MCMCpack_1.6-0        farver_2.1.0          rprojroot_2.0.2      
+ [28] coda_0.19-4           parallelly_1.29.0     vctrs_0.3.8          
+ [31] generics_0.1.1        ipred_0.9-12          xfun_0.8             
+ [34] R6_2.5.1              rsvd_1.0.1            invgamma_1.1         
+ [37] bitops_1.0-6          spatstat.utils_1.17-0 assertthat_0.2.1     
+ [40] promises_1.2.0.1      scales_1.1.1          nnet_7.3-12          
+ [43] gtable_0.3.0          npsurv_0.4-0          globals_0.14.0       
+ [46] conquer_1.2.1         goftest_1.2-2         mcmc_0.9-7           
+ [49] workflowr_1.6.2       timeDate_3043.102     rlang_0.4.12         
+ [52] MatrixModels_0.5-0    splines_3.6.1         lazyeval_0.2.2       
+ [55] ModelMetrics_1.2.2.2  broom_0.7.0           yaml_2.2.1           
+ [58] reshape2_1.4.4        abind_1.4-5           modelr_0.1.8         
+ [61] backports_1.1.10      httpuv_1.5.1          caret_6.0-90         
+ [64] tools_3.6.1           lava_1.6.10           ellipsis_0.3.2       
+ [67] gplots_3.0.1.1        RColorBrewer_1.1-2    ggridges_0.5.1       
+ [70] Rcpp_1.0.7            plyr_1.8.6            progress_1.2.2       
+ [73] prettyunits_1.1.1     rpart_4.1-15          deldir_0.1-23        
+ [76] pbapply_1.5-0         ashr_2.2-47           zoo_1.8-8            
+ [79] haven_2.3.1           ggrepel_0.9.1         cluster_2.1.0        
+ [82] fs_1.3.1              magrittr_2.0.1        data.table_1.14.2    
+ [85] scattermore_0.7       SparseM_1.81          lmtest_0.9-37        
+ [88] reprex_0.3.0          RANN_2.6.1            truncnorm_1.0-8      
+ [91] SQUAREM_2021.1        whisker_0.3-2         fitdistrplus_1.0-14  
+ [94] matrixStats_0.61.0    hms_1.1.1             patchwork_1.1.0      
+ [97] lsei_1.2-0            mime_0.12             evaluate_0.14        
+[100] xtable_1.8-4          readxl_1.3.1          gridExtra_2.3        
+[103] compiler_3.6.1        KernSmooth_2.23-15    crayon_1.4.2         
+[106] htmltools_0.5.2       mgcv_1.8-28           later_1.3.0          
+[109] RcppParallel_5.1.4    lubridate_1.8.0       DBI_1.1.0            
+[112] dbplyr_1.4.2          MASS_7.3-52           rappdirs_0.3.1       
+[115] cli_3.1.0             quadprog_1.5-8        gdata_2.18.0         
+[118] parallel_3.6.1        gower_0.2.2           igraph_1.2.4.1       
+[121] pkgconfig_2.0.3       plotly_4.10.0         recipes_0.1.17       
+[124] xml2_1.3.2            foreach_1.5.1         prodlim_2019.11.13   
+[127] rvest_0.3.6           digest_0.6.29         sctransform_0.3.2    
+[130] RcppAnnoy_0.0.19      spatstat.data_1.7-0   rmarkdown_1.13       
+[133] cellranger_1.1.0      leiden_0.3.1          uwot_0.1.11          
+[136] shiny_1.3.2           gtools_3.8.1          quantreg_5.86        
+[139] lifecycle_1.0.1       nlme_3.1-140          jsonlite_1.7.2       
+[142] viridisLite_0.4.0     fansi_0.5.0           pillar_1.6.4         
+[145] lattice_0.20-41       fastmap_1.1.0         httr_1.4.2           
+[148] survival_2.44-1.1     glue_1.5.1            spatstat_1.64-1      
+[151] png_0.1-7             iterators_1.0.13      class_7.3-15         
+[154] stringi_1.7.6         caTools_1.17.1.2      irlba_2.3.3          
+[157] future.apply_1.8.1   </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

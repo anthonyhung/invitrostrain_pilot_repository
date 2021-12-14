@@ -148,7 +148,13 @@ p4 <- volcano_plot(diff_count_topics_k7,k = "k4",ymax = 175,labels = genes)
 p5 <- volcano_plot(diff_count_topics_k7,k = "k5",ymax = 175,labels = genes)
 p6 <- volcano_plot(diff_count_topics_k7,k = "k6",ymax = 200,labels = genes)
 p7 <- volcano_plot(diff_count_topics_k7,k = "k7",ymax = 200,labels = genes)
-plot_grid(p1,p2,p3,p4,p5,p6,p7,nrow = 3,ncol = 3)
+p1
+p2
+p3
+p4
+p5
+p6
+p7
 
 ```
 
@@ -227,8 +233,12 @@ p3 <- volcano_plot(diff_count_topics_k6,k = "k3",ymax = 150,labels = genes)
 p4 <- volcano_plot(diff_count_topics_k6,k = "k4",ymax = 175,labels = genes)
 p5 <- volcano_plot(diff_count_topics_k6,k = "k5",ymax = 175,labels = genes)
 p6 <- volcano_plot(diff_count_topics_k6,k = "k6",ymax = 200,labels = genes)
-plot_grid(p1,p2,p3,p4,p5,p6,nrow = 3,ncol = 3)
-
+p1
+p2
+p3
+p4
+p5
+p6
 ```
 
 ```{r fit topic model k8}
@@ -308,6 +318,13 @@ p5 <- volcano_plot(diff_count_topics_k8,k = "k5",ymax = 175,labels = genes)
 p6 <- volcano_plot(diff_count_topics_k8,k = "k6",ymax = 200,labels = genes)
 p7 <- volcano_plot(diff_count_topics_k8,k = "k7",ymax = 200,labels = genes)
 p8 <- volcano_plot(diff_count_topics_k8,k = "k8",ymax = 200,labels = genes)
-plot_grid(p1,p2,p3,p4,p5,p6,p7,p8,nrow = 3,ncol = 3)
+p1
+p2
+p3
+p4
+p5
+p6
+p7
+p8
 
 ```
