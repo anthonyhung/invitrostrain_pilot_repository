@@ -1,4 +1,4 @@
-# invitroOA_pilot_repository
+# invitrostrain_pilot_repository
 
 A [workflowr][] project.
 
